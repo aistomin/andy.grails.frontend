@@ -6,7 +6,7 @@ const routeConfig: Routes = [
     {
       path: '',
       component: HomeComponent,
-      title: 'Home page',
+      title: 'Andy Grails',
     },
     {
       path: 'details/:id',
