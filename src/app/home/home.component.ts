@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import { HousingLocationComponent } from '../housing-location/housing-location.component';
-import { HousingLocation } from '../housinglocation';
+import { VideoCardComponent } from '../video-card/video-card.component';
+import { Video } from '../video';
 import { HousingService } from '../housing.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, HousingLocationComponent],
+  imports: [CommonModule, VideoCardComponent],
   providers: [HousingService],
   template: `
     <section>
@@ -16,10 +16,10 @@ import { HousingService } from '../housing.service';
       </form>
     </section>
     <section class="results">
-      <app-housing-location
-        *ngFor="let housingLocation of filteredLocations"
-        [housingLocation]="housingLocation"
-      ></app-housing-location>
+      <app-video-card
+        *ngFor="let video of filteredLocations"
+        [video]="video"
+      ></app-video-card>
     </section>
   `,
   styleUrls: ['./home.component.css']
@@ -27,12 +27,12 @@ import { HousingService } from '../housing.service';
 export class HomeComponent {
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
 
-  housingLocations: HousingLocation[] = [];
+  housingLocations: Video[] = [];
 
-  filteredLocations: HousingLocation[] = [];
+  filteredLocations: Video[] = [];
 
   constructor(private housingService: HousingService) {
-    this.housingService.getAllHousingLocations().then((list: HousingLocation[]) => {
+    this.housingService.getAllHousingLocations().then((list: Video[]) => {
       this.housingLocations = list;
       this.filteredLocations = list;
     });
