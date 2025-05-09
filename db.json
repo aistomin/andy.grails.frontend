@@ -2,13 +2,11 @@
     "locations": [
         {
             "id": 0,
-            "name": "Acme Fresh Start Housing",
-            "city": "Chicago",
-            "state": "IL",
-            "photo": "https://angular.dev/assets/images/tutorials/common/bernard-hermant-CLKGGwIBTaY-unsplash.jpg",
-            "availableUnits": 4,
-            "wifi": true,
-            "laundry": true
+            "name": "Klaus Schindler - Zeit für Träume // Andrej Istomin",
+            "description": "The photos in this video were taken by my wife(checkout her channel, by the way:  https://www.youtube.com/channel/UC810...) in Landkreis Dachau(mostly in Schwabhausen and Altomünster). The lovely place where I live.",
+            "youtubeId": "lLe-HB1WLO4",
+            "createdAt": "2025-05-09",
+            "publishedAt": "2025-05-09"
         },
         {
             "id": 1,
