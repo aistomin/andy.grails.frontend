@@ -8,7 +8,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   selector: 'app-video-card',
   imports: [CommonModule, RouterModule],
   template: `
-  @if (video.youtubeId) {
     <section class="video-card">
       <iframe [src]="getYouTubeUrl()" 
         class="video-card-youtube-video"
@@ -25,21 +24,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       </iframe>
       <h2 class="video-card-heading">{{ video.name }}</h2>
       <p class="video-card-description">{{ video.description }}</p>
-      <a [routerLink]="['/details', video.id]">Details</a>
+      <a [routerLink]="['/details', video.id]">Read more ...</a>
     </section>
-  } @else {
-    <section class="video-card">
-      <img
-        class="video-card-youtube-video"
-        [src]="video.photo"
-        alt="Exterior photo of {{ video.name }}"
-        crossorigin
-      />
-      <h2 class="video-card-heading">{{ video.name }}</h2>
-      <p class="video-card-description">{{ video.description }}</p>
-      <a [routerLink]="['/details', video.id]">Learn More</a>
-    </section>
-  }
   `,
   styleUrls: ['./video-card.component.scss']
 })

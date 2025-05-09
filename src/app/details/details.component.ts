@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
-import {HousingService} from '../housing.service';
+import {VideoService} from '../video.service';
 import {Video} from '../video';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
@@ -54,9 +54,9 @@ export class DetailsComponent {
     email: new FormControl(''),
   });
 
-  constructor(private housingService: HousingService, private route: ActivatedRoute) {
+  constructor(private housingService: VideoService, private route: ActivatedRoute) {
     const housingLocationId = parseInt(this.route.snapshot.params['id'], 10);
-    this.housingService.getHousingLocationById(housingLocationId).then((location) => {
+    this.housingService.getVideoById(housingLocationId).then((location) => {
       this.housingLocation = location;
     });
   }

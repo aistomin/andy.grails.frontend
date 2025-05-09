@@ -4,18 +4,18 @@ import { Video } from './video';
 @Injectable({
   providedIn: 'root'
 })
-export class HousingService {
+export class VideoService {
 
-  readonly url = 'http://localhost:3000/locations';
+  readonly url = 'http://localhost:3000/videos';
 
   constructor() { }
 
-  async getAllHousingLocations(): Promise<Video[]> {
+  async getAllVideos(): Promise<Video[]> {
     const data = await fetch(this.url);
     return (await data.json()) ?? [];
   }
 
-  async getHousingLocationById(id: number): Promise<Video | undefined> {
+  async getVideoById(id: number): Promise<Video | undefined> {
     const data = await fetch(`${this.url}/${id}`);
     return (await data.json()) ?? {};
   }
