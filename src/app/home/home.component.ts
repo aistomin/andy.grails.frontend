@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { VideoCardComponent } from '../video-card/video-card.component';
 import { Video } from '../video';
-import { HousingService } from '../housing.service';
+import { VideoService } from '../video.service';
 
 @Component({
   selector: 'app-home',
   imports: [CommonModule, VideoCardComponent],
-  providers: [HousingService],
+  providers: [VideoService],
   template: `
     <section>
       <form>
@@ -31,8 +31,8 @@ export class HomeComponent {
 
   filteredLocations: Video[] = [];
 
-  constructor(private housingService: HousingService) {
-    this.housingService.getAllHousingLocations().then((list: Video[]) => {
+  constructor(private housingService: VideoService) {
+    this.housingService.getAllVideos().then((list: Video[]) => {
       this.housingLocations = list;
       this.filteredLocations = list;
     });

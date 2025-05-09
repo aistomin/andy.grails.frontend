@@ -1,102 +1,76 @@
 {
-    "locations": [
+    "videos": [
         {
             "id": 0,
             "name": "Klaus Schindler - Zeit für Träume // Andrej Istomin",
             "description": "The photos in this video were taken by my wife(checkout her channel, by the way:  https://www.youtube.com/channel/UC810...) in Landkreis Dachau(mostly in Schwabhausen and Altomünster). The lovely place where I live.",
             "youtubeId": "lLe-HB1WLO4",
-            "createdAt": "2025-05-09",
-            "publishedAt": "2025-05-09"
+            "createdAt": "2017-08-20 10:05",
+            "publishedAt": "2017-08-20 12:45"
         },
         {
             "id": 1,
-            "name": "A113 Transitional Housing",
-            "city": "Santa Monica",
-            "state": "CA",
-            "photo": "https://angular.dev/assets/images/tutorials/common/brandon-griggs-wR11KBaB86U-unsplash.jpg",
-            "availableUnits": 0,
-            "wifi": false,
-            "laundry": true
+            "name": "Andrej Istomin - Jenny",
+            "description": "The melody composed and performed by Andrej Istomin except those telephone sounds.",
+            "youtubeId": "j_Ve3uiVsaA",
+            "createdAt": "2017-08-21 15:35",
+            "publishedAt": "2017-08-21 18:12"
         },
         {
             "id": 2,
-            "name": "Warm Beds Housing Support",
-            "city": "Juneau",
-            "state": "AK",
-            "photo": "https://angular.dev/assets/images/tutorials/common/i-do-nothing-but-love-lAyXdl1-Wmc-unsplash.jpg",
-            "availableUnits": 1,
-            "wifi": false,
-            "laundry": false
+            "name": "Mauro Giuliani - Sonatina op. 71 no. 1 // Andrej Istomin",
+            "description": "A little bit of an autumn mood :) Music piece is composed by Mauro Giuliani, called 'Sonatina op71 n°1'. The pictures in slide-show are the reproductions of different Russian painters.",
+            "youtubeId": "DIEBQxqY1yU",
+            "createdAt": "2017-11-11 09:328",
+            "publishedAt": "2017-11-11 18:30"
         },
         {
             "id": 3,
-            "name": "Homesteady Housing",
-            "city": "Chicago",
-            "state": "IL",
-            "photo": "https://angular.dev/assets/images/tutorials/common/ian-macdonald-W8z6aiwfi1E-unsplash.jpg",
-            "availableUnits": 1,
-            "wifi": true,
-            "laundry": false
+            "name": "Blackmore's Night - Minstrel Hall // Andrej Istomin",
+            "description": "The piece is composed by Ritchie Blackmore.",
+            "youtubeId": "iTVHH1vMIcI",
+            "createdAt": "2017-11-13 12:14",
+            "publishedAt": "2017-11-13 15:56"
         },
         {
             "id": 4,
-            "name": "Happy Homes Group",
-            "city": "Gary",
-            "state": "IN",
-            "photo": "https://angular.dev/assets/images/tutorials/common/krzysztof-hepner-978RAXoXnH4-unsplash.jpg",
-            "availableUnits": 1,
-            "wifi": true,
-            "laundry": false
+            "name": "Fernando Sor - Andante // Andrej Istomin",
+            "description": "This time I'm playing 'Andante' by Fernando Sor. It is the very first time when I try to create a real video instead of slide show which I did for my previous videos. I hope you like it :)",
+            "youtubeId": "kbd7a7j0VOE",
+            "createdAt": "2017-12-15 10:33",
+            "publishedAt": "2017-12-15 16:42"
         },
         {
             "id": 5,
-            "name": "Hopeful Apartment Group",
-            "city": "Oakland",
-            "state": "CA",
-            "photo": "https://angular.dev/assets/images/tutorials/common/r-architecture-JvQ0Q5IkeMM-unsplash.jpg",
-            "availableUnits": 2,
-            "wifi": true,
-            "laundry": true
+            "name": "Greensleeves(English traditional) // Andrej Istomin",
+            "description": "Today I'd like to show you my attempt to play instrumental version of the traditional English song 'Greensleeves'.",
+            "youtubeId": "DDt7N5KxXrM",
+            "createdAt": "2019-05-18 10:33",
+            "publishedAt": "2019-05-21 16:42"
         },
         {
             "id": 6,
-            "name": "Seriously Safe Towns",
-            "city": "Oakland",
-            "state": "CA",
-            "photo": "https://angular.dev/assets/images/tutorials/common/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
-            "availableUnits": 5,
-            "wifi": true,
-            "laundry": true
+            "name": "Ferdinando Carulli - Andantino // Andrej Istomin",
+            "description": "This summer is really hot here in Germany. I decided to create this small summer video where I'm trying to play nice light piece called 'Andantino' by Ferdinando Carulli (1770-1841).",
+            "youtubeId": "Hd05dNHYqAw",
+            "createdAt": "2019-07-07 11:33",
+            "publishedAt": "2019-07-09 16:22"
         },
         {
             "id": 7,
-            "name": "Hopeful Housing Solutions",
-            "city": "Oakland",
-            "state": "CA",
-            "photo": "https://angular.dev/assets/images/tutorials/common/r-architecture-GGupkreKwxA-unsplash.jpg",
-            "availableUnits": 2,
-            "wifi": true,
-            "laundry": true
+            "name": "Johann Pachelbel - Sarabande (Guitar + Recorder) // Andrej Istomin",
+            "description": "I'm finally back after almost a year of silence. During this year I was trying to learn some new skills and bring you a new material which will hopefully entertain you. One of the things which I was focused on at least last half a year was a new instrument: #recorder. I'm far away from being anything good at it, but I already can somehow play a simple melodies.",
+            "youtubeId": "hRvXB_gnR84",
+            "createdAt": "2020-06-13 11:23",
+            "publishedAt": "2020-06-13 16:51"
         },
         {
             "id": 8,
-            "name": "Seriously Safe Towns",
-            "city": "Oakland",
-            "state": "CA",
-            "photo": "https://angular.dev/assets/images/tutorials/common/saru-robert-9rP3mxf8qWI-unsplash.jpg",
-            "availableUnits": 10,
-            "wifi": false,
-            "laundry": false
-        },
-        {
-            "id": 9,
-            "name": "Capital Safe Towns",
-            "city": "Portland",
-            "state": "OR",
-            "photo": "https://angular.dev/assets/images/tutorials/common/webaliser-_TPTXZd9mOo-unsplash.jpg",
-            "availableUnits": 6,
-            "wifi": true,
-            "laundry": true
+            "name": "J. S. Bach - Bourrée // Andrej Istomin",
+            "description": "Thanks for watching this video. If you like it, please subscribe to my channel, comment the videos, 'like' them and share with your friends.",
+            "youtubeId": "AjQBAQ1jzwc",
+            "createdAt": "2020-04-09 00:01",
+            "publishedAt": "2020-04-09 11:05"
         }
     ]
 }
