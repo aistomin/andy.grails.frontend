@@ -24,7 +24,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       </iframe>
       <h2 class="video-card-heading">{{ video.name }}</h2>
       <p class="video-card-description">{{ truncateDescription(video.description) }}</p>
-      <a [routerLink]="['/details', video.id]">Read more ...</a>
+      <a [routerLink]="['/details', video.id]">More ...</a>
     </section>
   `,
   styleUrls: ['./video-card.component.scss']
