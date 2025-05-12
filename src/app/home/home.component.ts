@@ -33,8 +33,10 @@ export class HomeComponent {
 
   constructor(private housingService: VideoService) {
     this.housingService.getAllVideos().then((list: Video[]) => {
-      this.housingLocations = list;
-      this.filteredLocations = list;
+      this.housingLocations = list.sort((a, b) => 
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      );
+      this.filteredLocations = this.housingLocations;
     });
   }
 
