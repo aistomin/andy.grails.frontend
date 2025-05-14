@@ -22,7 +22,7 @@ import { VideoService } from '../video.service';
       ></app-video-card>
     </section>
   `,
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
