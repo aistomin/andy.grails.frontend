@@ -17,7 +17,7 @@ import { VideoService } from '../video.service';
     </section>
     <section class="results">
       <app-video-card
-        *ngFor="let video of filteredLocations"
+        *ngFor="let video of filteredVideos"
         [video]="video"
       ></app-video-card>
     </section>
@@ -27,26 +27,26 @@ import { VideoService } from '../video.service';
 export class HomeComponent {
   readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
 
-  housingLocations: Video[] = [];
+  videos: Video[] = [];
 
-  filteredLocations: Video[] = [];
+  filteredVideos: Video[] = [];
 
-  constructor(private housingService: VideoService) {
-    this.housingService.getAllVideos().then((list: Video[]) => {
-      this.housingLocations = list.sort((a, b) => 
+  constructor(private videoService: VideoService) {
+    this.videoService.getAllVideos().then((list: Video[]) => {
+      this.videos = list.sort((a, b) => 
         new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
       );
-      this.filteredLocations = this.housingLocations;
+      this.filteredVideos = this.videos;
     });
   }
 
   filterResults(text: string) {
     if (!text) {
-      this.filteredLocations = this.housingLocations;
+      this.filteredVideos = this.videos;
       return;
     }
-    this.filteredLocations = this.housingLocations.filter((housingLocation) =>
-      housingLocation?.city.toLowerCase().includes(text.toLowerCase()),
+    this.filteredVideos = this.videos.filter((video) =>
+      video?.name.toLowerCase().includes(text.toLowerCase()),
     );
   }
 }
