@@ -31,9 +31,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       </section>
     </article>
   `,
-  styleUrls: ['./details.component.scss']
+  styleUrls: ['./video-details.component.scss']
 })
-export class DetailsComponent {
+export class VideoDetailsComponent {
 
   video: Video | undefined;
 

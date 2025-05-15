@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {HomeComponent} from './home/home.component';
-import {DetailsComponent} from './details/details.component';
+import {VideoDetailsComponent} from './video-details/video-details.component';
 
 const routeConfig: Routes = [
     {
@@ -10,7 +10,7 @@ const routeConfig: Routes = [
     },
     {
       path: 'details/:id',
-      component: DetailsComponent,
+      component: VideoDetailsComponent,
       title: 'Home details',
     },
   ];
