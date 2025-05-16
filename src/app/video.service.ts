@@ -6,7 +6,7 @@ import { Video } from './video';
 })
 export class VideoService {
 
-  readonly url = 'http://localhost:3000/videos';
+  readonly url = 'http://localhost:8080/videos';
 
   constructor() { }
 
