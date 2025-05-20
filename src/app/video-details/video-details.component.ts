@@ -11,7 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   template: `
     <article>
       <iframe [src]="getYouTubeUrl()" 
-        class="listing-photo"
+        class="video-details-youtube-video"
         frameborder="0" 
         allow="accelerometer; 
         autoplay; 
@@ -23,10 +23,10 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
         referrerpolicy="strict-origin-when-cross-origin" 
         allowfullscreen>
       </iframe>
-      <section class="listing-features">
+      <section class="video-details-features">
         <h2 class="section-heading">{{ video?.name }}</h2>
       </section>
-      <section class="listing-features">
+      <section class="video-details-features">
         {{ video?.description }}
       </section>
     </article>
