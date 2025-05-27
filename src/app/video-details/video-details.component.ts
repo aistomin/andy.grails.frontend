@@ -31,6 +31,18 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       <section class="video-details-features">
         {{ video?.description }}
       </section>
+      <section class="video-details-features">
+        <div class="video-dates">
+          <p>
+            <strong>Created:</strong>
+            {{ video?.createdAt | date : 'dd.MM.yyyy HH:mm' }}
+          </p>
+          <p>
+            <strong>Published:</strong>
+            {{ video?.publishedAt | date : 'dd.MM.yyyy HH:mm' }}
+          </p>
+        </div>
+      </section>
     </article>
   `,
   styleUrls: ['./video-details.component.scss'],
