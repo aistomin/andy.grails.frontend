@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { VideoCardComponent } from '../video-card/video-card.component';
 import { Video } from '../video';
 import { VideoService } from '../video.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, VideoCardComponent],
+  imports: [CommonModule, VideoCardComponent, FormsModule],
   providers: [VideoService],
   template: `
     <section>
-      <form>
-        <input type="text" placeholder="Filter by city" #filter />
-        <button
-          class="primary"
-          type="button"
-          (click)="filterResults(filter.value)"
-        >
-          Search
-        </button>
+      <form (submit)="filterResults(filter.value); $event.preventDefault()">
+        <input
+          type="text"
+          placeholder="Filter by title and description"
+          #filter
+        />
+        <button class="primary" type="submit">Search</button>
       </form>
     </section>
     <section class="results">
