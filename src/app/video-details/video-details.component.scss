@@ -18,6 +18,8 @@
   }
   .video-details-features {
     margin-bottom: 20px;
+    width: 50%;
+    float: left;
   }
   .video-details-features li {
     font-size: 14pt;
@@ -36,3 +38,24 @@
       height: 400px;
     }
   }
+
+.video-dates {
+  margin-top: 1rem;
+
+  p {
+    margin: 0.5rem 0;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  strong {
+    color: #333;
+  }
+
+  .date-separator {
+    color: #ccc;
+    margin: 0 0.5rem;
+  }
+}
