@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [master] # Trigger only on direct pushes to master
+    branches: [master] # Trigger only on direct pushes to master.
   pull_request:
-    branches: [master] # Trigger on pull requests targeting master
+    branches: [master] # Trigger on pull requests targeting master.
 
 jobs:
   test:
@@ -25,7 +25,7 @@ jobs:
         run: npm test
   update_parent_repo:
     runs-on: ubuntu-latest
-    needs: test # Ensure this runs only after the 'test' job is successful
+    needs: test # Ensure this runs only after the 'test' job is successful.
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' # Only run on direct pushes to master
     steps:
       - name: Trigger parent repo to update submodule
@@ -36,7 +36,7 @@ jobs:
           {
             "event_type": "update_frontend_rev",
             "client_payload": {
-              "brev": "${{ github.sha }}",
+              "frev": "${{ github.sha }}",
               "ref": "refs/heads/master"
             }
           }
