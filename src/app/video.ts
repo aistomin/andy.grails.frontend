@@ -5,10 +5,4 @@ export interface Video {
   youtubeId: string;
   createdAt: string;
   publishedAt: string;
-  city: string;
-  state: string;
-  photo: string;
-  availableUnits: number;
-  wifi: boolean;
-  laundry: boolean;
 }
