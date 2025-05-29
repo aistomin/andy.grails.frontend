@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master] # Trigger only on direct pushes to master
   pull_request:
-    branches: [master]
+    branches: [master] # Trigger on pull requests targeting master
 
 jobs:
   test:
@@ -23,3 +23,34 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+  update_parent_repo:
+    runs-on: ubuntu-latest
+    needs: test # Ensure this runs only after the 'test' job is successful
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' # Only run on direct pushes to master
+    steps:
+      - name: Trigger parent repo to update submodule
+        run: |
+          set -e  # Fail the job if any command fails
+          # Prepare the JSON payload
+          PAYLOAD=$(cat <<EOF
+          {
+            "event_type": "update_frontend_rev",
+            "client_payload": {
+              "brev": "${{ github.sha }}",
+              "ref": "refs/heads/master"
+            }
+          }
+          EOF
+          )
+          echo "PAYLOAD: $PAYLOAD"
+          # Send the API request
+            RESPONSE=$(curl -w "%{http_code}" -X POST https://api.github.com/repos/aistomin/andy.grails/dispatches \
+              -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD")
+          # Get the HTTP status code
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)  # Get the last line, which is the HTTP response code
+          if [ "$HTTP_CODE" -ne 200 && "$HTTP_CODE" -ne 204 ]; then
+            echo "Error: Received HTTP status code $HTTP_CODE from GitHub API: $RESPONSE"
+            exit 1  # Force the job to fail
+          fi
