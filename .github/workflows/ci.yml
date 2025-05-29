@@ -4,7 +4,7 @@ on:
   push:
     branches: [master] # Trigger only on direct pushes to master
   pull_request:
-    branches: [master]
+    branches: [master] # Trigger on pull requests targeting master
 
 jobs:
   test:
