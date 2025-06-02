@@ -54,5 +54,5 @@ jobs:
             echo "Error: Received HTTP status code $HTTP_CODE from GitHub API: $RESPONSE"
             exit 1  # Force the job to fail
           else
-            echo "✅ GitHub API call successful with HTTP status code: $HTTP_CODE"  
+            echo "✅ GitHub API call was successful with HTTP status code: $HTTP_CODE"  
           fi
