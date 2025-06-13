@@ -41,13 +41,22 @@ main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .footer-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
+  
   a {
     color: #6c757d;
     text-decoration: none;
     font-size: 0.9rem;
+    white-space: nowrap;
     
     &:hover {
       color: #495057;
@@ -62,6 +71,10 @@ main {
 }
 
 .footer-center {
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+  
   p {
     margin: 0;
     color: #6c757d;
@@ -72,6 +85,9 @@ main {
 .footer-right {
   display: flex;
   gap: 1rem;
+  flex: 1;
+  justify-content: flex-end;
+  min-width: 200px;
   
   a {
     color: #6c757d;
@@ -81,6 +97,28 @@ main {
     &:hover {
       color: #495057;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  .footer-left {
+    justify-content: center;
+    order: 1;
+  }
+
+  .footer-center {
+    order: 2;
+  }
+
+  .footer-right {
+    justify-content: center;
+    order: 3;
   }
 }
   
