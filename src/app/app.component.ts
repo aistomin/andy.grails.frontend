@@ -23,9 +23,9 @@ import { CommonModule } from '@angular/common';
       <footer class="footer">
         <div class="footer-content">
           <div class="footer-left">
-            <a href="/imprint">Imprint</a>
+            <a href="/privacy">Privacy</a>
             <span class="separator">|</span>
-            <a href="/security">Security</a>
+            <a href="/imprint">Imprint/Terms</a>
           </div>
           <div class="footer-center">
             <p>&copy; 2025 Andy Grails</p>
