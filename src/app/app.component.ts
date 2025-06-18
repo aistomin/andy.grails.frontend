@@ -26,6 +26,8 @@ import { CommonModule } from '@angular/common';
             <a href="/privacy">Privacy</a>
             <span class="separator">|</span>
             <a href="/imprint">Imprint/Terms</a>
+            <span class="separator">|</span>
+            <a href="https://github.com/aistomin">Developed by me</a>
           </div>
           <div class="footer-center">
             <p>&copy; 2025 Andy Grails</p>
