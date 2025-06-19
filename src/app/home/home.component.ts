@@ -30,8 +30,6 @@ import { VideoService } from '../video.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
-
   videos: Video[] = [];
 
   filteredVideos: Video[] = [];
