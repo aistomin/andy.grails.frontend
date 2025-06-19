@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VideoCardComponent } from '../video-card/video-card.component';
-import { Video } from '../video';
-import { VideoService } from '../video.service';
+import { Video } from '../services/video';
+import { VideoService } from '../services/video.service';
 
 @Component({
   selector: 'app-home',
@@ -30,8 +30,6 @@ import { VideoService } from '../video.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
-
   videos: Video[] = [];
 
   filteredVideos: Video[] = [];

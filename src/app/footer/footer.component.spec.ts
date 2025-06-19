@@ -1,15 +1,48 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer.component';
+import { SocialMediaService } from '../services/social-media.service';
+import { SocialMediaLink } from '../services/social-media-link';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
   let fixture: ComponentFixture<FooterComponent>;
+  let mockSocialMediaService: jasmine.SpyObj<SocialMediaService>;
+
+  const mockSocialMediaLinks: SocialMediaLink[] = [
+    {
+      id: 0,
+      socialMedia: 'YOUTUBE',
+      url: 'https://www.youtube.com/@andygrails',
+    },
+    {
+      id: 1,
+      socialMedia: 'INSTAGRAM',
+      url: 'https://www.instagram.com/andy.grails/',
+    },
+    {
+      id: 2,
+      socialMedia: 'FACEBOOK',
+      url: 'https://www.facebook.com/profile.php?id=100074082643728',
+    },
+    { id: 3, socialMedia: 'GITHUB', url: 'https://github.com/aistomin' },
+  ];
 
   beforeEach(async () => {
+    const spy = jasmine.createSpyObj('SocialMediaService', [
+      'getSocialMediaLinks',
+    ]);
+    spy.getSocialMediaLinks.and.returnValue(
+      Promise.resolve(mockSocialMediaLinks)
+    );
+
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
+      providers: [{ provide: SocialMediaService, useValue: spy }],
     }).compileComponents();
 
+    mockSocialMediaService = TestBed.inject(
+      SocialMediaService
+    ) as jasmine.SpyObj<SocialMediaService>;
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -48,7 +81,11 @@ describe('FooterComponent', () => {
     expect(imprintLink.textContent.trim()).toBe('Imprint/Terms');
   });
 
-  it('should render footer left section with GitHub link', () => {
+  it('should render footer left section with GitHub link from API', async () => {
+    // Wait for the component to load the data
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement;
     const footerLeft = compiled.querySelector('.footer-left');
     const githubLink = footerLeft.querySelector(
@@ -76,9 +113,15 @@ describe('FooterComponent', () => {
     expect(footerRight).toBeTruthy();
   });
 
-  it('should render YouTube social media link with correct attributes', () => {
+  it('should render YouTube social media link with correct attributes', async () => {
+    // Wait for the component to load the data
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement;
-    const youtubeLink = compiled.querySelector('a[href="https://youtube.com"]');
+    const youtubeLink = compiled.querySelector(
+      'a[href="https://www.youtube.com/@andygrails"]'
+    );
 
     expect(youtubeLink).toBeTruthy();
     expect(youtubeLink.getAttribute('target')).toBe('_blank');
@@ -87,10 +130,14 @@ describe('FooterComponent', () => {
     expect(youtubeLink.querySelector('.fab.fa-youtube')).toBeTruthy();
   });
 
-  it('should render Instagram social media link with correct attributes', () => {
+  it('should render Instagram social media link with correct attributes', async () => {
+    // Wait for the component to load the data
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement;
     const instagramLink = compiled.querySelector(
-      'a[href="https://instagram.com"]'
+      'a[href="https://www.instagram.com/andy.grails/"]'
     );
 
     expect(instagramLink).toBeTruthy();
@@ -100,10 +147,14 @@ describe('FooterComponent', () => {
     expect(instagramLink.querySelector('.fab.fa-instagram')).toBeTruthy();
   });
 
-  it('should render Facebook social media link with correct attributes', () => {
+  it('should render Facebook social media link with correct attributes', async () => {
+    // Wait for the component to load the data
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement;
     const facebookLink = compiled.querySelector(
-      'a[href="https://facebook.com"]'
+      'a[href="https://www.facebook.com/profile.php?id=100074082643728"]'
     );
 
     expect(facebookLink).toBeTruthy();
@@ -121,5 +172,32 @@ describe('FooterComponent', () => {
     separators.forEach((separator: Element) => {
       expect(separator.textContent?.trim()).toBe('|');
     });
+  });
+
+  it('should call SocialMediaService.getSocialMediaLinks on init', () => {
+    expect(mockSocialMediaService.getSocialMediaLinks).toHaveBeenCalled();
+  });
+
+  it('should handle empty social media links gracefully', async () => {
+    // Reset the component and mock with empty data
+    mockSocialMediaService.getSocialMediaLinks.and.returnValue(
+      Promise.resolve([])
+    );
+
+    fixture = TestBed.createComponent(FooterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+
+    // Social media links should not be rendered
+    expect(compiled.querySelector('a[href*="youtube"]')).toBeFalsy();
+    expect(compiled.querySelector('a[href*="instagram"]')).toBeFalsy();
+    expect(compiled.querySelector('a[href*="facebook"]')).toBeFalsy();
+
+    // GitHub link should not be rendered (since it's conditional now)
+    expect(compiled.querySelector('a[href*="github"]')).toBeFalsy();
   });
 });

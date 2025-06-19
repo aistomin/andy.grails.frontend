@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { VideoService } from '../video.service';
-import { Video } from '../video';
+import { VideoService } from '../services/video.service';
+import { Video } from '../services/video';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({

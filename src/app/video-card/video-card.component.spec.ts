@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VideoCardComponent } from './video-card.component';
-import { Video } from '../video';
+import { Video } from '../services/video';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 
