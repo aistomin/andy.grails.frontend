@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Video } from '../video';
+import { Video } from '../services/video';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';

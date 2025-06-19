@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SocialMediaLink } from '../social-media-link';
-import { SocialMediaService } from '../social-media.service';
+import { SocialMediaLink } from '../services/social-media-link';
+import { SocialMediaService } from '../services/social-media.service';
 
 @Component({
   selector: 'app-footer',
