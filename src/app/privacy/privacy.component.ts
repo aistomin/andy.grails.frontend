@@ -114,6 +114,7 @@ import { CommonModule } from '@angular/common';
         </section>
 
         <!-- <section>
+          TODO: Use the contact for or contact data from the Issue #84
           <h2>10. Contact Us</h2>
           <p>
             If you have any questions about this privacy policy or our data
