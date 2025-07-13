@@ -11,7 +11,7 @@
   .brand-name {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
     height: 100%;
   }
   
@@ -20,10 +20,19 @@
     width: auto;
   }
   
+  .logo-link {
+    text-decoration: none;
+  }
+  
   .brand-text {
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 24px;
     font-weight: 700;
+    color: #605DC8;
+    cursor: pointer;
+  }
+  
+  .brand-text:hover {
     color: #605DC8;
   }
   

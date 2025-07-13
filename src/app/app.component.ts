@@ -8,17 +8,17 @@ import { FooterComponent } from './footer/footer.component';
   imports: [RouterModule, CommonModule, FooterComponent],
   template: `
     <main>
-      <a [routerLink]="['/']">
-        <header class="brand-name">
+      <header class="brand-name">
+        <a [routerLink]="['/']" class="logo-link">
           <img
             class="brand-logo"
             src="/assets/logo.svg"
             alt="chalice logo"
             aria-hidden="true"
           />
-          <span class="brand-text">Andy Grails</span>
-        </header>
-      </a>
+        </a>
+        <span class="brand-text" (click)="navigateHome()">Andy Grails</span>
+      </header>
       <section class="content">
         <router-outlet></router-outlet>
       </section>
@@ -29,4 +29,9 @@ import { FooterComponent } from './footer/footer.component';
 })
 export class AppComponent {
   title = 'Andy Grails';
+
+  navigateHome() {
+    // This will be handled by the router
+    window.location.href = '/';
+  }
 }
