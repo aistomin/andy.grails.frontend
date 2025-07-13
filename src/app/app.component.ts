@@ -13,9 +13,10 @@ import { FooterComponent } from './footer/footer.component';
           <img
             class="brand-logo"
             src="/assets/logo.svg"
-            alt="logo"
+            alt="chalice logo"
             aria-hidden="true"
           />
+          <span class="brand-text">Andy Grails</span>
         </header>
       </a>
       <section class="content">
