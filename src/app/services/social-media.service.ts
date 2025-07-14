@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { SocialMediaLink } from './social-media-link';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocialMediaService {
-  readonly url = 'http://localhost:8080/configuration/social/media/links';
-
-  constructor() {}
+  constructor(private apiService: ApiService) {}
 
   async getSocialMediaLinks(): Promise<SocialMediaLink[]> {
-    const data = await fetch(this.url);
-    return (await data.json()) ?? [];
+    return (
+      (await this.apiService.get<SocialMediaLink[]>(
+        '/configuration/social/media/links'
+      )) ?? []
+    );
   }
 }
