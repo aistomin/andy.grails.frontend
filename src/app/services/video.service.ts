@@ -6,13 +6,15 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class VideoService {
+  private readonly api = 'videos';
+
   constructor(private apiService: ApiService) {}
 
   async getAllVideos(): Promise<Video[]> {
-    return (await this.apiService.get<Video[]>('/videos')) ?? [];
+    return (await this.apiService.get<Video[]>(`/${this.api}`)) ?? [];
   }
 
   async getVideoById(id: number): Promise<Video | undefined> {
-    return (await this.apiService.get<Video>(`/videos/${id}`)) ?? {};
+    return (await this.apiService.get<Video>(`/${this.api}/${id}`)) ?? {};
   }
 }
