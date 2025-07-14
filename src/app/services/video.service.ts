@@ -1,28 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Video } from './video';
+import { ApiService } from './api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class VideoService {
-
-  readonly url = 'http://localhost:8080/videos';
-
-  constructor() { }
+  constructor(private apiService: ApiService) {}
 
   async getAllVideos(): Promise<Video[]> {
-    const data = await fetch(this.url);
-    return (await data.json()) ?? [];
+    return (await this.apiService.get<Video[]>('/videos')) ?? [];
   }
 
   async getVideoById(id: number): Promise<Video | undefined> {
-    const data = await fetch(`${this.url}/${id}`);
-    return (await data.json()) ?? {};
+    return (await this.apiService.get<Video>(`/videos/${id}`)) ?? {};
   }
 
   submitApplication(firstName: string, lastName: string, email: string) {
     console.log(
-      `Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`,
+      `Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`
     );
   }
 }
