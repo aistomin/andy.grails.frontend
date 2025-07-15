@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ResourceNotFoundException, ServerException } from './api-exceptions';
 
 @Injectable({
@@ -7,7 +8,17 @@ import { ResourceNotFoundException, ServerException } from './api-exceptions';
 export class ApiService {
   private readonly baseUrl = 'http://localhost:8080';
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  /**
+   * Handles 404 errors by navigating to the 404 page
+   * @param error - The error that occurred
+   */
+  private handle404Error(error: any): void {
+    if (error instanceof ResourceNotFoundException) {
+      this.router.navigate(['/404']);
+    }
+  }
 
   /**
    * Makes a GET request to the specified endpoint
@@ -26,6 +37,7 @@ export class ApiService {
       return await response.json();
     } catch (error) {
       console.error(`API GET request failed for ${endpoint}:`, error);
+      this.handle404Error(error);
       throw error;
     }
   }
@@ -56,6 +68,7 @@ export class ApiService {
       return await response.json();
     } catch (error) {
       console.error(`API POST request failed for ${endpoint}:`, error);
+      this.handle404Error(error);
       throw error;
     }
   }
@@ -84,6 +97,7 @@ export class ApiService {
       return await response.json();
     } catch (error) {
       console.error(`API PUT request failed for ${endpoint}:`, error);
+      this.handle404Error(error);
       throw error;
     }
   }
@@ -107,6 +121,7 @@ export class ApiService {
       return await response.json();
     } catch (error) {
       console.error(`API DELETE request failed for ${endpoint}:`, error);
+      this.handle404Error(error);
       throw error;
     }
   }
