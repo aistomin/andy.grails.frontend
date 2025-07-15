@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-not-found',
   standalone: true,
-  imports: [RouterLink],
   template: `
     <div class="not-found-container">
       <div class="not-found-content">
@@ -14,10 +13,6 @@ import { RouterLink } from '@angular/router';
           Oops! The page you're looking for doesn't exist. It might have been
           moved, deleted, or you entered the wrong URL.
         </p>
-        <div class="actions">
-          <a routerLink="/" class="btn btn-primary">Go to Homepage</a>
-          <button (click)="goBack()" class="btn btn-secondary">Go Back</button>
-        </div>
       </div>
     </div>
   `,
