@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { VideoDetailsComponent } from './video-details/video-details.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { ImprintComponent } from './imprint/imprint.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routeConfig: Routes = [
   {
@@ -24,6 +25,11 @@ const routeConfig: Routes = [
     path: 'imprint',
     component: ImprintComponent,
     title: 'Imprint/Terms - Andy Grails',
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+    title: 'Page Not Found - Andy Grails',
   },
 ];
 
