@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
+import { ResourceNotFoundException } from '../services/api-exceptions';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -63,10 +64,7 @@ export class VideoDetailsComponent {
         this.video = vid;
       })
       .catch((error) => {
-        if (
-          error instanceof Error &&
-          error.message.includes('Resource not found')
-        ) {
+        if (error instanceof ResourceNotFoundException) {
           this.router.navigate(['/404']);
         } else {
           // Optionally handle other errors

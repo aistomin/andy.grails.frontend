@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ResourceNotFoundException, ServerException } from './api-exceptions';
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +19,9 @@ export class ApiService {
       const response = await fetch(`${this.baseUrl}${endpoint}`);
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error(`Resource not found: ${endpoint}`);
+          throw new ResourceNotFoundException(endpoint);
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new ServerException(endpoint, response.status);
       }
       return await response.json();
     } catch (error) {
@@ -47,9 +48,9 @@ export class ApiService {
 
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error(`Resource not found: ${endpoint}`);
+          throw new ResourceNotFoundException(endpoint);
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new ServerException(endpoint, response.status);
       }
 
       return await response.json();
@@ -76,9 +77,9 @@ export class ApiService {
       });
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error(`Resource not found: ${endpoint}`);
+          throw new ResourceNotFoundException(endpoint);
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new ServerException(endpoint, response.status);
       }
       return await response.json();
     } catch (error) {
@@ -99,9 +100,9 @@ export class ApiService {
       });
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error(`Resource not found: ${endpoint}`);
+          throw new ResourceNotFoundException(endpoint);
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new ServerException(endpoint, response.status);
       }
       return await response.json();
     } catch (error) {
