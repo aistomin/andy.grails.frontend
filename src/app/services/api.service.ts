@@ -17,6 +17,9 @@ export class ApiService {
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`);
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Resource not found: ${endpoint}`);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return await response.json();
@@ -43,6 +46,9 @@ export class ApiService {
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Resource not found: ${endpoint}`);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -69,6 +75,9 @@ export class ApiService {
         body: JSON.stringify(data),
       });
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Resource not found: ${endpoint}`);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return await response.json();
@@ -89,6 +98,9 @@ export class ApiService {
         method: 'DELETE',
       });
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Resource not found: ${endpoint}`);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return await response.json();
