@@ -266,11 +266,11 @@ describe('ApiService', () => {
   });
 
   describe('Network errors', () => {
-    it('should not navigate to 404 for network errors', async () => {
+    it('should navigate to 500 for network errors', async () => {
       const endpoint = '/api/videos';
 
       spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Network error'))
+        Promise.reject(new Error('Failed to fetch'))
       );
 
       try {
@@ -278,13 +278,29 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         if (error instanceof Error) {
-          expect(error.message).toBe('Network error');
+          expect(error.message).toBe('Failed to fetch');
         }
-        expect(router.navigate).not.toHaveBeenCalled();
+        expect(router.navigate).toHaveBeenCalledWith(['/500']);
       }
     });
 
-    it('should not navigate to 500 for network errors', async () => {
+    it('should navigate to 500 for TypeError network errors', async () => {
+      const endpoint = '/api/videos';
+
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new TypeError('fetch failed'))
+      );
+
+      try {
+        await service.get(endpoint);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(error).toBeInstanceOf(TypeError);
+        expect(router.navigate).toHaveBeenCalledWith(['/500']);
+      }
+    });
+
+    it('should navigate to 500 for generic network errors', async () => {
       const endpoint = '/api/videos';
 
       spyOn(window, 'fetch').and.returnValue(
@@ -298,7 +314,54 @@ describe('ApiService', () => {
         if (error instanceof Error) {
           expect(error.message).toBe('Network error');
         }
-        expect(router.navigate).not.toHaveBeenCalled();
+        expect(router.navigate).toHaveBeenCalledWith(['/500']);
+      }
+    });
+
+    it('should handle network errors in POST requests', async () => {
+      const endpoint = '/api/videos';
+      const data = { title: 'Test Video' };
+
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Failed to fetch'))
+      );
+
+      try {
+        await service.post(endpoint, data);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(router.navigate).toHaveBeenCalledWith(['/500']);
+      }
+    });
+
+    it('should handle network errors in PUT requests', async () => {
+      const endpoint = '/api/videos/1';
+      const data = { title: 'Updated Video' };
+
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Failed to fetch'))
+      );
+
+      try {
+        await service.put(endpoint, data);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(router.navigate).toHaveBeenCalledWith(['/500']);
+      }
+    });
+
+    it('should handle network errors in DELETE requests', async () => {
+      const endpoint = '/api/videos/1';
+
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Failed to fetch'))
+      );
+
+      try {
+        await service.delete(endpoint);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(router.navigate).toHaveBeenCalledWith(['/500']);
       }
     });
   });

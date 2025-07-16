@@ -35,6 +35,21 @@ export class ApiService {
   }
 
   /**
+   * Handles network errors (like backend being down) by navigating to the 500 page
+   * @param error - The error that occurred
+   */
+  private handleNetworkError(error: any): void {
+    if (
+      error instanceof TypeError ||
+      error.message?.includes('fetch') ||
+      error.message?.toLowerCase().includes('network') ||
+      error.message?.includes('Failed to fetch')
+    ) {
+      this.router.navigate(['/500']);
+    }
+  }
+
+  /**
    * Makes a GET request to the specified endpoint
    * @param endpoint - The API endpoint (without base URL)
    * @returns Promise with the response data
@@ -56,6 +71,7 @@ export class ApiService {
       console.error(`API GET request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
+      this.handleNetworkError(error);
       throw error;
     }
   }
@@ -91,6 +107,7 @@ export class ApiService {
       console.error(`API POST request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
+      this.handleNetworkError(error);
       throw error;
     }
   }
@@ -124,6 +141,7 @@ export class ApiService {
       console.error(`API PUT request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
+      this.handleNetworkError(error);
       throw error;
     }
   }
@@ -152,6 +170,7 @@ export class ApiService {
       console.error(`API DELETE request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
+      this.handleNetworkError(error);
       throw error;
     }
   }
