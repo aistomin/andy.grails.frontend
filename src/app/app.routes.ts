@@ -45,7 +45,7 @@ const routeConfig: Routes = [
     title: 'Error Test - Andy Grails',
   },
   {
-    path: 'network-error',
+    path: 'network/error',
     component: NetworkErrorComponent,
     title: 'Network Error - Andy Grails',
   },

@@ -273,7 +273,7 @@ describe('ApiService', () => {
       spyOn(sessionStorage, 'removeItem');
     });
 
-    it('should throw NetworkException and navigate to network-error for network errors', async () => {
+    it('should throw NetworkException and navigate to network/error for network errors', async () => {
       const endpoint = '/api/videos';
       spyOn(window, 'fetch').and.returnValue(
         Promise.reject(new Error('Failed to fetch'))
@@ -283,7 +283,7 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network-error']);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
 
@@ -297,7 +297,7 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network-error']);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
 
@@ -311,7 +311,7 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network-error']);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
 
@@ -326,7 +326,7 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network-error']);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
 
@@ -341,7 +341,7 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network-error']);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
 
@@ -355,7 +355,7 @@ describe('ApiService', () => {
         fail('Should have thrown an error');
       } catch (error) {
         expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network-error']);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
   });

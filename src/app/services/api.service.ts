@@ -41,7 +41,7 @@ export class ApiService {
    */
   private handleNetworkError(error: any, endpoint: string): void {
     if (error instanceof NetworkException) {
-      this.router.navigate(['/network-error']);
+      this.router.navigate(['/network/error']);
     }
   }
 
