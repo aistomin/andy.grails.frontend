@@ -25,3 +25,10 @@ export class ServerException extends ApiException {
     this.name = 'ServerException';
   }
 }
+
+export class NetworkException extends ApiException {
+  constructor(endpoint: string, message: string = 'Network error') {
+    super(message, 0, endpoint);
+    this.name = 'NetworkException';
+  }
+}

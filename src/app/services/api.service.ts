@@ -4,6 +4,7 @@ import {
   ResourceNotFoundException,
   InternalServerException,
   ServerException,
+  NetworkException,
 } from './api-exceptions';
 
 @Injectable({
@@ -35,6 +36,16 @@ export class ApiService {
   }
 
   /**
+   * Handles network errors (like backend being down) by navigating to the network error page
+   * @param error - The error that occurred
+   */
+  private handleNetworkError(error: any, endpoint: string): void {
+    if (error instanceof NetworkException) {
+      this.router.navigate(['/network/error']);
+    }
+  }
+
+  /**
    * Makes a GET request to the specified endpoint
    * @param endpoint - The API endpoint (without base URL)
    * @returns Promise with the response data
@@ -52,7 +63,17 @@ export class ApiService {
         throw new ServerException(endpoint, response.status);
       }
       return await response.json();
-    } catch (error) {
+    } catch (error: any) {
+      if (
+        error instanceof TypeError ||
+        error.message?.includes('fetch') ||
+        error.message?.toLowerCase().includes('network') ||
+        error.message?.includes('Failed to fetch')
+      ) {
+        const networkError = new NetworkException(endpoint, error.message);
+        this.handleNetworkError(networkError, endpoint);
+        throw networkError;
+      }
       console.error(`API GET request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
@@ -87,7 +108,17 @@ export class ApiService {
       }
 
       return await response.json();
-    } catch (error) {
+    } catch (error: any) {
+      if (
+        error instanceof TypeError ||
+        error.message?.includes('fetch') ||
+        error.message?.toLowerCase().includes('network') ||
+        error.message?.includes('Failed to fetch')
+      ) {
+        const networkError = new NetworkException(endpoint, error.message);
+        this.handleNetworkError(networkError, endpoint);
+        throw networkError;
+      }
       console.error(`API POST request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
@@ -120,7 +151,17 @@ export class ApiService {
         throw new ServerException(endpoint, response.status);
       }
       return await response.json();
-    } catch (error) {
+    } catch (error: any) {
+      if (
+        error instanceof TypeError ||
+        error.message?.includes('fetch') ||
+        error.message?.toLowerCase().includes('network') ||
+        error.message?.includes('Failed to fetch')
+      ) {
+        const networkError = new NetworkException(endpoint, error.message);
+        this.handleNetworkError(networkError, endpoint);
+        throw networkError;
+      }
       console.error(`API PUT request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
@@ -148,7 +189,17 @@ export class ApiService {
         throw new ServerException(endpoint, response.status);
       }
       return await response.json();
-    } catch (error) {
+    } catch (error: any) {
+      if (
+        error instanceof TypeError ||
+        error.message?.includes('fetch') ||
+        error.message?.toLowerCase().includes('network') ||
+        error.message?.includes('Failed to fetch')
+      ) {
+        const networkError = new NetworkException(endpoint, error.message);
+        this.handleNetworkError(networkError, endpoint);
+        throw networkError;
+      }
       console.error(`API DELETE request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);

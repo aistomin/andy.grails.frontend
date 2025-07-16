@@ -3,6 +3,7 @@ import {
   ResourceNotFoundException,
   InternalServerException,
   ServerException,
+  NetworkException,
 } from './api-exceptions';
 
 describe('ApiException', () => {
@@ -79,6 +80,34 @@ describe('ServerException', () => {
 
     expect(exception.status).toBe(403);
     expect(exception.message).toBe('Server error: 403');
+  });
+});
+
+describe('NetworkException', () => {
+  it('should create NetworkException with correct properties', () => {
+    const endpoint = '/api/videos';
+    const message = 'Connection failed';
+    const exception = new NetworkException(endpoint, message);
+
+    expect(exception.message).toBe(message);
+    expect(exception.status).toBe(0);
+    expect(exception.endpoint).toBe(endpoint);
+    expect(exception.name).toBe('NetworkException');
+  });
+
+  it('should create NetworkException with default message', () => {
+    const endpoint = '/api/videos';
+    const exception = new NetworkException(endpoint);
+
+    expect(exception.message).toBe('Network error');
+    expect(exception.status).toBe(0);
+    expect(exception.endpoint).toBe(endpoint);
+    expect(exception.name).toBe('NetworkException');
+  });
+
+  it('should be instance of ApiException', () => {
+    const exception = new NetworkException('/test/endpoint');
+    expect(exception).toBeInstanceOf(ApiException);
   });
 });
 

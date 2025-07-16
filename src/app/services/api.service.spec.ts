@@ -5,6 +5,7 @@ import {
   ResourceNotFoundException,
   InternalServerException,
   ServerException,
+  NetworkException,
 } from './api-exceptions';
 
 describe('ApiService', () => {
@@ -266,39 +267,95 @@ describe('ApiService', () => {
   });
 
   describe('Network errors', () => {
-    it('should not navigate to 404 for network errors', async () => {
+    beforeEach(() => {
+      spyOn(sessionStorage, 'setItem');
+      spyOn(sessionStorage, 'getItem');
+      spyOn(sessionStorage, 'removeItem');
+    });
+
+    it('should throw NetworkException and navigate to network/error for network errors', async () => {
       const endpoint = '/api/videos';
-
       spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Network error'))
+        Promise.reject(new Error('Failed to fetch'))
       );
-
       try {
         await service.get(endpoint);
         fail('Should have thrown an error');
       } catch (error) {
-        if (error instanceof Error) {
-          expect(error.message).toBe('Network error');
-        }
-        expect(router.navigate).not.toHaveBeenCalled();
+        expect(error).toBeInstanceOf(NetworkException);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
 
-    it('should not navigate to 500 for network errors', async () => {
+    it('should throw NetworkException for TypeError network errors', async () => {
       const endpoint = '/api/videos';
-
       spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Network error'))
+        Promise.reject(new TypeError('fetch failed'))
       );
-
       try {
         await service.get(endpoint);
         fail('Should have thrown an error');
       } catch (error) {
-        if (error instanceof Error) {
-          expect(error.message).toBe('Network error');
-        }
-        expect(router.navigate).not.toHaveBeenCalled();
+        expect(error).toBeInstanceOf(NetworkException);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
+      }
+    });
+
+    it('should throw NetworkException for generic network errors', async () => {
+      const endpoint = '/api/videos';
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Network error'))
+      );
+      try {
+        await service.get(endpoint);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NetworkException);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
+      }
+    });
+
+    it('should handle network errors in POST requests', async () => {
+      const endpoint = '/api/videos';
+      const data = { title: 'Test Video' };
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Failed to fetch'))
+      );
+      try {
+        await service.post(endpoint, data);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NetworkException);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
+      }
+    });
+
+    it('should handle network errors in PUT requests', async () => {
+      const endpoint = '/api/videos/1';
+      const data = { title: 'Updated Video' };
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Failed to fetch'))
+      );
+      try {
+        await service.put(endpoint, data);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NetworkException);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
+      }
+    });
+
+    it('should handle network errors in DELETE requests', async () => {
+      const endpoint = '/api/videos/1';
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Failed to fetch'))
+      );
+      try {
+        await service.delete(endpoint);
+        fail('Should have thrown an error');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NetworkException);
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
       }
     });
   });
