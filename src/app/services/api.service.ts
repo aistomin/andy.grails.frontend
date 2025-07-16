@@ -36,16 +36,11 @@ export class ApiService {
   }
 
   /**
-   * Handles network errors (like backend being down) by navigating to the 500 page
+   * Handles network errors (like backend being down) by navigating to the network error page
    * @param error - The error that occurred
    */
   private handleNetworkError(error: any, endpoint: string): void {
     if (error instanceof NetworkException) {
-      // Store the current URL to return to after retry
-      const currentUrl = window.location.pathname;
-      if (currentUrl !== '/network-error') {
-        sessionStorage.setItem('networkErrorReturnUrl', currentUrl);
-      }
       this.router.navigate(['/network-error']);
     }
   }

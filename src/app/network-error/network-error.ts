@@ -11,8 +11,6 @@ export class NetworkErrorComponent {
   constructor(private router: Router) {}
 
   retry() {
-    const returnUrl = sessionStorage.getItem('networkErrorReturnUrl') || '/';
-    sessionStorage.removeItem('networkErrorReturnUrl');
-    this.router.navigate([returnUrl]);
+    this.router.navigate(['/']);
   }
 }
