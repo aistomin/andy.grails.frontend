@@ -1,0 +1,20 @@
+<div class="test-container">
+  <div class="test-content">
+    <h2>Error Handling Test</h2>
+    <p>This page tests the 500 error handling by calling the /test/error endpoint.</p>
+    
+    <button 
+      (click)="testError()" 
+      [disabled]="isLoading"
+      class="test-button">
+      {{ isLoading ? 'Testing...' : 'Test Error Handling' }}
+    </button>
+
+    <div *ngIf="result" class="result-container">
+      <div [class]="hasError ? 'error-result' : 'success-result'">
+        <h3>{{ hasError ? 'Error Test Result' : 'Success Test Result' }}</h3>
+        <p>{{ result }}</p>
+      </div>
+    </div>
+  </div>
+</div>
