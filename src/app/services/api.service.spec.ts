@@ -1,7 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
-import { ResourceNotFoundException, ServerException } from './api-exceptions';
+import {
+  ResourceNotFoundException,
+  InternalServerException,
+  ServerException,
+} from './api-exceptions';
 
 describe('ApiService', () => {
   let service: ApiService;
@@ -38,6 +42,23 @@ describe('ApiService', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/404']);
     });
 
+    it('should handle 500 errors by navigating to 500 page', async () => {
+      const endpoint = '/test/error';
+      const mockResponse = new Response('Internal Server Error', {
+        status: 500,
+      });
+
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+
+      try {
+        await service.get(endpoint);
+      } catch (error) {
+        // Expected to throw
+      }
+
+      expect(router.navigate).toHaveBeenCalledWith(['/500']);
+    });
+
     it('should throw ResourceNotFoundException for 404 errors', async () => {
       const endpoint = '/api/videos/999';
       const mockResponse = new Response('Not Found', { status: 404 });
@@ -56,8 +77,8 @@ describe('ApiService', () => {
       }
     });
 
-    it('should throw ServerException for other HTTP errors', async () => {
-      const endpoint = '/api/videos';
+    it('should throw InternalServerException for 500 errors', async () => {
+      const endpoint = '/test/error';
       const mockResponse = new Response('Internal Server Error', {
         status: 500,
       });
@@ -68,9 +89,27 @@ describe('ApiService', () => {
         await service.get(endpoint);
         fail('Should have thrown an error');
       } catch (error) {
+        expect(error).toBeInstanceOf(InternalServerException);
+        if (error instanceof InternalServerException) {
+          expect(error.status).toBe(500);
+          expect(error.endpoint).toBe(endpoint);
+        }
+      }
+    });
+
+    it('should throw ServerException for other HTTP errors', async () => {
+      const endpoint = '/api/videos';
+      const mockResponse = new Response('Bad Request', { status: 400 });
+
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+
+      try {
+        await service.get(endpoint);
+        fail('Should have thrown an error');
+      } catch (error) {
         expect(error).toBeInstanceOf(ServerException);
         if (error instanceof ServerException) {
-          expect(error.status).toBe(500);
+          expect(error.status).toBe(400);
           expect(error.endpoint).toBe(endpoint);
         }
       }
@@ -108,6 +147,24 @@ describe('ApiService', () => {
       }
 
       expect(router.navigate).toHaveBeenCalledWith(['/404']);
+    });
+
+    it('should handle 500 errors by navigating to 500 page', async () => {
+      const endpoint = '/test/error';
+      const data = { test: 'data' };
+      const mockResponse = new Response('Internal Server Error', {
+        status: 500,
+      });
+
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+
+      try {
+        await service.post(endpoint, data);
+      } catch (error) {
+        // Expected to throw
+      }
+
+      expect(router.navigate).toHaveBeenCalledWith(['/500']);
     });
 
     it('should make POST request with correct parameters', async () => {
@@ -154,6 +211,24 @@ describe('ApiService', () => {
 
       expect(router.navigate).toHaveBeenCalledWith(['/404']);
     });
+
+    it('should handle 500 errors by navigating to 500 page', async () => {
+      const endpoint = '/test/error';
+      const data = { test: 'data' };
+      const mockResponse = new Response('Internal Server Error', {
+        status: 500,
+      });
+
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+
+      try {
+        await service.put(endpoint, data);
+      } catch (error) {
+        // Expected to throw
+      }
+
+      expect(router.navigate).toHaveBeenCalledWith(['/500']);
+    });
   });
 
   describe('DELETE requests', () => {
@@ -171,10 +246,45 @@ describe('ApiService', () => {
 
       expect(router.navigate).toHaveBeenCalledWith(['/404']);
     });
+
+    it('should handle 500 errors by navigating to 500 page', async () => {
+      const endpoint = '/test/error';
+      const mockResponse = new Response('Internal Server Error', {
+        status: 500,
+      });
+
+      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+
+      try {
+        await service.delete(endpoint);
+      } catch (error) {
+        // Expected to throw
+      }
+
+      expect(router.navigate).toHaveBeenCalledWith(['/500']);
+    });
   });
 
   describe('Network errors', () => {
     it('should not navigate to 404 for network errors', async () => {
+      const endpoint = '/api/videos';
+
+      spyOn(window, 'fetch').and.returnValue(
+        Promise.reject(new Error('Network error'))
+      );
+
+      try {
+        await service.get(endpoint);
+        fail('Should have thrown an error');
+      } catch (error) {
+        if (error instanceof Error) {
+          expect(error.message).toBe('Network error');
+        }
+        expect(router.navigate).not.toHaveBeenCalled();
+      }
+    });
+
+    it('should not navigate to 500 for network errors', async () => {
       const endpoint = '/api/videos';
 
       spyOn(window, 'fetch').and.returnValue(

@@ -1,21 +1,22 @@
 import {
   ApiException,
   ResourceNotFoundException,
+  InternalServerException,
   ServerException,
 } from './api-exceptions';
 
 describe('ApiException', () => {
   it('should create ApiException with correct properties', () => {
-    const message = 'Test error message';
-    const status = 500;
-    const endpoint = '/api/test';
+    const exception = new ApiException('Test message', 400, '/test/endpoint');
 
-    const exception = new ApiException(message, status, endpoint);
-
-    expect(exception.message).toBe(message);
-    expect(exception.status).toBe(status);
-    expect(exception.endpoint).toBe(endpoint);
+    expect(exception.message).toBe('Test message');
+    expect(exception.status).toBe(400);
+    expect(exception.endpoint).toBe('/test/endpoint');
     expect(exception.name).toBe('ApiException');
+  });
+
+  it('should be instance of Error', () => {
+    const exception = new ApiException('Test message', 400, '/test/endpoint');
     expect(exception).toBeInstanceOf(Error);
   });
 });
@@ -23,57 +24,61 @@ describe('ApiException', () => {
 describe('ResourceNotFoundException', () => {
   it('should create ResourceNotFoundException with correct properties', () => {
     const endpoint = '/api/videos/999';
-
     const exception = new ResourceNotFoundException(endpoint);
 
     expect(exception.message).toBe(`Resource not found: ${endpoint}`);
     expect(exception.status).toBe(404);
     expect(exception.endpoint).toBe(endpoint);
     expect(exception.name).toBe('ResourceNotFoundException');
-    expect(exception).toBeInstanceOf(ApiException);
-    expect(exception).toBeInstanceOf(Error);
   });
 
-  it('should have correct error message format', () => {
-    const endpoint = '/api/users/123';
-    const exception = new ResourceNotFoundException(endpoint);
+  it('should be instance of ApiException', () => {
+    const exception = new ResourceNotFoundException('/test/endpoint');
+    expect(exception).toBeInstanceOf(ApiException);
+  });
+});
 
-    expect(exception.message).toBe('Resource not found: /api/users/123');
+describe('InternalServerException', () => {
+  it('should create InternalServerException with correct properties', () => {
+    const endpoint = '/test/error';
+    const exception = new InternalServerException(endpoint);
+
+    expect(exception.message).toBe(`Internal server error: ${endpoint}`);
+    expect(exception.status).toBe(500);
+    expect(exception.endpoint).toBe(endpoint);
+    expect(exception.name).toBe('InternalServerException');
+  });
+
+  it('should be instance of ApiException', () => {
+    const exception = new InternalServerException('/test/endpoint');
+    expect(exception).toBeInstanceOf(ApiException);
   });
 });
 
 describe('ServerException', () => {
   it('should create ServerException with correct properties', () => {
     const endpoint = '/api/videos';
-    const status = 500;
-
+    const status = 400;
     const exception = new ServerException(endpoint, status);
 
     expect(exception.message).toBe(`Server error: ${status}`);
     expect(exception.status).toBe(status);
     expect(exception.endpoint).toBe(endpoint);
     expect(exception.name).toBe('ServerException');
+  });
+
+  it('should be instance of ApiException', () => {
+    const exception = new ServerException('/test/endpoint', 400);
     expect(exception).toBeInstanceOf(ApiException);
-    expect(exception).toBeInstanceOf(Error);
   });
 
-  it('should handle different HTTP status codes', () => {
+  it('should handle different status codes', () => {
     const endpoint = '/api/videos';
-    const statusCodes = [400, 401, 403, 500, 502, 503];
-
-    statusCodes.forEach((status) => {
-      const exception = new ServerException(endpoint, status);
-      expect(exception.status).toBe(status);
-      expect(exception.message).toBe(`Server error: ${status}`);
-    });
-  });
-
-  it('should have correct error message format', () => {
-    const endpoint = '/api/users';
-    const status = 502;
+    const status = 403;
     const exception = new ServerException(endpoint, status);
 
-    expect(exception.message).toBe('Server error: 502');
+    expect(exception.status).toBe(403);
+    expect(exception.message).toBe('Server error: 403');
   });
 });
 
