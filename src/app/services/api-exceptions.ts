@@ -12,6 +12,13 @@ export class ResourceNotFoundException extends ApiException {
   }
 }
 
+export class InternalServerException extends ApiException {
+  constructor(endpoint: string) {
+    super(`Internal server error: ${endpoint}`, 500, endpoint);
+    this.name = 'InternalServerException';
+  }
+}
+
 export class ServerException extends ApiException {
   constructor(endpoint: string, status: number) {
     super(`Server error: ${status}`, status, endpoint);
