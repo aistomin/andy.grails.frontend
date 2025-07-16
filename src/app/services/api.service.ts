@@ -41,6 +41,11 @@ export class ApiService {
    */
   private handleNetworkError(error: any, endpoint: string): void {
     if (error instanceof NetworkException) {
+      // Store the current URL to return to after retry
+      const currentUrl = window.location.pathname;
+      if (currentUrl !== '/network-error') {
+        sessionStorage.setItem('networkErrorReturnUrl', currentUrl);
+      }
       this.router.navigate(['/network-error']);
     }
   }
