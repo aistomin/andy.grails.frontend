@@ -6,6 +6,7 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { InternalServerErrorComponent } from './internal-server-error/internal-server-error';
 import { TestErrorComponent } from './test-error/test-error';
+import { NetworkErrorComponent } from './network-error/network-error';
 
 const routeConfig: Routes = [
   {
@@ -42,6 +43,11 @@ const routeConfig: Routes = [
     path: 'test/error',
     component: TestErrorComponent,
     title: 'Error Test - Andy Grails',
+  },
+  {
+    path: 'network-error',
+    component: NetworkErrorComponent,
+    title: 'Network Error - Andy Grails',
   },
   {
     path: '**',
