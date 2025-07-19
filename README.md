@@ -1,5 +1,9 @@
 # Andy Grails' Website. Frontend.
 
+This is the frontend part of the Andy Grails' Website, built with Angular. The main repository that combines both frontend and backend is available at [https://github.com/aistomin/andy.grails](https://github.com/aistomin/andy.grails).
+
+The website is live at [https://andy-grails.de/](https://andy-grails.de/).
+
 ## Development server
 
 This project uses Docker for development and production environments.
