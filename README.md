@@ -2,13 +2,25 @@
 
 ## Development server
 
-To start a local development server, run:
+This project uses Docker for development and production environments.
+
+### Quick Start
+
+**Development environment (with hot reload):**
 
 ```bash
-ng serve
+./scripts/docker-dev.sh
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**Production environment:**
+
+```bash
+./scripts/docker-prod.sh
+```
+
+Once running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
 
 ## Error Handling
 
