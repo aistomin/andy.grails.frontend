@@ -1,8 +1,12 @@
-# Andy Grails' Website. Frontend.
+# Andy Grails' Website. Frontend
 
-This is the frontend part of the Andy Grails' Website, built with Angular. The main repository that combines both frontend and backend is available at [https://github.com/aistomin/andy.grails](https://github.com/aistomin/andy.grails).
+This is the frontend service for the [Andy Grails' website](https://andy-grails.de/) —  
+a personal music project under the nickname _Andy Grails_.
 
-The website is live at [https://andy-grails.de/](https://andy-grails.de/).
+The app is built with **Angular** and consumes RESTful APIs provided by the backend service.
+
+For the full project including backend and main repository, visit:  
+[https://github.com/aistomin/andy.grails](https://github.com/aistomin/andy.grails)
 
 ## Getting Started
 
