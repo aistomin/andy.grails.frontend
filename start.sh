@@ -20,7 +20,7 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 # Build and start containers in detached mode
-if docker-compose -f docker-compose.dev.yml up --build -d; then
+if docker-compose up --build -d; then
     echo ""
     echo "🎉  Environment started successfully!"
     echo ""
@@ -34,7 +34,7 @@ if docker-compose -f docker-compose.dev.yml up --build -d; then
     echo "Backend: http://localhost:8080"
     echo "Database: localhost:55432"
     echo ""
-    echo "To view logs: docker-compose -f docker-compose.dev.yml logs -f"
+    echo "To view logs: docker-compose logs -f"
     echo "To stop: ./stop.sh"
 else
     echo ""

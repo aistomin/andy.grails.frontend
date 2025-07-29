@@ -3,7 +3,7 @@
 echo "Stopping Andy Grails environment..."
 
 # Stop containers
-if docker-compose -f docker-compose.dev.yml down; then
+if docker-compose down; then
     echo ""
     echo "🛑  Environment stopped!"
     echo ""

@@ -33,7 +33,7 @@ Once running, open your browser and navigate to `http://localhost:4200/`. The ap
 **View logs:**
 
 ```bash
-docker-compose -f docker-compose.dev.yml logs -f
+docker-compose logs -f
 ```
 
 **Restart the App:**

@@ -2,7 +2,7 @@ services:
   # Database
   db:
     image: postgres:17.5
-    container_name: andy_grails_db
+    container_name: andy_grails_db_dev
     environment:
       POSTGRES_DB: ${DB_NAME:-andy_grails}
       POSTGRES_USER: ${DB_USER:-andy}
@@ -10,15 +10,15 @@ services:
     ports:
       - '55432:5432'
     volumes:
-      - andy_grails_postgres_data:/var/lib/postgresql/data
+      - andy_grails_postgres_data_dev:/var/lib/postgresql/data
     networks:
-      - andy-network
+      - andy-network-dev
 
   # Backend API
   backend:
     image: andygrails/andy-grails-backend:latest
     platform: linux/amd64 # Force x86_64 platform for compatibility
-    container_name: andy_grails_backend
+    container_name: andy_grails_backend_dev
     depends_on:
       - db
     ports:
@@ -30,26 +30,31 @@ services:
       DB_USER: ${DB_USER:-andy}
       DB_PASSWORD: ${DB_PASSWORD:-andy}
     networks:
-      - andy-network
+      - andy-network-dev
 
-  # Frontend Angular App
-  frontend:
+  # Frontend Angular App (Development with hot reload)
+  frontend-dev:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: andy_grails_frontend
+      dockerfile: Dockerfile.dev
+    container_name: andy_grails_frontend_dev
     ports:
-      - '4200:80'
+      - '4200:4200'
+    volumes:
+      - .:/app
+      - /app/node_modules
     depends_on:
       - backend
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
     networks:
-      - andy-network
+      - andy-network-dev
+    command: ng serve --host 0.0.0.0 --port 4200 --poll 2000 --disable-host-check
 
 volumes:
-  andy_grails_postgres_data:
+  andy_grails_postgres_data_dev:
 
 networks:
-  andy-network:
+  andy-network-dev:
     driver: bridge
