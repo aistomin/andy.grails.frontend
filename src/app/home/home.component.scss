@@ -13,12 +13,17 @@
     margin-right: 4px;
     display: inline-block;
     width: 30%;
+    background-color: var(--background-secondary);
+    color: var(--text-color);
+  }
+  input[type="text"]::placeholder {
+    color: #cc5500;
   }
   button {
     padding: 10px;
     border: solid 1px var(--primary-color);
     background: var(--primary-color);
-    color: white;
+    color: var(--background-color);
     border-radius: 8px;
   }
   @media (min-width: 500px) and (max-width: 768px) {
