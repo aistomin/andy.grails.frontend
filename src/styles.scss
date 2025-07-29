@@ -5,20 +5,20 @@
   
   body {
     font-family: 'Be Vietnam Pro', sans-serif;
-    background-color: #2a2a2a;
-    color: #d4af37;
+    background-color: #1f1f1f;
+    color: #ff6600;
   }
   
   :root {
-    --primary-color: #d4af37;
-    --secondary-color: #b8860b;
-    --accent-color: #3a3a3a;
-    --shadow-color: #1a1a1a;
-    --text-color: #d4af37;
-    --text-secondary: #b8860b;
-    --background-color: #2a2a2a;
-    --background-secondary: #3a3a3a;
-    --border-color: #4a4a4a;
+    --primary-color: #ff6600;
+    --secondary-color: #ff8c00;
+    --accent-color: #2d2d2d;
+    --shadow-color: #0f0f0f;
+    --text-color: #ff6600;
+    --text-secondary: #ff8c00;
+    --background-color: #1f1f1f;
+    --background-secondary: #2d2d2d;
+    --border-color: #3a3a3a;
   }
   
   button.primary {
