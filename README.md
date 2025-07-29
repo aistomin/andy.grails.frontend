@@ -28,6 +28,36 @@ This project uses Docker for development and production environments.
 
 Once running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+### Managing the Environment
+
+**View logs:**
+
+```bash
+# Development
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Production
+docker-compose logs -f
+```
+
+**Stop the environment:**
+
+```bash
+# Development
+./scripts/docker-dev-stop.sh
+
+# Production
+./scripts/docker-prod-stop.sh
+```
+
+**Restart the environment:**
+
+```bash
+# Stop first, then start again
+./scripts/docker-dev-stop.sh
+./scripts/docker-dev.sh
+```
+
 For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
 
 ## Error Handling
