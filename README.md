@@ -14,19 +14,34 @@ This project uses Docker for development and production environments.
 
 ### Quick Start
 
-**Development environment (with hot reload):**
+**Start the App:**
 
 ```bash
-./scripts/docker-dev.sh
+./start.sh
 ```
 
-**Production environment:**
+**Stop the App:**
 
 ```bash
-./scripts/docker-prod.sh
+./stop.sh
 ```
 
 Once running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+### Managing the App
+
+**View logs:**
+
+```bash
+docker-compose -f docker-compose.dev.yml logs -f
+```
+
+**Restart the App:**
+
+```bash
+./stop.sh
+./start.sh
+```
 
 For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
 
