@@ -2,6 +2,7 @@
   background: var(--accent-color);
   border-radius: 30px;
   padding-bottom: 30px;
+  border: 1px solid var(--border-color);
 }
 .video-card-heading {
   color: var(--primary-color);
@@ -15,6 +16,7 @@
 }
 .video-card-description {
   padding: 10px 20px 20px 20px;
+  color: var(--text-color);
 }
 section.video-card a {
   padding-left: 20px;
@@ -24,4 +26,7 @@ section.video-card a {
 section.video-card a::after {
   content: "\203A";
   margin-left: 5px;
+}
+section.video-card a:hover {
+  color: var(--secondary-color);
 }

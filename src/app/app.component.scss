@@ -6,6 +6,8 @@
     height: 60px;
     padding: var(--content-padding);
     box-shadow: 0px 5px 25px var(--shadow-color);
+    background-color: var(--background-secondary);
+    border-bottom: 1px solid var(--border-color);
   }
   
   .brand-name {
@@ -28,12 +30,12 @@
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 24px;
     font-weight: 700;
-    color: #605DC8;
+    color: var(--primary-color);
     cursor: pointer;
   }
   
   .brand-text:hover {
-    color: #605DC8;
+    color: var(--secondary-color);
   }
   
   .content {
@@ -45,6 +47,7 @@ main {
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  background-color: var(--background-color);
 }
 
 .content {
