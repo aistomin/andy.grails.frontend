@@ -1,32 +1,23 @@
-# Build stage
-FROM node:20-alpine AS build
+# Development stage
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
+
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
 
 # Copy package files
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
+# Expose port 4200 for Angular dev server
+EXPOSE 4200
 
-# Production stage
-FROM nginx:alpine
-
-# Copy built application from build stage
-COPY --from=build /app/dist/andy.grails.frontend/browser /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80
-EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"] 
+# Start Angular development server
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--poll", "2000", "--disable-host-check"] 
