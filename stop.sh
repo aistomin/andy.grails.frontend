@@ -1,22 +1,22 @@
 #!/bin/bash
 
-echo "Stopping Andy Grails production environment..."
+echo "Stopping Andy Grails environment..."
 
-# Stop production containers
-if docker-compose down; then
+# Stop containers
+if docker-compose -f docker-compose.dev.yml down; then
     echo ""
-    echo "🛑  Production environment stopped!"
+    echo "🛑  Environment stopped!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   🧡 Service is offline... 🧡       │"
+    echo "    │   🧡 Containers are sleeping... 🧡   │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "To start again: ./scripts/docker-prod.sh"
+    echo "To start again: ./start.sh"
 else
     echo ""
-    echo "💥  Failed to stop production environment!"
+    echo "💥  Failed to stop environment!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
@@ -26,6 +26,6 @@ else
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "Error: Failed to stop production environment. Please check the error messages above."
+    echo "Error: Failed to stop environment. Please check the error messages above."
     exit 1
 fi 

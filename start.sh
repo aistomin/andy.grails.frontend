@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting Andy Grails production environment..."
+echo "Starting Andy Grails environment..."
 
 # Check if Docker is running
 if ! docker info > /dev/null 2>&1; then
@@ -19,14 +19,14 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-# Build and start production containers in detached mode
-if docker-compose up --build -d; then
+# Build and start containers in detached mode
+if docker-compose -f docker-compose.dev.yml up --build -d; then
     echo ""
-    echo "🚀  Production environment deployed successfully!"
+    echo "🎉  Environment started successfully!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   🧡 Live and ready for users! 🧡   │"
+    echo "    │   🧡 Your app is ready to rock! 🧡   │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
@@ -34,20 +34,20 @@ if docker-compose up --build -d; then
     echo "Backend: http://localhost:8080"
     echo "Database: localhost:55432"
     echo ""
-    echo "To view logs: docker-compose logs -f"
-    echo "To stop: ./scripts/docker-prod-stop.sh"
+    echo "To view logs: docker-compose -f docker-compose.dev.yml logs -f"
+    echo "To stop: ./stop.sh"
 else
     echo ""
-    echo "💥  Production deployment failed!"
+    echo "💥  Something went wrong!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   Deployment unsuccessful...        │"
+    echo "    │   Container build failed...         │"
     echo "    │                                     │"
     echo "    │   Check the logs above!             │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "Error: Failed to start production environment. Please check the error messages above."
+    echo "Error: Failed to start environment. Please check the error messages above."
     exit 1
 fi 
