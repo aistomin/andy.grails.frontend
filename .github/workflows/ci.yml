@@ -19,7 +19,7 @@ jobs:
           node-version: lts/*
           cache: 'npm'
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Run unit tests
         run: npm test
       - name: Extract short SHA
