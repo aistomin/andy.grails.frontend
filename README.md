@@ -12,6 +12,15 @@ For the full project including backend and main repository, visit:
 
 This project uses Docker for development and production environments.
 
+### Dockerfiles
+
+This project includes two Dockerfiles:
+
+- **`Dockerfile.dev`**: Development environment with hot reload using `ng serve`
+- **`Dockerfile.prod`**: Production environment with nginx serving the built Angular app
+
+The CI/CD pipeline automatically builds and publishes the production image to Docker Hub.
+
 ### Quick Start
 
 **Start the App:**

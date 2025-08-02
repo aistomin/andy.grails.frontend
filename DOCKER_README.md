@@ -13,10 +13,10 @@ This project now supports Docker for both development and production environment
 
 ```bash
 # Start the development environment
-./scripts/docker-dev.sh
+./start.sh
 
 # Or manually:
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose up --build
 ```
 
 This will start:
@@ -27,19 +27,13 @@ This will start:
 
 ### Production Environment
 
+The production environment uses the `Dockerfile.prod` which builds the Angular app and serves it with nginx. This is automatically built and published to Docker Hub by the CI/CD pipeline.
+
+To run the production image locally:
+
 ```bash
-# Start the production environment
-./scripts/docker-prod.sh
-
-# Or manually:
-docker-compose up --build
+docker run -p 80:80 andygrails/andy-grails-frontend:latest
 ```
-
-This will start:
-
-- **Frontend**: http://localhost:4200 (optimized build)
-- **Backend**: http://localhost:8080
-- **Database**: localhost:55432
 
 ## Environment Variables
 
@@ -59,29 +53,25 @@ Default values:
 
 ## Docker Files Explained
 
-### `Dockerfile`
+### `Dockerfile.prod`
 
 - Multi-stage build for production
 - Builds the Angular app and serves it with nginx
 - Optimized for production deployment
+- Used by CI/CD pipeline to publish to Docker Hub
 
 ### `Dockerfile.dev`
 
 - Single-stage build for development
 - Includes Angular CLI and development dependencies
-- Supports hot reloading
+- Supports hot reloading with `ng serve`
+- Used for local development
 
 ### `docker-compose.yml`
 
-- Production orchestration
-- Includes frontend, backend, and database services
-- Uses nginx to serve the built Angular app
-
-### `docker-compose.dev.yml`
-
 - Development orchestration
-- Includes hot reloading for the frontend
-- Mounts source code for live development
+- Includes frontend, backend, and database services
+- Uses the development Dockerfile for hot reloading
 
 ### `nginx.conf`
 
@@ -95,7 +85,7 @@ Default values:
 1. **Start the development environment**:
 
    ```bash
-   ./scripts/docker-dev.sh
+   ./start.sh
    ```
 
 2. **Make changes to your code** - they will automatically reload in the browser
@@ -107,20 +97,18 @@ Default values:
 
 4. **Stop the environment**:
    ```bash
-   docker-compose -f docker-compose.dev.yml down
+   ./stop.sh
    ```
 
 ## Production Deployment
 
-1. **Build and start production environment**:
+The production image is automatically built and published to Docker Hub by the CI/CD pipeline when changes are pushed to the master branch.
 
-   ```bash
-   ./scripts/docker-prod.sh
-   ```
+To deploy the production image:
 
-2. **The application will be available at**:
-   - Frontend: http://localhost:4200
-   - Backend API: http://localhost:8080
+```bash
+docker run -p 80:80 andygrails/andy-grails-frontend:latest
+```
 
 ## Benefits of This Setup
 

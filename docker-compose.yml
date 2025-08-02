@@ -36,7 +36,7 @@ services:
   frontend-dev:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: andy_grails_frontend_dev
     ports:
       - '4200:4200'
