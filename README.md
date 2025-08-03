@@ -21,6 +21,11 @@ This project includes two Dockerfiles:
 
 The CI/CD pipeline automatically builds and publishes the production image to Docker Hub.
 
+### Nginx Configurations
+
+- **`nginx.conf`**: Development configuration with API proxy to backend
+- **`nginx.prod.conf`**: Production configuration without API proxy (for standalone deployment)
+
 ### Quick Start
 
 **Start the App:**
