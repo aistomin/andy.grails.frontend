@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting Andy Grails environment..."
+echo "Starting Andy Grails PRODUCTION environment..."
 
 # Check if Docker is running
 if ! docker info > /dev/null 2>&1; then
@@ -20,7 +20,7 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 # Build and start containers in detached mode
-if docker-compose up --build -d; then
+if docker compose -f docker-compose-prod.yml up --build -d; then
     echo ""
     echo "🚀  Containers started! Waiting for backend to be ready..."
     echo ""
@@ -38,11 +38,11 @@ if docker-compose up --build -d; then
     done
     
     echo ""
-    echo "🎉  Environment started successfully!"
+    echo "🎉  PRODUCTION environment started successfully!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   🧡 Your app is ready to rock! 🧡   │"
+    echo "    │   🚀 Production app is ready! 🚀     │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
@@ -50,8 +50,8 @@ if docker-compose up --build -d; then
     echo "Backend: http://localhost:8080"
     echo "Database: localhost:55432"
     echo ""
-    echo "To view logs: docker-compose logs -f"
-    echo "To stop: ./stop.sh"
+    echo "To view logs: docker compose -f docker-compose-prod.yml logs -f"
+    echo "To stop: ./stop-prod.sh"
 else
     echo ""
     echo "💥  Something went wrong!"
@@ -64,6 +64,6 @@ else
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "Error: Failed to start environment. Please check the error messages above."
+    echo "Error: Failed to start production environment. Please check the error messages above."
     exit 1
 fi 
