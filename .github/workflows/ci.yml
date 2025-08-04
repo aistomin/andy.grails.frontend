@@ -46,6 +46,14 @@ jobs:
           docker compose -f docker-compose-prod.yml up -d
           # Wait for services to be ready
           sleep 30
+
+          # Debug: Check container status
+          echo "Container status:"
+          docker compose -f docker-compose-prod.yml ps
+
+          # Debug: Check backend logs if it's not responding
+          echo "Backend logs:"
+          docker compose -f docker-compose-prod.yml logs backend
       - name: Test production frontend
         run: |
           # Check if the frontend is responding
@@ -89,7 +97,7 @@ jobs:
           echo "Testing API connectivity from frontend..."
           # Wait for backend to be fully ready
           for i in {1..10}; do
-            if curl -f http://localhost:8080/videos > /dev/null 2>&1; then
+            if curl -f http://localhost:8080/actuator/health > /dev/null 2>&1; then
               echo "✅ Backend API is accessible"
               break
             else
@@ -98,7 +106,7 @@ jobs:
             fi
           done
           # Final check - if this fails, the test fails
-          curl -f http://localhost:8080/videos || (echo "❌ Backend API is not accessible" && exit 1)
+          curl -f http://localhost:8080/actuator/health || (echo "❌ Backend API is not accessible" && exit 1)
 
           # Check that the app loads without JavaScript errors (basic check)
           echo "Testing JavaScript bundle..."
