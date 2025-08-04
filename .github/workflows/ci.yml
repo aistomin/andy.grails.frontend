@@ -37,6 +37,11 @@ jobs:
         run: docker build -f Dockerfile.prod -t andy-grails-frontend-prod-test .
       - name: Start production services
         run: |
+          # Clean up any existing containers and networks to avoid port conflicts
+          echo "Cleaning up any existing containers..."
+          docker compose -f docker-compose-prod.yml down -v 2>/dev/null || true
+          docker system prune -f
+
           # Start the production stack
           docker compose -f docker-compose-prod.yml up -d
           # Wait for services to be ready
