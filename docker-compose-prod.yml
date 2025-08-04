@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile.prod
     container_name: andy_grails_frontend_prod
     ports:
-      - '80:80'
+      - '4200:80'
     depends_on:
       - backend
     networks:

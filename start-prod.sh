@@ -46,7 +46,7 @@ if docker compose -f docker-compose-prod.yml up --build -d; then
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "Frontend: http://localhost:80"
+    echo "Frontend: http://localhost:4200"
     echo "Backend: http://localhost:8080"
     echo "Database: localhost:55432"
     echo ""
