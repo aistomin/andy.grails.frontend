@@ -46,7 +46,7 @@ jobs:
           # Check if the frontend is responding
           echo "Testing frontend accessibility..."
           for i in {1..10}; do
-            if curl -f http://localhost:80/ > /dev/null 2>&1; then
+            if curl -f http://localhost:4200/ > /dev/null 2>&1; then
               echo "✅ Frontend is accessible"
               break
             else
@@ -55,16 +55,46 @@ jobs:
             fi
           done
           # Final check - if this fails, the test fails
-          curl -f http://localhost:80/ || (echo "❌ Frontend test failed" && exit 1)
+          curl -f http://localhost:4200/ || (echo "❌ Frontend test failed" && exit 1)
       - name: Check frontend content
         run: |
-          # Verify that the Angular app is actually served
-          response=$(curl -s http://localhost:80/)
+          # Verify that the Angular app is actually served with proper content
+          echo "Testing Angular app content..."
+
+          # Check main page loads Angular app
+          response=$(curl -s http://localhost:4200/)
           if echo "$response" | grep -q "andy.grails.frontend\|Angular\|app-root"; then
             echo "✅ Frontend serves Angular application"
           else
             echo "❌ Frontend does not serve expected Angular content"
             echo "Response preview: ${response:0:200}..."
+            exit 1
+          fi
+
+          # Check that assets are accessible
+          echo "Testing asset accessibility..."
+          if curl -f http://localhost:4200/assets/logo.svg > /dev/null 2>&1; then
+            echo "✅ Assets are accessible"
+          else
+            echo "❌ Assets are not accessible"
+            exit 1
+          fi
+
+          # Check that the app can make API calls (simulate browser behavior)
+          echo "Testing API connectivity from frontend..."
+          if curl -f http://localhost:8080/videos > /dev/null 2>&1; then
+            echo "✅ Backend API is accessible"
+          else
+            echo "❌ Backend API is not accessible"
+            exit 1
+          fi
+
+          # Check that the app loads without JavaScript errors (basic check)
+          echo "Testing JavaScript bundle..."
+          if curl -s http://localhost:4200/ | grep -q "main\."; then
+            echo "✅ JavaScript bundle is referenced"
+          else
+            echo "❌ JavaScript bundle not found"
             exit 1
           fi
       - name: Cleanup
