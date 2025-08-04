@@ -46,24 +46,6 @@ jobs:
           docker compose -f docker-compose-prod.yml up -d
           # Wait for services to be ready
           sleep 60
-      - name: Debug container status
-        run: |
-          # Debug: Check container status
-          echo "Container status:"
-          docker compose -f docker-compose-prod.yml ps
-
-          # Debug: Check backend logs
-          echo "Backend logs:"
-          docker compose -f docker-compose-prod.yml logs backend
-
-          # Debug: Check if backend is responding
-          echo "Testing backend connectivity:"
-          curl -v http://localhost:8080/actuator/health || echo "Backend not responding"
-
-          # Debug: Check network connectivity
-          echo "Network info:"
-          docker network ls
-          docker network inspect andygrailsfrontend_andy-network-prod || echo "Network not found"
       - name: Test production frontend
         run: |
           # Check if the frontend is responding
