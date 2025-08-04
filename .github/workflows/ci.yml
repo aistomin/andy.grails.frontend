@@ -87,7 +87,7 @@ jobs:
 
           # Check that the app loads without JavaScript errors (basic check)
           echo "Testing JavaScript bundle..."
-          if curl -s http://localhost:4200/ | grep -q "main\."; then
+          if curl -s http://localhost:4200/ | grep -q "main-"; then
             echo "✅ JavaScript bundle is referenced"
           else
             echo "❌ JavaScript bundle not found"
