@@ -82,12 +82,18 @@ jobs:
 
           # Check that the app can make API calls (simulate browser behavior)
           echo "Testing API connectivity from frontend..."
-          if curl -f http://localhost:8080/videos > /dev/null 2>&1; then
-            echo "✅ Backend API is accessible"
-          else
-            echo "❌ Backend API is not accessible"
-            exit 1
-          fi
+          # Wait for backend to be fully ready
+          for i in {1..10}; do
+            if curl -f http://localhost:8080/videos > /dev/null 2>&1; then
+              echo "✅ Backend API is accessible"
+              break
+            else
+              echo "Attempt $i: Backend API not ready yet, waiting..."
+              sleep 5
+            fi
+          done
+          # Final check - if this fails, the test fails
+          curl -f http://localhost:8080/videos || (echo "❌ Backend API is not accessible" && exit 1)
 
           # Check that the app loads without JavaScript errors (basic check)
           echo "Testing JavaScript bundle..."
