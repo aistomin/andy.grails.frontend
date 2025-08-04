@@ -39,7 +39,9 @@ jobs:
         run: |
           # Clean up any existing containers and networks to avoid port conflicts
           echo "Cleaning up any existing containers..."
-          docker compose -f docker-compose-prod.yml down -v 2>/dev/null || true
+          docker compose -f docker-compose-prod.yml down -v --remove-orphans 2>/dev/null || true
+          docker stop $(docker ps -q) 2>/dev/null || true
+          docker rm $(docker ps -aq) 2>/dev/null || true
           docker system prune -f
 
           # Start the production stack
