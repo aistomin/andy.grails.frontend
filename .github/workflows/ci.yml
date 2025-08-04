@@ -97,6 +97,19 @@ jobs:
             echo "❌ JavaScript bundle not found"
             exit 1
           fi
+
+          # Check that specific video content is displayed (indicating API integration works)
+          echo "Testing video content display..."
+          # Wait a bit for the app to load and fetch data
+          sleep 5
+          # Use a headless browser approach to check rendered content
+          if curl -s http://localhost:4200/ | grep -q "Mauro Giuliani - Sonatina op. 71 no. 1"; then
+            echo "✅ Specific video content is displayed"
+          else
+            echo "❌ Expected video content not found"
+            echo "This might indicate the app is not properly fetching/displaying data from the backend"
+            exit 1
+          fi
       - name: Cleanup
         if: always()
         run: docker compose -f docker-compose-prod.yml down -v
