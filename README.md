@@ -26,7 +26,7 @@ The CI/CD pipeline automatically builds and publishes the production image to Do
 - **`nginx.conf`**: Development configuration with API proxy to backend
 - **`nginx.prod.conf`**: Production configuration without API proxy (for standalone deployment)
 
-### Quick Start
+### Quick Start (Development)
 
 **Start the App:**
 
@@ -42,19 +42,52 @@ The CI/CD pipeline automatically builds and publishes the production image to Do
 
 Once running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+### Production Environment
+
+To run the production environment locally (using the production Docker image):
+
+**Start Production App:**
+
+```bash
+./start-prod.sh
+```
+
+**Stop Production App:**
+
+```bash
+./stop-prod.sh
+```
+
+Once running, open your browser and navigate to `http://localhost:80/`. This runs the production build with nginx serving the optimized Angular application.
+
+**Note:** The production environment includes the full stack (database, backend, and frontend) and builds the frontend locally using `Dockerfile.prod`.
+
 ### Managing the App
 
-**View logs:**
+**View logs (Development):**
 
 ```bash
 docker-compose logs -f
 ```
 
-**Restart the App:**
+**View logs (Production):**
+
+```bash
+docker compose -f docker-compose-prod.yml logs -f
+```
+
+**Restart the App (Development):**
 
 ```bash
 ./stop.sh
 ./start.sh
+```
+
+**Restart the App (Production):**
+
+```bash
+./stop-prod.sh
+./start-prod.sh
 ```
 
 For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).

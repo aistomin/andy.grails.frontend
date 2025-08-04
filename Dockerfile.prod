@@ -23,7 +23,7 @@ RUN ng build --configuration production
 FROM nginx:alpine
 
 # Copy the built application from the builder stage
-COPY --from=builder /app/dist/andy.grails.frontend/browser/* /usr/share/nginx/html/
+COPY --from=builder /app/dist/andy.grails.frontend/browser/ /usr/share/nginx/html/
 
 # Copy nginx configuration
 COPY nginx.prod.conf /etc/nginx/nginx.conf
