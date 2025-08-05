@@ -46,8 +46,6 @@ jobs:
 
           # Start the production stack
           docker compose -f docker-compose-prod.yml up -d
-          # Wait for services to be ready
-          # sleep 60
       - name: Test production frontend
         run: |
           # Check if the frontend is responding
