@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting Andy Grails environment..."
+echo "Starting Andy Grails App in the Dev Mode..."
 
 # Check if Docker is running
 if ! docker info > /dev/null 2>&1; then
@@ -32,17 +32,17 @@ if docker-compose up --build -d; then
             echo "✅  Backend is ready!"
             break
         else
-            echo "⏳  Attempt $i/30: Backend not ready yet..."
+            echo "⏳  Attempt $i/30: Backend is not ready yet..."
             sleep 2
         fi
     done
     
     echo ""
-    echo "🎉  Environment started successfully!"
+    echo "🎉  The App started successfully!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   🧡 Your app is ready to rock! 🧡   │"
+    echo "    │   🧡 Your App is ready to rock! 🧡  │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
@@ -64,6 +64,6 @@ else
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "Error: Failed to start environment. Please check the error messages above."
+    echo "Error: Failed to start the App. Please check the error messages above."
     exit 1
 fi 

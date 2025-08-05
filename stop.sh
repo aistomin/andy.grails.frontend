@@ -1,22 +1,22 @@
 #!/bin/bash
 
-echo "Stopping Andy Grails environment..."
+echo "Stopping Andy Grails App..."
 
 # Stop containers
 if docker-compose down; then
     echo ""
-    echo "🛑  Environment stopped!"
+    echo "🛑  The App stopped!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   🧡 Containers are sleeping... 🧡   │"
+    echo "    │   🧡 Containers are sleeping... 🧡  │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
     echo "To start again: ./start.sh"
 else
     echo ""
-    echo "💥  Failed to stop environment!"
+    echo "💥  Failed to stop the App!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
@@ -26,6 +26,6 @@ else
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "Error: Failed to stop environment. Please check the error messages above."
+    echo "Error: Failed to stop the App. Please check the error messages above."
     exit 1
 fi 
