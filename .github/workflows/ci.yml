@@ -145,7 +145,7 @@ jobs:
                     process.exit(1);
                   }
                   console.log('Video not found yet, waiting 5 seconds...');
-                  await page.waitForTimeout(5000);
+                  await new Promise(resolve => setTimeout(resolve, 5000));
                 }
               }
             } catch (error) {
