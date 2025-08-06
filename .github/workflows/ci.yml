@@ -65,7 +65,7 @@ jobs:
           # Check if the backend API is responding
           echo "Testing backend API accessibility..."
           for i in {1..10}; do
-            if curl -f http://localhost:8080/api/videos > /dev/null 2>&1; then
+            if curl -f http://localhost:8080/videos > /dev/null 2>&1; then
               echo "✅ Backend API is accessible"
               break
             else
@@ -74,11 +74,11 @@ jobs:
             fi
           done
           # Final check - if this fails, the test fails
-          curl -f http://localhost:8080/api/videos || (echo "❌ Backend API test failed" && exit 1)
+          curl -f http://localhost:8080/videos || (echo "❌ Backend API test failed" && exit 1)
 
           # Check what the backend API returns
           echo "Checking backend API response..."
-          api_response=$(curl -s http://localhost:8080/api/videos)
+          api_response=$(curl -s http://localhost:8080/videos)
           echo "API Response: $api_response"
       - name: Check frontend content
         run: |
