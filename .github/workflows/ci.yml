@@ -93,6 +93,28 @@ jobs:
             echo "❌ JavaScript bundle not found"
             exit 1
           fi
+
+          # Wait for Angular app to load and render content
+          echo "Waiting for Angular app to load and render video content..."
+          for i in {1..15}; do
+            echo "Attempt $i: Checking for video content..."
+            
+            # Use curl with a longer timeout and check for the specific video title
+            response=$(curl -s --max-time 30 http://localhost:4200/)
+            
+            if echo "$response" | grep -q "J\. S\. Bach - Bourrée"; then
+              echo "✅ Video 'J. S. Bach - Bourrée' is displayed on the page"
+              break
+            else
+              if [ $i -eq 15 ]; then
+                echo "❌ Video 'J. S. Bach - Bourrée' not found after 15 attempts"
+                echo "Response preview: ${response:0:500}..."
+                exit 1
+              fi
+              echo "Video not found yet, waiting 5 seconds..."
+              sleep 5
+            fi
+          done
       - name: Cleanup
         if: always()
         run: docker compose -f docker-compose-prod.yml down -v
