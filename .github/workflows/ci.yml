@@ -61,6 +61,25 @@ jobs:
           done
           # Final check - if this fails, the test fails
           curl -f http://localhost:4200/ || (echo "❌ Frontend test failed" && exit 1)
+
+          # Check if the backend API is responding
+          echo "Testing backend API accessibility..."
+          for i in {1..10}; do
+            if curl -f http://localhost:8080/videos > /dev/null 2>&1; then
+              echo "✅ Backend API is accessible"
+              break
+            else
+              echo "Attempt $i: Backend API not ready yet, waiting..."
+              sleep 5
+            fi
+          done
+          # Final check - if this fails, the test fails
+          curl -f http://localhost:8080/videos || (echo "❌ Backend API test failed" && exit 1)
+
+          # Check what the backend API returns
+          echo "Checking backend API response..."
+          api_response=$(curl -s http://localhost:8080/videos)
+          echo "API Response: $api_response"
       - name: Check frontend content
         run: |
           # Verify that the Angular app is actually served with proper content
@@ -93,6 +112,75 @@ jobs:
             echo "❌ JavaScript bundle not found"
             exit 1
           fi
+
+          # Install Puppeteer for headless browser testing
+          echo "Installing Puppeteer for JavaScript-enabled testing..."
+          npm install puppeteer
+
+          # Wait for Angular app to load and render content using headless browser
+          echo "Waiting for Angular app to load and render video content..."
+          node -e "
+          const puppeteer = require('puppeteer');
+
+          (async () => {
+            const browser = await puppeteer.launch({ 
+              headless: true,
+              args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process',
+                '--disable-gpu'
+              ]
+            });
+            const page = await browser.newPage();
+            
+            try {
+              console.log('Loading page...');
+              await page.goto('http://localhost:4200', { waitUntil: 'networkidle2', timeout: 30000 });
+              
+              console.log('Waiting for Angular app to render...');
+              await page.waitForSelector('app-root', { timeout: 10000 });
+              
+              console.log('Waiting for video content to load...');
+              for (let i = 1; i <= 5; i++) {
+                console.log(\`Attempt \${i}: Checking for video content...\`);
+                
+                // Debug: Check what content is actually on the page
+                const currentText = await page.evaluate(() => document.body.textContent);
+                console.log('Current page text content:', currentText.substring(0, 500));
+                
+                try {
+                  await page.waitForFunction(
+                    () => document.body.textContent.includes('J. S. Bach - Bourrée'),
+                    { timeout: 5000 }
+                  );
+                  console.log('✅ Video \"J. S. Bach - Bourrée\" is displayed on the page');
+                  break;
+                } catch (error) {
+                  if (i === 5) {
+                    const content = await page.content();
+                    const textContent = await page.evaluate(() => document.body.textContent);
+                    console.log('❌ Video \"J. S. Bach - Bourrée\" not found after 5 attempts');
+                    console.log('Page HTML preview:', content.substring(0, 1000));
+                    console.log('Page text content preview:', textContent.substring(0, 1000));
+                    process.exit(1);
+                  }
+                  console.log('Video not found yet, waiting 5 seconds...');
+                  await new Promise(resolve => setTimeout(resolve, 5000));
+                }
+              }
+            } catch (error) {
+              console.error('Error during testing:', error.message);
+              process.exit(1);
+            } finally {
+              await browser.close();
+            }
+          })();
+          "
       - name: Cleanup
         if: always()
         run: docker compose -f docker-compose-prod.yml down -v
