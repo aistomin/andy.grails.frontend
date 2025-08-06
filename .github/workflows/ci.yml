@@ -130,6 +130,10 @@ jobs:
               for (let i = 1; i <= 5; i++) {
                 console.log(\`Attempt \${i}: Checking for video content...\`);
                 
+                // Debug: Check what content is actually on the page
+                const currentText = await page.evaluate(() => document.body.textContent);
+                console.log('Current page text content:', currentText.substring(0, 500));
+                
                 try {
                   await page.waitForFunction(
                     () => document.body.textContent.includes('J. S. Bach - Bourrée'),
@@ -138,10 +142,12 @@ jobs:
                   console.log('✅ Video \"J. S. Bach - Bourrée\" is displayed on the page');
                   break;
                 } catch (error) {
-                  if (i === 15) {
+                  if (i === 5) {
                     const content = await page.content();
-                    console.log('❌ Video \"J. S. Bach - Bourrée\" not found after 15 attempts');
-                    console.log('Page content preview:', content.substring(0, 1000));
+                    const textContent = await page.evaluate(() => document.body.textContent);
+                    console.log('❌ Video \"J. S. Bach - Bourrée\" not found after 5 attempts');
+                    console.log('Page HTML preview:', content.substring(0, 1000));
+                    console.log('Page text content preview:', textContent.substring(0, 1000));
                     process.exit(1);
                   }
                   console.log('Video not found yet, waiting 5 seconds...');
