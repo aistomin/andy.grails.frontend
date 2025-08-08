@@ -27,9 +27,11 @@ if docker-compose up --build -d; then
     
     # Wait for backend to be ready
     echo "⏳  Waiting for backend to start..."
+    backend_ready=false
     for i in {1..30}; do
         if curl -f http://localhost:8080/actuator/health > /dev/null 2>&1; then
             echo "✅  Backend is ready!"
+            backend_ready=true
             break
         else
             echo "⏳  Attempt $i/30: Backend is not ready yet..."
@@ -37,8 +39,26 @@ if docker-compose up --build -d; then
         fi
     done
     
-    echo ""
-    echo "🎉  The App started successfully!"
+    if [ "$backend_ready" = true ]; then
+        echo ""
+        echo "🎉  The App started successfully!"
+    else
+        echo ""
+        echo "💥  Backend failed to start!"
+        echo ""
+        echo "    ┌─────────────────────────────────────┐"
+        echo "    │                                     │"
+        echo "    │   Backend is not responding...      │"
+        echo "    │                                     │"
+        echo "    │   Check the logs:                   │"
+        echo "    │   docker-compose logs backend       │"
+        echo "    │                                     │"
+        echo "    └─────────────────────────────────────┘"
+        echo ""
+        echo "Error: Backend failed to start within the timeout period."
+        echo "Please check the backend logs for more details."
+        exit 1
+    fi
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
