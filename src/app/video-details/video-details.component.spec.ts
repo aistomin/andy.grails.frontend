@@ -22,6 +22,15 @@ describe('VideoDetailsComponent', () => {
     publishedAt: '2024-01-01T12:00:00Z',
   };
 
+  const mockUnpublishedVideo: Video = {
+    id: 2,
+    title: 'Unpublished Video',
+    description: 'This video is not published yet',
+    youtubeId: 'xyz789',
+    createdAt: '2024-01-01T10:00:00Z',
+    publishedAt: null,
+  };
+
   beforeEach(async () => {
     const videoServiceSpy = jasmine.createSpyObj('VideoService', [
       'getVideoById',
@@ -164,6 +173,26 @@ describe('VideoDetailsComponent', () => {
     expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(
       expectedUrl
     );
+  });
+
+  it('should handle unpublished videos correctly', async () => {
+    videoService.getVideoById.and.returnValue(
+      Promise.resolve(mockUnpublishedVideo)
+    );
+
+    // Create component and wait for video to load
+    component = new VideoDetailsComponent(
+      videoService,
+      TestBed.inject(ActivatedRoute),
+      TestBed.inject(DomSanitizer),
+      router
+    );
+
+    // Wait for the promise to resolve
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(component.video).toEqual(mockUnpublishedVideo);
+    expect(component.video?.publishedAt).toBeNull();
   });
 
   it('should parse video ID from route params correctly', () => {

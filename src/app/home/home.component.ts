@@ -36,10 +36,17 @@ export class HomeComponent {
 
   constructor(private videoService: VideoService) {
     this.videoService.getAllVideos().then((list: Video[]) => {
-      this.videos = list.sort(
-        (a, b) =>
+      this.videos = list.sort((a, b) => {
+        // Handle null publishedAt values - unpublished videos go to the end
+        if (a.publishedAt === null && b.publishedAt === null) return 0;
+        if (a.publishedAt === null) return 1; // a goes after b
+        if (b.publishedAt === null) return -1; // b goes after a
+
+        // Both have publishedAt, sort by date (newest first)
+        return (
           new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      );
+        );
+      });
       this.filteredVideos = this.videos;
     });
   }
