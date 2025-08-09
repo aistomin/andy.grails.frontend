@@ -39,7 +39,11 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
           </p>
           <p>
             <strong>Published:</strong>
-            {{ video?.publishedAt | date : 'dd.MM.yyyy HH:mm' }}
+            {{
+              video?.publishedAt
+                ? (video?.publishedAt | date : 'dd.MM.yyyy HH:mm')
+                : 'Not published yet'
+            }}
           </p>
         </div>
       </section>

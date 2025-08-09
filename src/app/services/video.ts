@@ -4,5 +4,5 @@ export interface Video {
   description: string;
   youtubeId: string;
   createdAt: string;
-  publishedAt: string;
+  publishedAt: string | null;
 }
