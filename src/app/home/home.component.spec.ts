@@ -39,7 +39,7 @@ describe('HomeComponent', () => {
     const videoServiceSpy = jasmine.createSpyObj('VideoService', [
       'getAllVideos',
     ]);
-    videoServiceSpy.getAllVideos.and.returnValue(Promise.resolve(mockVideos));
+    // Don't set default return value here - let individual tests set it
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
@@ -55,7 +55,24 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should load videos in constructor', async () => {
+    // Set up the mock to return videos
+    videoService.getAllVideos.and.returnValue(Promise.resolve(mockVideos));
+    
+    // Create a new component instance to trigger the constructor
+    component = new HomeComponent(videoService);
+
+    // Wait for the async operation to complete
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    expect(videoService.getAllVideos).toHaveBeenCalled();
+    expect(component.videos.length).toBe(3);
+  });
+
   it('should load videos and sort them by createdAt (newest first)', async () => {
+    // Set up the mock to return videos
+    videoService.getAllVideos.and.returnValue(Promise.resolve(mockVideos));
+    
     // Create a new component instance to trigger the constructor
     component = new HomeComponent(videoService);
 

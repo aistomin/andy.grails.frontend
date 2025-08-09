@@ -117,8 +117,7 @@ describe('VideoDetailsComponent', () => {
     // Wait for the promise to reject and error handling to complete
     await new Promise((resolve) => setTimeout(resolve, 0));
 
-    // The ApiService should handle the 404 navigation automatically
-    // We just need to verify that the component doesn't crash
+    // The component should handle the error gracefully without crashing
     expect(component.video).toBeUndefined();
   });
 
