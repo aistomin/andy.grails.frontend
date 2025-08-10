@@ -8,7 +8,6 @@ import { VideoService } from '../services/video.service';
 @Component({
   selector: 'app-home',
   imports: [CommonModule, VideoCardComponent, FormsModule],
-  providers: [VideoService],
   template: `
     <section>
       <form (submit)="filterResults(filter.value); $event.preventDefault()">
