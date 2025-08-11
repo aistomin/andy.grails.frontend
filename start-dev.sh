@@ -20,7 +20,7 @@ if ! docker info > /dev/null 2>&1; then
 fi
 
 # Build and start containers in detached mode
-if docker-compose up --build -d; then
+if docker-compose -f docker-compose-dev.yml up --build -d; then
     echo ""
     echo "🚀  Containers started! Waiting for backend to be ready..."
     echo ""
@@ -51,7 +51,7 @@ if docker-compose up --build -d; then
         echo "    │   Backend is not responding...      │"
         echo "    │                                     │"
         echo "    │   Check the logs:                   │"
-        echo "    │   docker-compose logs backend       │"
+        echo "    │   docker-compose -f docker-compose-dev.yml logs backend       │"
         echo "    │                                     │"
         echo "    └─────────────────────────────────────┘"
         echo ""
@@ -70,8 +70,8 @@ if docker-compose up --build -d; then
     echo "Backend: http://localhost:8080"
     echo "Database: localhost:55432"
     echo ""
-    echo "To view logs: docker-compose logs -f"
-    echo "To stop: ./stop.sh"
+    echo "To view logs: docker-compose -f docker-compose-dev.yml logs -f"
+    echo "To stop: ./stop-dev.sh"
 else
     echo ""
     echo "💥  Something went wrong!"

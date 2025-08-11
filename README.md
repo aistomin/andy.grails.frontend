@@ -31,13 +31,13 @@ The CI/CD pipeline automatically builds and publishes the production image to Do
 **Start the App:**
 
 ```bash
-./start.sh
+./start-dev.sh
 ```
 
 **Stop the App:**
 
 ```bash
-./stop.sh
+./stop-dev.sh
 ```
 
 Once running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -67,7 +67,7 @@ Once running, open your browser and navigate to `http://localhost:80/`. This run
 **View logs (Development):**
 
 ```bash
-docker-compose logs -f
+docker-compose -f docker-compose-dev.yml logs -f
 ```
 
 **View logs (Production):**
@@ -79,8 +79,8 @@ docker compose -f docker-compose-prod.yml logs -f
 **Restart the App (Development):**
 
 ```bash
-./stop.sh
-./start.sh
+./stop-dev.sh
+./start-dev.sh
 ```
 
 **Restart the App (Production):**
