@@ -13,10 +13,10 @@ This project now supports Docker for both development and production environment
 
 ```bash
 # Start the development environment
-./start.sh
+./start-dev.sh
 
 # Or manually:
-docker-compose up --build
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
 This will start:
@@ -67,7 +67,7 @@ Default values:
 - Supports hot reloading with `ng serve`
 - Used for local development
 
-### `docker-compose.yml`
+### `docker-compose-dev.yml`
 
 - Development orchestration
 - Includes frontend, backend, and database services
@@ -85,7 +85,7 @@ Default values:
 1. **Start the development environment**:
 
    ```bash
-   ./start.sh
+   ./start-dev.sh
    ```
 
 2. **Make changes to your code** - they will automatically reload in the browser
@@ -97,7 +97,7 @@ Default values:
 
 4. **Stop the environment**:
    ```bash
-   ./stop.sh
+   ./stop-dev.sh
    ```
 
 ## Production Deployment
@@ -135,10 +135,10 @@ If the database doesn't start properly:
 
 ```bash
 # Remove existing volumes
-docker-compose down -v
+docker-compose -f docker-compose-dev.yml down -v
 
 # Start fresh
-docker-compose up --build
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
 ### Frontend Build Issues
@@ -150,7 +150,7 @@ If the frontend build fails:
 docker system prune -a
 
 # Rebuild
-docker-compose up --build
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
 ## API Configuration

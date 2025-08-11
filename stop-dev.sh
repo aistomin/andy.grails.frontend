@@ -3,7 +3,7 @@
 echo "Stopping Andy Grails App..."
 
 # Stop containers
-if docker-compose down; then
+if docker-compose -f docker-compose-dev.yml down; then
     echo ""
     echo "🛑  The App stopped!"
     echo ""
@@ -13,7 +13,7 @@ if docker-compose down; then
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
-    echo "To start again: ./start.sh"
+    echo "To start again: ./start-dev.sh"
 else
     echo ""
     echo "💥  Failed to stop the App!"
