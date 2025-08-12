@@ -3,7 +3,7 @@
 echo "Stopping Andy Grails App..."
 
 # Stop containers
-if docker-compose -f docker-compose-dev.yml down; then
+if docker compose -f docker-compose-dev.yml down --remove-orphans; then
     echo ""
     echo "🛑  The App stopped!"
     echo ""

@@ -3,7 +3,7 @@
 echo "Stopping Andy Grails PRODUCTION environment..."
 
 # Stop containers
-if docker compose -f docker-compose-prod.yml down; then
+if docker compose -f docker-compose-prod.yml down --remove-orphans; then
     echo ""
     echo "🛑  PRODUCTION environment stopped!"
     echo ""
