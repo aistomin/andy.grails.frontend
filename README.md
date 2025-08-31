@@ -58,7 +58,7 @@ To run the production environment locally (using the production Docker image):
 ./stop-prod.sh
 ```
 
-Once running, open your browser and navigate to `http://localhost:80/`. This runs the production build with nginx serving the optimized Angular application.
+Once running, open your browser and navigate to `http://localhost:4200/`. This runs the production build with nginx serving the optimized Angular application.
 
 **Note:** The production environment includes the full stack (database, backend, and frontend) and builds the frontend locally using `Dockerfile.prod`.
 
