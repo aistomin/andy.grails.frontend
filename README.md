@@ -119,3 +119,13 @@ To execute unit tests use the following command:
 ```bash
 npm test
 ```
+
+## How to Contribute
+
+1. **Make your changes** and [run tests](#running-unit-tests)
+
+2. **Test your changes work** in both [development](#quick-start-development) and [production](#production-environment) environments
+
+3. **Submit a pull request** with a clear description of your changes.
+
+**Important**: You must verify that the production Docker Compose setup displays the website correctly and that your changes work as intended.
