@@ -11,20 +11,20 @@ describe('FooterComponent', () => {
   const mockWebLinks: WebLink[] = [
     {
       id: 0,
-      socialMedia: 'YOUTUBE',
+      type: 'YOUTUBE',
       url: 'https://www.youtube.com/@andygrails',
     },
     {
       id: 1,
-      socialMedia: 'INSTAGRAM',
+      type: 'INSTAGRAM',
       url: 'https://www.instagram.com/andy.grails/',
     },
     {
       id: 2,
-      socialMedia: 'FACEBOOK',
+      type: 'FACEBOOK',
       url: 'https://www.facebook.com/profile.php?id=100074082643728',
     },
-    { id: 3, socialMedia: 'DEVELOPER_WEBSITE', url: 'https://andygrails.com' },
+    { id: 3, type: 'DEVELOPER_WEBSITE', url: 'https://andygrails.com' },
   ];
 
   beforeEach(async () => {

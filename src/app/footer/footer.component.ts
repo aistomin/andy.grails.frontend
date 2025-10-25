@@ -63,17 +63,11 @@ export class FooterComponent {
   constructor(private webLinksService: WebLinksService) {
     this.webLinksService.getWebLinks().then((links: WebLink[]) => {
       this.webLinks = links;
-      this.youtubeLink = links.find(
-        (link) => (link.type || link.socialMedia) === 'YOUTUBE'
-      );
-      this.instagramLink = links.find(
-        (link) => (link.type || link.socialMedia) === 'INSTAGRAM'
-      );
-      this.facebookLink = links.find(
-        (link) => (link.type || link.socialMedia) === 'FACEBOOK'
-      );
+      this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
+      this.instagramLink = links.find((link) => link.type === 'INSTAGRAM');
+      this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
       this.developerWebsiteLink = links.find(
-        (link) => (link.type || link.socialMedia) === 'DEVELOPER_WEBSITE'
+        (link) => link.type === 'DEVELOPER_WEBSITE'
       );
     });
   }
