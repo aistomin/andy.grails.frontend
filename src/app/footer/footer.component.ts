@@ -12,9 +12,18 @@ import { WebLinksService } from '../services/web-links.service';
         <div class="footer-left">
           <a href="/privacy">Privacy</a>
           <span class="separator">|</span>
-          <a href="/imprint">Imprint/Terms</a>
+          <a href="/imprint">Imprint</a>
           <span class="separator">|</span>
-          <a [href]="developerWebsiteLink?.url">Developed by me</a>
+          <a [href]="developerWebsiteLink?.url">Developer</a>
+          <span class="separator" *ngIf="issueTrackerLink">|</span>
+          <a
+            *ngIf="issueTrackerLink"
+            [href]="issueTrackerLink.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Support
+          </a>
         </div>
         <div class="footer-center">
           <p>&copy; 2025 Andy Grails</p>
@@ -59,6 +68,7 @@ export class FooterComponent {
   instagramLink?: WebLink;
   facebookLink?: WebLink;
   developerWebsiteLink?: WebLink;
+  issueTrackerLink?: WebLink;
 
   constructor(private webLinksService: WebLinksService) {
     this.webLinksService.getWebLinks().then((links: WebLink[]) => {
@@ -68,6 +78,9 @@ export class FooterComponent {
       this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
       this.developerWebsiteLink = links.find(
         (link) => link.type === 'DEVELOPER_WEBSITE'
+      );
+      this.issueTrackerLink = links.find(
+        (link) => link.type === 'ISSUE_TRACKER'
       );
     });
   }
