@@ -79,7 +79,7 @@ describe('FooterComponent', () => {
     const imprintLink = footerLeft.querySelector('a[href="/imprint"]');
 
     expect(imprintLink).toBeTruthy();
-    expect(imprintLink.textContent.trim()).toBe('Imprint/Terms');
+    expect(imprintLink.textContent.trim()).toBe('Imprint');
   });
 
   it('should render footer left section with developer website link from API', async () => {
@@ -94,7 +94,7 @@ describe('FooterComponent', () => {
     );
 
     expect(developerWebsiteLink).toBeTruthy();
-    expect(developerWebsiteLink.textContent.trim()).toBe('Developed by me');
+    expect(developerWebsiteLink.textContent.trim()).toBe('Developer');
   });
 
   it('should render footer left section with issue tracker link from API', async () => {
@@ -109,7 +109,7 @@ describe('FooterComponent', () => {
     );
 
     expect(issueTrackerLink).toBeTruthy();
-    expect(issueTrackerLink.textContent.trim()).toBe('Report a problem');
+    expect(issueTrackerLink.textContent.trim()).toBe('Support');
     expect(issueTrackerLink.getAttribute('target')).toBe('_blank');
     expect(issueTrackerLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
