@@ -14,6 +14,8 @@ if docker compose -f docker-compose-dev.yml down --remove-orphans; then
     echo "    └─────────────────────────────────────┘"
     echo ""
     echo "To start again: ./start-dev.sh"
+    echo ""
+    echo "🗑️  To remove volumes as well: docker compose -f docker-compose-dev.yml down -v" 
 else
     echo ""
     echo "💥  Failed to stop the App!"

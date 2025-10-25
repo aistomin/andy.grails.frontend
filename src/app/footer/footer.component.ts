@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SocialMediaLink } from '../services/social-media-link';
-import { SocialMediaService } from '../services/social-media.service';
+import { WebLink } from '../services/web-link';
+import { WebLinksService } from '../services/web-links.service';
 
 @Component({
   selector: 'app-footer',
@@ -14,7 +14,7 @@ import { SocialMediaService } from '../services/social-media.service';
           <span class="separator">|</span>
           <a href="/imprint">Imprint/Terms</a>
           <span class="separator">|</span>
-          <a [href]="githubLink?.url">Developed by me</a>
+          <a [href]="developerWebsiteLink?.url">Developed by me</a>
         </div>
         <div class="footer-center">
           <p>&copy; 2025 Andy Grails</p>
@@ -54,25 +54,27 @@ import { SocialMediaService } from '../services/social-media.service';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent {
-  socialMediaLinks: SocialMediaLink[] = [];
-  youtubeLink?: SocialMediaLink;
-  instagramLink?: SocialMediaLink;
-  facebookLink?: SocialMediaLink;
-  githubLink?: SocialMediaLink;
+  webLinks: WebLink[] = [];
+  youtubeLink?: WebLink;
+  instagramLink?: WebLink;
+  facebookLink?: WebLink;
+  developerWebsiteLink?: WebLink;
 
-  constructor(private socialMediaService: SocialMediaService) {
-    this.socialMediaService
-      .getSocialMediaLinks()
-      .then((links: SocialMediaLink[]) => {
-        this.socialMediaLinks = links;
-        this.youtubeLink = links.find((link) => link.socialMedia === 'YOUTUBE');
-        this.instagramLink = links.find(
-          (link) => link.socialMedia === 'INSTAGRAM'
-        );
-        this.facebookLink = links.find(
-          (link) => link.socialMedia === 'FACEBOOK'
-        );
-        this.githubLink = links.find((link) => link.socialMedia === 'GITHUB');
-      });
+  constructor(private webLinksService: WebLinksService) {
+    this.webLinksService.getWebLinks().then((links: WebLink[]) => {
+      this.webLinks = links;
+      this.youtubeLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'YOUTUBE'
+      );
+      this.instagramLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'INSTAGRAM'
+      );
+      this.facebookLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'FACEBOOK'
+      );
+      this.developerWebsiteLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'DEVELOPER_WEBSITE'
+      );
+    });
   }
 }
