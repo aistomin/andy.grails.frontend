@@ -24,7 +24,7 @@ describe('FooterComponent', () => {
       socialMedia: 'FACEBOOK',
       url: 'https://www.facebook.com/profile.php?id=100074082643728',
     },
-    { id: 3, socialMedia: 'GITHUB', url: 'https://github.com/aistomin' },
+    { id: 3, socialMedia: 'DEVELOPER_WEBSITE', url: 'https://andygrails.com' },
   ];
 
   beforeEach(async () => {
@@ -77,19 +77,19 @@ describe('FooterComponent', () => {
     expect(imprintLink.textContent.trim()).toBe('Imprint/Terms');
   });
 
-  it('should render footer left section with GitHub link from API', async () => {
+  it('should render footer left section with developer website link from API', async () => {
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement;
     const footerLeft = compiled.querySelector('.footer-left');
-    const githubLink = footerLeft.querySelector(
-      'a[href="https://github.com/aistomin"]'
+    const developerWebsiteLink = footerLeft.querySelector(
+      'a[href="https://andygrails.com"]'
     );
 
-    expect(githubLink).toBeTruthy();
-    expect(githubLink.textContent.trim()).toBe('Developed by me');
+    expect(developerWebsiteLink).toBeTruthy();
+    expect(developerWebsiteLink.textContent.trim()).toBe('Developed by me');
   });
 
   it('should render footer center section with copyright', () => {
@@ -191,7 +191,7 @@ describe('FooterComponent', () => {
     expect(compiled.querySelector('a[href*="instagram"]')).toBeFalsy();
     expect(compiled.querySelector('a[href*="facebook"]')).toBeFalsy();
 
-    // GitHub link should not be rendered (since it's conditional now)
-    expect(compiled.querySelector('a[href*="github"]')).toBeFalsy();
+    // Developer website link should not be rendered (since it's conditional now)
+    expect(compiled.querySelector('a[href*="andygrails.com"]')).toBeFalsy();
   });
 });

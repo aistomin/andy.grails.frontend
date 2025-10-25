@@ -1,5 +1,6 @@
 export interface WebLink {
   id: number;
-  socialMedia: string;
+  type?: string;
+  socialMedia?: string;
   url: string;
 }

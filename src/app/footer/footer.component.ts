@@ -14,7 +14,7 @@ import { WebLinksService } from '../services/web-links.service';
           <span class="separator">|</span>
           <a href="/imprint">Imprint/Terms</a>
           <span class="separator">|</span>
-          <a [href]="githubLink?.url">Developed by me</a>
+          <a [href]="developerWebsiteLink?.url">Developed by me</a>
         </div>
         <div class="footer-center">
           <p>&copy; 2025 Andy Grails</p>
@@ -58,17 +58,23 @@ export class FooterComponent {
   youtubeLink?: WebLink;
   instagramLink?: WebLink;
   facebookLink?: WebLink;
-  githubLink?: WebLink;
+  developerWebsiteLink?: WebLink;
 
   constructor(private webLinksService: WebLinksService) {
     this.webLinksService.getWebLinks().then((links: WebLink[]) => {
       this.webLinks = links;
-      this.youtubeLink = links.find((link) => link.socialMedia === 'YOUTUBE');
-      this.instagramLink = links.find(
-        (link) => link.socialMedia === 'INSTAGRAM'
+      this.youtubeLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'YOUTUBE'
       );
-      this.facebookLink = links.find((link) => link.socialMedia === 'FACEBOOK');
-      this.githubLink = links.find((link) => link.socialMedia === 'GITHUB');
+      this.instagramLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'INSTAGRAM'
+      );
+      this.facebookLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'FACEBOOK'
+      );
+      this.developerWebsiteLink = links.find(
+        (link) => (link.type || link.socialMedia) === 'DEVELOPER_WEBSITE'
+      );
     });
   }
 }
