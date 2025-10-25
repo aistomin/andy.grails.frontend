@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer.component';
-import { SocialMediaService } from '../services/social-media.service';
-import { SocialMediaLink } from '../services/social-media-link';
+import { WebLinksService } from '../services/web-links.service';
+import { WebLink } from '../services/web-link';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
   let fixture: ComponentFixture<FooterComponent>;
-  let mockSocialMediaService: jasmine.SpyObj<SocialMediaService>;
+  let mockWebLinksService: jasmine.SpyObj<WebLinksService>;
 
-  const mockSocialMediaLinks: SocialMediaLink[] = [
+  const mockWebLinks: WebLink[] = [
     {
       id: 0,
       socialMedia: 'YOUTUBE',
@@ -28,21 +28,17 @@ describe('FooterComponent', () => {
   ];
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('SocialMediaService', [
-      'getSocialMediaLinks',
-    ]);
-    spy.getSocialMediaLinks.and.returnValue(
-      Promise.resolve(mockSocialMediaLinks)
-    );
+    const spy = jasmine.createSpyObj('WebLinksService', ['getWebLinks']);
+    spy.getWebLinks.and.returnValue(Promise.resolve(mockWebLinks));
 
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
-      providers: [{ provide: SocialMediaService, useValue: spy }],
+      providers: [{ provide: WebLinksService, useValue: spy }],
     }).compileComponents();
 
-    mockSocialMediaService = TestBed.inject(
-      SocialMediaService
-    ) as jasmine.SpyObj<SocialMediaService>;
+    mockWebLinksService = TestBed.inject(
+      WebLinksService
+    ) as jasmine.SpyObj<WebLinksService>;
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -174,15 +170,13 @@ describe('FooterComponent', () => {
     });
   });
 
-  it('should call SocialMediaService.getSocialMediaLinks on init', () => {
-    expect(mockSocialMediaService.getSocialMediaLinks).toHaveBeenCalled();
+  it('should call WebLinksService.getWebLinks on init', () => {
+    expect(mockWebLinksService.getWebLinks).toHaveBeenCalled();
   });
 
-  it('should handle empty social media links gracefully', async () => {
+  it('should handle empty web links gracefully', async () => {
     // Reset the component and mock with empty data
-    mockSocialMediaService.getSocialMediaLinks.and.returnValue(
-      Promise.resolve([])
-    );
+    mockWebLinksService.getWebLinks.and.returnValue(Promise.resolve([]));
 
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
@@ -192,7 +186,7 @@ describe('FooterComponent', () => {
 
     const compiled = fixture.nativeElement;
 
-    // Social media links should not be rendered
+    // Web links should not be rendered
     expect(compiled.querySelector('a[href*="youtube"]')).toBeFalsy();
     expect(compiled.querySelector('a[href*="instagram"]')).toBeFalsy();
     expect(compiled.querySelector('a[href*="facebook"]')).toBeFalsy();

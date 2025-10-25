@@ -1,4 +1,4 @@
-export interface SocialMediaLink {
+export interface WebLink {
   id: number;
   socialMedia: string;
   url: string;
