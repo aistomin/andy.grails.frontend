@@ -11,20 +11,25 @@ describe('FooterComponent', () => {
   const mockWebLinks: WebLink[] = [
     {
       id: 0,
-      socialMedia: 'YOUTUBE',
+      type: 'YOUTUBE',
       url: 'https://www.youtube.com/@andygrails',
     },
     {
       id: 1,
-      socialMedia: 'INSTAGRAM',
+      type: 'INSTAGRAM',
       url: 'https://www.instagram.com/andy.grails/',
     },
     {
       id: 2,
-      socialMedia: 'FACEBOOK',
+      type: 'FACEBOOK',
       url: 'https://www.facebook.com/profile.php?id=100074082643728',
     },
-    { id: 3, socialMedia: 'DEVELOPER_WEBSITE', url: 'https://andygrails.com' },
+    { id: 3, type: 'DEVELOPER_WEBSITE', url: 'https://andygrails.com' },
+    {
+      id: 4,
+      type: 'ISSUE_TRACKER',
+      url: 'https://github.com/andygrails/issues',
+    },
   ];
 
   beforeEach(async () => {
@@ -74,7 +79,7 @@ describe('FooterComponent', () => {
     const imprintLink = footerLeft.querySelector('a[href="/imprint"]');
 
     expect(imprintLink).toBeTruthy();
-    expect(imprintLink.textContent.trim()).toBe('Imprint/Terms');
+    expect(imprintLink.textContent.trim()).toBe('Imprint');
   });
 
   it('should render footer left section with developer website link from API', async () => {
@@ -89,7 +94,24 @@ describe('FooterComponent', () => {
     );
 
     expect(developerWebsiteLink).toBeTruthy();
-    expect(developerWebsiteLink.textContent.trim()).toBe('Developed by me');
+    expect(developerWebsiteLink.textContent.trim()).toBe('Developer');
+  });
+
+  it('should render footer left section with issue tracker link from API', async () => {
+    // Wait for the component to load the data
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    const footerLeft = compiled.querySelector('.footer-left');
+    const issueTrackerLink = footerLeft.querySelector(
+      'a[href="https://github.com/andygrails/issues"]'
+    );
+
+    expect(issueTrackerLink).toBeTruthy();
+    expect(issueTrackerLink.textContent.trim()).toBe('Support');
+    expect(issueTrackerLink.getAttribute('target')).toBe('_blank');
+    expect(issueTrackerLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
   it('should render footer center section with copyright', () => {
@@ -160,11 +182,15 @@ describe('FooterComponent', () => {
     expect(facebookLink.querySelector('.fab.fa-facebook')).toBeTruthy();
   });
 
-  it('should render separators between footer left links', () => {
+  it('should render separators between footer left links', async () => {
+    // Wait for the component to load the data
+    await fixture.whenStable();
+    fixture.detectChanges();
+
     const compiled = fixture.nativeElement;
     const separators = compiled.querySelectorAll('.separator');
 
-    expect(separators.length).toBe(2);
+    expect(separators.length).toBe(3);
     separators.forEach((separator: Element) => {
       expect(separator.textContent?.trim()).toBe('|');
     });
@@ -193,5 +219,8 @@ describe('FooterComponent', () => {
 
     // Developer website link should not be rendered (since it's conditional now)
     expect(compiled.querySelector('a[href*="andygrails.com"]')).toBeFalsy();
+
+    // Issue tracker link should not be rendered
+    expect(compiled.querySelector('a[href*="github.com"]')).toBeFalsy();
   });
 });
