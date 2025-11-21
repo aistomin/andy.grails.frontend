@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VideoService } from '../services/video.service';
@@ -51,20 +51,24 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   `,
   styleUrls: ['./video-details.component.scss'],
 })
-export class VideoDetailsComponent {
+export class VideoDetailsComponent implements OnInit {
   video: Video | undefined;
 
   constructor(
     private videoService: VideoService,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private router: Router
-  ) {
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit() {
     const videoId = parseInt(this.route.snapshot.params['id'], 10);
     this.videoService
       .getVideoById(videoId)
       .then((vid) => {
         this.video = vid;
+        this.cdr.markForCheck();
       })
       .catch((error) => {
         console.error('Error loading video:', error);

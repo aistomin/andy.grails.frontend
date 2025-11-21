@@ -46,24 +46,29 @@ describe('FooterComponent', () => {
     ) as jasmine.SpyObj<WebLinksService>;
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render footer element', () => {
+  it('should render footer element', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('footer')).toBeTruthy();
   });
 
-  it('should render footer content div', () => {
+  it('should render footer content div', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.footer-content')).toBeTruthy();
   });
 
-  it('should render footer left section with privacy link', () => {
+  it('should render footer left section with privacy link', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement;
     const footerLeft = compiled.querySelector('.footer-left');
     const privacyLink = footerLeft.querySelector('a[href="/privacy"]');
@@ -73,7 +78,9 @@ describe('FooterComponent', () => {
     expect(privacyLink.textContent.trim()).toBe('Privacy');
   });
 
-  it('should render footer left section with imprint link', () => {
+  it('should render footer left section with imprint link', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement;
     const footerLeft = compiled.querySelector('.footer-left');
     const imprintLink = footerLeft.querySelector('a[href="/imprint"]');
@@ -114,7 +121,9 @@ describe('FooterComponent', () => {
     expect(issueTrackerLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
-  it('should render footer center section with copyright', () => {
+  it('should render footer center section with copyright', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement;
     const footerCenter = compiled.querySelector('.footer-center');
     const copyrightText = footerCenter.querySelector('p');
@@ -124,7 +133,9 @@ describe('FooterComponent', () => {
     expect(copyrightText.textContent.trim()).toBe('© 2025 Andy Grails');
   });
 
-  it('should render footer right section with social media links', () => {
+  it('should render footer right section with social media links', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement;
     const footerRight = compiled.querySelector('.footer-right');
 
@@ -197,6 +208,7 @@ describe('FooterComponent', () => {
   });
 
   it('should call WebLinksService.getWebLinks on init', () => {
+    fixture.detectChanges(); // Trigger ngOnInit
     expect(mockWebLinksService.getWebLinks).toHaveBeenCalled();
   });
 
@@ -206,7 +218,6 @@ describe('FooterComponent', () => {
 
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 

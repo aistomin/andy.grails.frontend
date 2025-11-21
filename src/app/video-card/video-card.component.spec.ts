@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VideoCardComponent } from './video-card.component';
 import { Video } from '../services/video';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
+import { VideoDetailsComponent } from '../video-details/video-details.component';
 
 describe('VideoCardComponent', () => {
   let component: VideoCardComponent;
@@ -21,7 +22,10 @@ describe('VideoCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VideoCardComponent, RouterTestingModule],
+      imports: [VideoCardComponent],
+      providers: [
+        provideRouter([{ path: 'details/:id', component: VideoDetailsComponent }]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(VideoCardComponent);

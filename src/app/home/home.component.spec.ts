@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
+import { provideRouter } from '@angular/router';
+import { VideoDetailsComponent } from '../video-details/video-details.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -41,7 +43,12 @@ describe('HomeComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
-      providers: [{ provide: VideoService, useValue: spy }],
+      providers: [
+        { provide: VideoService, useValue: spy },
+        provideRouter([
+          { path: 'details/:id', component: VideoDetailsComponent },
+        ]),
+      ],
     }).compileComponents();
 
     videoService = TestBed.inject(VideoService) as jasmine.SpyObj<VideoService>;
