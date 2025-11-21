@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VideoCardComponent } from '../video-card/video-card.component';
@@ -28,12 +28,17 @@ import { VideoService } from '../services/video.service';
   `,
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   videos: Video[] = [];
 
   filteredVideos: Video[] = [];
 
-  constructor(private videoService: VideoService) {
+  constructor(
+    private videoService: VideoService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit() {
     this.videoService.getAllVideos().then((list: Video[]) => {
       this.videos = list.sort((a, b) => {
         // Sort by createdAt (newest first)
@@ -42,6 +47,7 @@ export class HomeComponent {
         );
       });
       this.filteredVideos = this.videos;
+      this.cdr.markForCheck();
     });
   }
 

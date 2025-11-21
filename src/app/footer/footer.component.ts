@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebLink } from '../services/web-link';
 import { WebLinksService } from '../services/web-links.service';
@@ -62,7 +62,7 @@ import { WebLinksService } from '../services/web-links.service';
   `,
   styleUrls: ['./footer.component.scss'],
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
   webLinks: WebLink[] = [];
   youtubeLink?: WebLink;
   instagramLink?: WebLink;
@@ -70,7 +70,12 @@ export class FooterComponent {
   developerWebsiteLink?: WebLink;
   issueTrackerLink?: WebLink;
 
-  constructor(private webLinksService: WebLinksService) {
+  constructor(
+    private webLinksService: WebLinksService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit() {
     this.webLinksService.getWebLinks().then((links: WebLink[]) => {
       this.webLinks = links;
       this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
@@ -82,6 +87,7 @@ export class FooterComponent {
       this.issueTrackerLink = links.find(
         (link) => link.type === 'ISSUE_TRACKER'
       );
+      this.cdr.markForCheck();
     });
   }
 }

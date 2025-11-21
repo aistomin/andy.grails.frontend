@@ -11,7 +11,7 @@ describe('VideoDetailsComponent', () => {
   let fixture: ComponentFixture<VideoDetailsComponent>;
   let videoService: jasmine.SpyObj<VideoService>;
   let router: jasmine.SpyObj<Router>;
-  let sanitizer: jasmine.SpyObj<DomSanitizer>;
+  let sanitizer: DomSanitizer;
 
   const mockVideo: Video = {
     id: 1,
@@ -36,9 +36,6 @@ describe('VideoDetailsComponent', () => {
       'getVideoById',
     ]);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    const sanitizerSpy = jasmine.createSpyObj('DomSanitizer', [
-      'bypassSecurityTrustResourceUrl',
-    ]);
 
     // Set up default mock behavior to prevent constructor errors
     videoServiceSpy.getVideoById.and.returnValue(Promise.resolve(mockVideo));
@@ -48,7 +45,7 @@ describe('VideoDetailsComponent', () => {
       providers: [
         { provide: VideoService, useValue: videoServiceSpy },
         { provide: Router, useValue: routerSpy },
-        { provide: DomSanitizer, useValue: sanitizerSpy },
+        // Use the real DomSanitizer instead of a spy
         {
           provide: ActivatedRoute,
           useValue: {
@@ -64,7 +61,7 @@ describe('VideoDetailsComponent', () => {
     component = fixture.componentInstance;
     videoService = TestBed.inject(VideoService) as jasmine.SpyObj<VideoService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-    sanitizer = TestBed.inject(DomSanitizer) as jasmine.SpyObj<DomSanitizer>;
+    sanitizer = TestBed.inject(DomSanitizer);
   });
 
   it('should create', () => {
@@ -123,30 +120,23 @@ describe('VideoDetailsComponent', () => {
   it('should generate correct YouTube URL', () => {
     component.video = mockVideo;
     const expectedUrl = `https://www.youtube.com/embed/${mockVideo.youtubeId}`;
-    sanitizer.bypassSecurityTrustResourceUrl.and.returnValue(
-      expectedUrl as any
-    );
+    const spy = spyOn(sanitizer, 'bypassSecurityTrustResourceUrl').and.callThrough();
 
     const result = component.getYouTubeUrl();
 
-    expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(
-      expectedUrl
-    );
-    expect(result).toBe(expectedUrl);
+    expect(spy).toHaveBeenCalledWith(expectedUrl);
+    expect(result).toBeTruthy();
   });
 
   it('should handle undefined video in getYouTubeUrl', () => {
     component.video = undefined;
     const expectedUrl = 'https://www.youtube.com/embed/undefined';
-    sanitizer.bypassSecurityTrustResourceUrl.and.returnValue(
-      expectedUrl as any
-    );
+    const spy = spyOn(sanitizer, 'bypassSecurityTrustResourceUrl').and.callThrough();
 
     const result = component.getYouTubeUrl();
 
-    expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(
-      expectedUrl
-    );
+    expect(spy).toHaveBeenCalledWith(expectedUrl);
+    expect(result).toBeTruthy();
   });
 
   it('should handle unpublished videos correctly', async () => {
@@ -166,16 +156,19 @@ describe('VideoDetailsComponent', () => {
   });
 
   it('should parse video ID from route params correctly', () => {
+    fixture.detectChanges(); // Trigger ngOnInit
     // The component should call getVideoById with the parsed ID from the route
     expect(videoService.getVideoById).toHaveBeenCalledWith(1);
   });
 
   it('should handle non-numeric video ID gracefully', () => {
+    fixture.detectChanges(); // Trigger ngOnInit
     // The component should call getVideoById with the ID from the route
     expect(videoService.getVideoById).toHaveBeenCalledWith(1);
   });
 
   it('should handle missing video ID gracefully', () => {
+    fixture.detectChanges(); // Trigger ngOnInit
     // The component should call getVideoById with the ID from the route
     expect(videoService.getVideoById).toHaveBeenCalledWith(1);
   });
