@@ -19,7 +19,7 @@ This project includes two Dockerfiles:
 - **`Dockerfile.dev`**: Development environment with hot reload using `ng serve`
 - **`Dockerfile.prod`**: Production environment with nginx serving the built Angular app
 
-The CI/CD pipeline automatically builds and publishes the production image to Docker Hub.
+The CI/CD pipeline automatically builds and publishes the production image to Docker Hub. The older builds will be cleaned up by the job in the parent repo.
 
 ### Nginx Configurations
 
