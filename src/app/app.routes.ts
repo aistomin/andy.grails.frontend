@@ -12,7 +12,7 @@ const routeConfig: Routes = [
   {
     path: '',
     component: HomeComponent,
-    title: 'Andy Grails',
+    title: 'Andy Grails 123',
   },
   {
     path: 'details/:id',
@@ -22,37 +22,37 @@ const routeConfig: Routes = [
   {
     path: 'privacy',
     component: PrivacyComponent,
-    title: 'Privacy Policy - Andy Grails',
+    title: 'Privacy Policy - Andy Grails 123',
   },
   {
     path: 'imprint',
     component: ImprintComponent,
-    title: 'Imprint/Terms - Andy Grails',
+    title: 'Imprint/Terms - Andy Grails 123',
   },
   {
     path: '500',
     component: InternalServerErrorComponent,
-    title: 'Internal Server Error - Andy Grails',
+    title: 'Internal Server Error - Andy Grails 123',
   },
   {
     path: '404',
     component: NotFoundComponent,
-    title: 'Page Not Found - Andy Grails',
+    title: 'Page Not Found - Andy Grails 123',
   },
   {
     path: 'test/error',
     component: TestErrorComponent,
-    title: 'Error Test - Andy Grails',
+    title: 'Error Test - Andy Grails 123',
   },
   {
     path: 'network/error',
     component: NetworkErrorComponent,
-    title: 'Network Error - Andy Grails',
+    title: 'Network Error - Andy Grails 123',
   },
   {
     path: '**',
     component: NotFoundComponent,
-    title: 'Page Not Found - Andy Grails',
+    title: 'Page Not Found - Andy Grails 123',
   },
 ];
 

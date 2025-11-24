@@ -28,8 +28,6 @@ import { FooterComponent } from './footer/footer.component';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'Andy Grails';
-
   navigateHome() {
     // This will be handled by the router
     window.location.href = '/';
