@@ -69,6 +69,8 @@ describe('VideoDetailsComponent', () => {
   });
 
   it('should load video on initialization', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the async operation to complete
     await fixture.whenStable();
 
@@ -76,6 +78,8 @@ describe('VideoDetailsComponent', () => {
   });
 
   it('should set video property when video is loaded successfully', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the async operation to complete
     await fixture.whenStable();
 
@@ -90,6 +94,8 @@ describe('VideoDetailsComponent', () => {
     fixture = TestBed.createComponent(VideoDetailsComponent);
     component = fixture.componentInstance;
 
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the promise to reject and error handling to complete
     await fixture.whenStable();
 
@@ -107,6 +113,8 @@ describe('VideoDetailsComponent', () => {
     fixture = TestBed.createComponent(VideoDetailsComponent);
     component = fixture.componentInstance;
 
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the promise to reject and error handling to complete
     await fixture.whenStable();
 
@@ -148,6 +156,8 @@ describe('VideoDetailsComponent', () => {
     fixture = TestBed.createComponent(VideoDetailsComponent);
     component = fixture.componentInstance;
 
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the promise to resolve
     await fixture.whenStable();
 

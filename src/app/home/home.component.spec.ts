@@ -61,6 +61,8 @@ describe('HomeComponent', () => {
   });
 
   it('should load videos in constructor', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -71,6 +73,8 @@ describe('HomeComponent', () => {
   });
 
   it('should load videos and sort them by createdAt (newest first)', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -81,6 +85,8 @@ describe('HomeComponent', () => {
   });
 
   it('should filter videos by title and description', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -91,6 +97,8 @@ describe('HomeComponent', () => {
   });
 
   it('should handle empty search text by showing all videos', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -100,6 +108,8 @@ describe('HomeComponent', () => {
   });
 
   it('should handle case-insensitive search', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -110,6 +120,8 @@ describe('HomeComponent', () => {
   });
 
   it('should handle special characters in search', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -120,6 +132,8 @@ describe('HomeComponent', () => {
   });
 
   it('should handle search with no results', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
@@ -129,6 +143,8 @@ describe('HomeComponent', () => {
   });
 
   it('should clear search and show all videos', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
