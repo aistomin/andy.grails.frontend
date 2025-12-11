@@ -53,6 +53,7 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer element', async () => {
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
@@ -60,6 +61,7 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer content div', async () => {
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
@@ -67,6 +69,7 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer left section with privacy link', async () => {
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
@@ -79,6 +82,7 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer left section with imprint link', async () => {
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
@@ -90,6 +94,8 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer left section with developer website link from API', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
@@ -105,6 +111,8 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer left section with issue tracker link from API', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
@@ -122,6 +130,7 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer center section with copyright', async () => {
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
@@ -134,6 +143,7 @@ describe('FooterComponent', () => {
   });
 
   it('should render footer right section with social media links', async () => {
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
@@ -143,6 +153,8 @@ describe('FooterComponent', () => {
   });
 
   it('should render YouTube social media link with correct attributes', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
@@ -160,6 +172,8 @@ describe('FooterComponent', () => {
   });
 
   it('should render Instagram social media link with correct attributes', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
@@ -177,6 +191,8 @@ describe('FooterComponent', () => {
   });
 
   it('should render Facebook social media link with correct attributes', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
@@ -194,6 +210,8 @@ describe('FooterComponent', () => {
   });
 
   it('should render separators between footer left links', async () => {
+    // Trigger ngOnInit
+    fixture.detectChanges();
     // Wait for the component to load the data
     await fixture.whenStable();
     fixture.detectChanges();
@@ -218,6 +236,8 @@ describe('FooterComponent', () => {
 
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
+    // Trigger ngOnInit
+    fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
