@@ -26,7 +26,7 @@ import { WebLinksService } from '../services/web-links.service';
           </a>
         </div>
         <div class="footer-center">
-          <p>&copy; 2025 Andy Grails</p>
+          <p>&copy; {{ copyrightYears }} Andy Grails</p>
         </div>
         <div class="footer-right">
           <a
@@ -69,6 +69,15 @@ export class FooterComponent implements OnInit {
   facebookLink?: WebLink;
   developerWebsiteLink?: WebLink;
   issueTrackerLink?: WebLink;
+
+  readonly startYear = 2025;
+  readonly currentYear = new Date().getFullYear();
+
+  get copyrightYears(): string {
+    return this.startYear === this.currentYear
+      ? `${this.startYear}`
+      : `${this.startYear}–${this.currentYear}`;
+  }
 
   constructor(
     private webLinksService: WebLinksService,
