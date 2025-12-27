@@ -10,12 +10,10 @@ import { WebLinksService } from '../services/web-links.service';
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-left">
-          <a href="/privacy">Privacy</a>
+          <!-- <a href="/privacy">Privacy</a>
           <span class="separator">|</span>
           <a href="/imprint">Imprint</a>
-          <span class="separator">|</span>
-          <a [href]="developerWebsiteLink?.url">Developer</a>
-          <span class="separator" *ngIf="issueTrackerLink">|</span>
+          <span class="separator">|</span> -->
           <a
             *ngIf="issueTrackerLink"
             [href]="issueTrackerLink.url"
@@ -24,6 +22,8 @@ import { WebLinksService } from '../services/web-links.service';
           >
             Support
           </a>
+          <span class="separator" *ngIf="issueTrackerLink">|</span>
+          <a [href]="developerWebsiteLink?.url">Developer</a>
         </div>
         <div class="footer-center">
           <p>&copy; {{ copyrightYears }} Andy Grails</p>
