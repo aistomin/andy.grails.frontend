@@ -68,6 +68,7 @@ describe('FooterComponent', () => {
     expect(compiled.querySelector('.footer-content')).toBeTruthy();
   });
 
+  // The privacy link is hidden for now.
   xit('should render footer left section with privacy link', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
@@ -81,6 +82,7 @@ describe('FooterComponent', () => {
     expect(privacyLink.textContent.trim()).toBe('Privacy');
   });
 
+  // The imprint link is hidden for now.
   xit('should render footer left section with imprint link', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
