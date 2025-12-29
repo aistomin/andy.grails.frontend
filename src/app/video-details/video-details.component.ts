@@ -28,7 +28,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       <section class="video-details-features">
         <h2 class="section-heading">{{ video?.title }}</h2>
       </section>
-      <section class="video-details-features">
+      <section class="video-details-features video-description">
         {{ video?.description }}
       </section>
       <section class="video-details-features">
