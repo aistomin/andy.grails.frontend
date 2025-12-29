@@ -22,6 +22,9 @@
     width: 50%;
     float: left;
   }
+  .video-description {
+    white-space: pre-line;
+  }
   .video-details-features li {
     font-size: 14pt;
     color: var(--text-color);
