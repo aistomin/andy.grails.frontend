@@ -115,7 +115,7 @@ jobs:
 
           # Install Puppeteer for headless browser testing
           echo "Installing Puppeteer for JavaScript-enabled testing..."
-          npm install puppeteer
+          npm install puppeteer --legacy-peer-deps
 
           # Wait for Angular app to load and render content using headless browser
           echo "Waiting for Angular app to load and render video content..."
