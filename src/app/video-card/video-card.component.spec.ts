@@ -45,11 +45,13 @@ describe('VideoCardComponent', () => {
 
   it('should generate correct YouTube URL', () => {
     const expectedUrl = `https://www.youtube.com/embed/${mockVideo.youtubeId}`;
-    const spy = spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
+    const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
 
     component.getYouTubeUrl();
 
     expect(spy).toHaveBeenCalledWith(expectedUrl);
+
+    spy.mockRestore();
   });
 
   it('should truncate description to first sentence', () => {
