@@ -9,8 +9,8 @@ import { ResourceNotFoundException } from '../services/api-exceptions';
 describe('VideoDetailsComponent', () => {
   let component: VideoDetailsComponent;
   let fixture: ComponentFixture<VideoDetailsComponent>;
-  let videoService: jasmine.SpyObj<VideoService>;
-  let router: jasmine.SpyObj<Router>;
+  let videoService: jest.Mocked<VideoService>;
+  let router: jest.Mocked<Router>;
   let sanitizer: DomSanitizer;
 
   const mockVideo: Video = {
@@ -32,13 +32,12 @@ describe('VideoDetailsComponent', () => {
   };
 
   beforeEach(async () => {
-    const videoServiceSpy = jasmine.createSpyObj('VideoService', [
-      'getVideoById',
-    ]);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-
-    // Set up default mock behavior to prevent constructor errors
-    videoServiceSpy.getVideoById.and.returnValue(Promise.resolve(mockVideo));
+    const videoServiceSpy = {
+      getVideoById: jest.fn().mockResolvedValue(mockVideo),
+    };
+    const routerSpy = {
+      navigate: jest.fn(),
+    };
 
     await TestBed.configureTestingModule({
       imports: [VideoDetailsComponent],
@@ -59,8 +58,8 @@ describe('VideoDetailsComponent', () => {
 
     fixture = TestBed.createComponent(VideoDetailsComponent);
     component = fixture.componentInstance;
-    videoService = TestBed.inject(VideoService) as jasmine.SpyObj<VideoService>;
-    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    videoService = TestBed.inject(VideoService) as jest.Mocked<VideoService>;
+    router = TestBed.inject(Router) as jest.Mocked<Router>;
     sanitizer = TestBed.inject(DomSanitizer);
   });
 
@@ -88,7 +87,7 @@ describe('VideoDetailsComponent', () => {
 
   it('should handle 404 errors gracefully', async () => {
     const notFoundError = new ResourceNotFoundException('/api/videos/999');
-    videoService.getVideoById.and.returnValue(Promise.reject(notFoundError));
+    videoService.getVideoById.mockRejectedValue(notFoundError);
 
     // Recreate the component with the error scenario
     fixture = TestBed.createComponent(VideoDetailsComponent);
@@ -105,9 +104,9 @@ describe('VideoDetailsComponent', () => {
 
   it('should handle other errors gracefully', async () => {
     const serverError = new Error('Server error');
-    videoService.getVideoById.and.returnValue(Promise.reject(serverError));
+    videoService.getVideoById.mockRejectedValue(serverError);
 
-    spyOn(console, 'error');
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
     // Recreate the component with the error scenario
     fixture = TestBed.createComponent(VideoDetailsComponent);
@@ -118,39 +117,43 @@ describe('VideoDetailsComponent', () => {
     // Wait for the promise to reject and error handling to complete
     await fixture.whenStable();
 
-    expect(console.error).toHaveBeenCalledWith(
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
       'Error loading video:',
       serverError
     );
     expect(component.video).toBeUndefined();
+
+    consoleErrorSpy.mockRestore();
   });
 
   it('should generate correct YouTube URL', () => {
     component.video = mockVideo;
     const expectedUrl = `https://www.youtube.com/embed/${mockVideo.youtubeId}`;
-    const spy = spyOn(sanitizer, 'bypassSecurityTrustResourceUrl').and.callThrough();
+    const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
 
     const result = component.getYouTubeUrl();
 
     expect(spy).toHaveBeenCalledWith(expectedUrl);
     expect(result).toBeTruthy();
+
+    spy.mockRestore();
   });
 
   it('should handle undefined video in getYouTubeUrl', () => {
     component.video = undefined;
     const expectedUrl = 'https://www.youtube.com/embed/undefined';
-    const spy = spyOn(sanitizer, 'bypassSecurityTrustResourceUrl').and.callThrough();
+    const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
 
     const result = component.getYouTubeUrl();
 
     expect(spy).toHaveBeenCalledWith(expectedUrl);
     expect(result).toBeTruthy();
+
+    spy.mockRestore();
   });
 
   it('should handle unpublished videos correctly', async () => {
-    videoService.getVideoById.and.returnValue(
-      Promise.resolve(mockUnpublishedVideo)
-    );
+    videoService.getVideoById.mockResolvedValue(mockUnpublishedVideo);
 
     // Recreate the component with the unpublished video
     fixture = TestBed.createComponent(VideoDetailsComponent);

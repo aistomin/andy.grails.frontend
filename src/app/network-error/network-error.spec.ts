@@ -5,10 +5,12 @@ import { NetworkErrorComponent } from './network-error';
 describe('NetworkErrorComponent', () => {
   let component: NetworkErrorComponent;
   let fixture: ComponentFixture<NetworkErrorComponent>;
-  let router: jasmine.SpyObj<Router>;
+  let router: jest.Mocked<Router>;
 
   beforeEach(async () => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const routerSpy = {
+      navigate: jest.fn(),
+    };
 
     await TestBed.configureTestingModule({
       imports: [NetworkErrorComponent],
@@ -17,7 +19,7 @@ describe('NetworkErrorComponent', () => {
 
     fixture = TestBed.createComponent(NetworkErrorComponent);
     component = fixture.componentInstance;
-    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    router = TestBed.inject(Router) as jest.Mocked<Router>;
     fixture.detectChanges();
   });
 

@@ -6,7 +6,7 @@ import { WebLink } from '../services/web-link';
 describe('FooterComponent', () => {
   let component: FooterComponent;
   let fixture: ComponentFixture<FooterComponent>;
-  let mockWebLinksService: jasmine.SpyObj<WebLinksService>;
+  let mockWebLinksService: jest.Mocked<WebLinksService>;
 
   const mockWebLinks: WebLink[] = [
     {
@@ -33,8 +33,9 @@ describe('FooterComponent', () => {
   ];
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('WebLinksService', ['getWebLinks']);
-    spy.getWebLinks.and.returnValue(Promise.resolve(mockWebLinks));
+    const spy = {
+      getWebLinks: jest.fn().mockResolvedValue(mockWebLinks),
+    };
 
     await TestBed.configureTestingModule({
       imports: [FooterComponent],
@@ -43,7 +44,7 @@ describe('FooterComponent', () => {
 
     mockWebLinksService = TestBed.inject(
       WebLinksService
-    ) as jasmine.SpyObj<WebLinksService>;
+    ) as jest.Mocked<WebLinksService>;
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
   });
@@ -69,7 +70,7 @@ describe('FooterComponent', () => {
   });
 
   // The privacy link is hidden for now.
-  xit('should render footer left section with privacy link', async () => {
+  it.skip('should render footer left section with privacy link', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -83,7 +84,7 @@ describe('FooterComponent', () => {
   });
 
   // The imprint link is hidden for now.
-  xit('should render footer left section with imprint link', async () => {
+  it.skip('should render footer left section with imprint link', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -141,7 +142,7 @@ describe('FooterComponent', () => {
 
     expect(footerCenter).toBeTruthy();
     expect(copyrightText).toBeTruthy();
-    expect(copyrightText.textContent.trim()).toBe('© 2025 Andy Grails');
+    expect(copyrightText.textContent.trim()).toMatch(/© 2025(–\d{4})? Andy Grails/);
   });
 
   it('should render footer right section with social media links', async () => {
@@ -234,7 +235,7 @@ describe('FooterComponent', () => {
 
   it('should handle empty web links gracefully', async () => {
     // Reset the component and mock with empty data
-    mockWebLinksService.getWebLinks.and.returnValue(Promise.resolve([]));
+    mockWebLinksService.getWebLinks.mockResolvedValue([]);
 
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;

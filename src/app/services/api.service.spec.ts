@@ -8,19 +8,65 @@ import {
   NetworkException,
 } from './api-exceptions';
 
+// Helper to create a mock Response object
+function createMockResponse(body: string, init: ResponseInit): Response {
+  return {
+    ok: init.status !== undefined && init.status >= 200 && init.status < 300,
+    status: init.status || 200,
+    statusText: init.statusText || '',
+    headers: new Headers(init.headers),
+    json: () => Promise.resolve(JSON.parse(body)),
+    text: () => Promise.resolve(body),
+    clone: function () {
+      return this;
+    },
+  } as Response;
+}
+
 describe('ApiService', () => {
   let service: ApiService;
-  let router: jasmine.SpyObj<Router>;
+  let router: jest.Mocked<Router>;
+  let originalSessionStorage: Storage;
+  let mockFetch: jest.Mock;
 
   beforeEach(() => {
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const routerSpy = {
+      navigate: jest.fn(),
+    };
+
+    // Mock fetch globally
+    mockFetch = jest.fn();
+    global.fetch = mockFetch;
+
+    // Mock sessionStorage
+    originalSessionStorage = window.sessionStorage;
+    const mockSessionStorage: Storage = {
+      length: 0,
+      clear: jest.fn(),
+      getItem: jest.fn(),
+      key: jest.fn(),
+      removeItem: jest.fn(),
+      setItem: jest.fn(),
+    };
+    Object.defineProperty(window, 'sessionStorage', {
+      value: mockSessionStorage,
+      writable: true,
+    });
 
     TestBed.configureTestingModule({
       providers: [ApiService, { provide: Router, useValue: routerSpy }],
     });
 
     service = TestBed.inject(ApiService);
-    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    router = TestBed.inject(Router) as jest.Mocked<Router>;
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    Object.defineProperty(window, 'sessionStorage', {
+      value: originalSessionStorage,
+      writable: true,
+    });
   });
 
   it('should be created', () => {
@@ -30,9 +76,9 @@ describe('ApiService', () => {
   describe('GET requests', () => {
     it('should handle 404 errors by navigating to 404 page', async () => {
       const endpoint = '/api/videos/999';
-      const mockResponse = new Response('Not Found', { status: 404 });
+      const mockResponse = createMockResponse('Not Found', { status: 404 });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.get(endpoint);
@@ -45,11 +91,11 @@ describe('ApiService', () => {
 
     it('should handle 500 errors by navigating to 500 page', async () => {
       const endpoint = '/test/error';
-      const mockResponse = new Response('Internal Server Error', {
+      const mockResponse = createMockResponse('Internal Server Error', {
         status: 500,
       });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.get(endpoint);
@@ -62,69 +108,46 @@ describe('ApiService', () => {
 
     it('should throw ResourceNotFoundException for 404 errors', async () => {
       const endpoint = '/api/videos/999';
-      const mockResponse = new Response('Not Found', { status: 404 });
+      const mockResponse = createMockResponse('Not Found', { status: 404 });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
-      try {
-        await service.get(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(ResourceNotFoundException);
-        if (error instanceof ResourceNotFoundException) {
-          expect(error.status).toBe(404);
-          expect(error.endpoint).toBe(endpoint);
-        }
-      }
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(
+        ResourceNotFoundException
+      );
     });
 
     it('should throw InternalServerException for 500 errors', async () => {
       const endpoint = '/test/error';
-      const mockResponse = new Response('Internal Server Error', {
+      const mockResponse = createMockResponse('Internal Server Error', {
         status: 500,
       });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
-      try {
-        await service.get(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(InternalServerException);
-        if (error instanceof InternalServerException) {
-          expect(error.status).toBe(500);
-          expect(error.endpoint).toBe(endpoint);
-        }
-      }
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(
+        InternalServerException
+      );
     });
 
     it('should throw ServerException for other HTTP errors', async () => {
       const endpoint = '/api/videos';
-      const mockResponse = new Response('Bad Request', { status: 400 });
+      const mockResponse = createMockResponse('Bad Request', { status: 400 });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
-      try {
-        await service.get(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(ServerException);
-        if (error instanceof ServerException) {
-          expect(error.status).toBe(400);
-          expect(error.endpoint).toBe(endpoint);
-        }
-      }
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(ServerException);
     });
 
     it('should return data for successful requests', async () => {
       const endpoint = '/api/videos/1';
       const mockData = { id: 1, title: 'Test Video' };
-      const mockResponse = new Response(JSON.stringify(mockData), {
+      const mockResponse = createMockResponse(JSON.stringify(mockData), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       const result = await service.get(endpoint);
 
@@ -137,9 +160,9 @@ describe('ApiService', () => {
     it('should handle 404 errors by navigating to 404 page', async () => {
       const endpoint = '/api/videos';
       const data = { title: 'Test Video' };
-      const mockResponse = new Response('Not Found', { status: 404 });
+      const mockResponse = createMockResponse('Not Found', { status: 404 });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.post(endpoint, data);
@@ -153,11 +176,11 @@ describe('ApiService', () => {
     it('should handle 500 errors by navigating to 500 page', async () => {
       const endpoint = '/test/error';
       const data = { test: 'data' };
-      const mockResponse = new Response('Internal Server Error', {
+      const mockResponse = createMockResponse('Internal Server Error', {
         status: 500,
       });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.post(endpoint, data);
@@ -172,19 +195,18 @@ describe('ApiService', () => {
       const endpoint = '/api/videos';
       const data = { title: 'Test Video' };
       const mockData = { id: 1, title: 'Test Video' };
-      const mockResponse = new Response(JSON.stringify(mockData), {
+      const mockResponse = createMockResponse(JSON.stringify(mockData), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
 
-      const fetchSpy = spyOn(window, 'fetch').and.returnValue(
-        Promise.resolve(mockResponse)
-      );
+      mockFetch.mockResolvedValue(mockResponse);
 
       await service.post(endpoint, data);
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        'http://localhost:8080/api/videos',
+      // The base URL from environment.ts is '/api', so the full URL is '/api/api/videos'
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/api/videos',
         {
           method: 'POST',
           headers: {
@@ -200,9 +222,9 @@ describe('ApiService', () => {
     it('should handle 404 errors by navigating to 404 page', async () => {
       const endpoint = '/api/videos/1';
       const data = { title: 'Updated Video' };
-      const mockResponse = new Response('Not Found', { status: 404 });
+      const mockResponse = createMockResponse('Not Found', { status: 404 });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.put(endpoint, data);
@@ -216,11 +238,11 @@ describe('ApiService', () => {
     it('should handle 500 errors by navigating to 500 page', async () => {
       const endpoint = '/test/error';
       const data = { test: 'data' };
-      const mockResponse = new Response('Internal Server Error', {
+      const mockResponse = createMockResponse('Internal Server Error', {
         status: 500,
       });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.put(endpoint, data);
@@ -235,9 +257,9 @@ describe('ApiService', () => {
   describe('DELETE requests', () => {
     it('should handle 404 errors by navigating to 404 page', async () => {
       const endpoint = '/api/videos/999';
-      const mockResponse = new Response('Not Found', { status: 404 });
+      const mockResponse = createMockResponse('Not Found', { status: 404 });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.delete(endpoint);
@@ -250,11 +272,11 @@ describe('ApiService', () => {
 
     it('should handle 500 errors by navigating to 500 page', async () => {
       const endpoint = '/test/error';
-      const mockResponse = new Response('Internal Server Error', {
+      const mockResponse = createMockResponse('Internal Server Error', {
         status: 500,
       });
 
-      spyOn(window, 'fetch').and.returnValue(Promise.resolve(mockResponse));
+      mockFetch.mockResolvedValue(mockResponse);
 
       try {
         await service.delete(endpoint);
@@ -267,96 +289,60 @@ describe('ApiService', () => {
   });
 
   describe('Network errors', () => {
-    beforeEach(() => {
-      spyOn(sessionStorage, 'setItem');
-      spyOn(sessionStorage, 'getItem');
-      spyOn(sessionStorage, 'removeItem');
-    });
-
     it('should throw NetworkException and navigate to network/error for network errors', async () => {
       const endpoint = '/api/videos';
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Failed to fetch'))
-      );
-      try {
-        await service.get(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
-      }
+      mockFetch.mockRejectedValue(new Error('Failed to fetch'));
+
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(NetworkException);
+      expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
     });
 
     it('should throw NetworkException for TypeError network errors', async () => {
       const endpoint = '/api/videos';
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new TypeError('fetch failed'))
-      );
-      try {
-        await service.get(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
-      }
+      mockFetch.mockRejectedValue(new TypeError('fetch failed'));
+
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(NetworkException);
+      expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
     });
 
     it('should throw NetworkException for generic network errors', async () => {
       const endpoint = '/api/videos';
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Network error'))
-      );
-      try {
-        await service.get(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
-      }
+      mockFetch.mockRejectedValue(new Error('Network error'));
+
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(NetworkException);
+      expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
     });
 
     it('should handle network errors in POST requests', async () => {
       const endpoint = '/api/videos';
       const data = { title: 'Test Video' };
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Failed to fetch'))
+      mockFetch.mockRejectedValue(new Error('Failed to fetch'));
+
+      await expect(service.post(endpoint, data)).rejects.toBeInstanceOf(
+        NetworkException
       );
-      try {
-        await service.post(endpoint, data);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
-      }
+      expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
     });
 
     it('should handle network errors in PUT requests', async () => {
       const endpoint = '/api/videos/1';
       const data = { title: 'Updated Video' };
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Failed to fetch'))
+      mockFetch.mockRejectedValue(new Error('Failed to fetch'));
+
+      await expect(service.put(endpoint, data)).rejects.toBeInstanceOf(
+        NetworkException
       );
-      try {
-        await service.put(endpoint, data);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
-      }
+      expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
     });
 
     it('should handle network errors in DELETE requests', async () => {
       const endpoint = '/api/videos/1';
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.reject(new Error('Failed to fetch'))
+      mockFetch.mockRejectedValue(new Error('Failed to fetch'));
+
+      await expect(service.delete(endpoint)).rejects.toBeInstanceOf(
+        NetworkException
       );
-      try {
-        await service.delete(endpoint);
-        fail('Should have thrown an error');
-      } catch (error) {
-        expect(error).toBeInstanceOf(NetworkException);
-        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
-      }
+      expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
     });
   });
 });

@@ -8,7 +8,7 @@ import { VideoDetailsComponent } from '../video-details/video-details.component'
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let videoService: jasmine.SpyObj<VideoService>;
+  let videoService: jest.Mocked<VideoService>;
 
   const mockVideos: Video[] = [
     {
@@ -38,8 +38,9 @@ describe('HomeComponent', () => {
   ];
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('VideoService', ['getAllVideos']);
-    spy.getAllVideos.and.returnValue(Promise.resolve(mockVideos));
+    const spy = {
+      getAllVideos: jest.fn().mockResolvedValue(mockVideos),
+    };
 
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
@@ -51,7 +52,7 @@ describe('HomeComponent', () => {
       ],
     }).compileComponents();
 
-    videoService = TestBed.inject(VideoService) as jasmine.SpyObj<VideoService>;
+    videoService = TestBed.inject(VideoService) as jest.Mocked<VideoService>;
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
   });

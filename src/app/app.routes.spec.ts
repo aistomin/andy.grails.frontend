@@ -11,21 +11,17 @@ describe('App Routes', () => {
   let titleService: Title;
 
   beforeEach(async () => {
-    const videoServiceSpy = jasmine.createSpyObj('VideoService', [
-      'getAllVideos',
-      'getVideoById',
-    ]);
-    videoServiceSpy.getAllVideos.and.returnValue(Promise.resolve([]));
-    videoServiceSpy.getVideoById.and.returnValue(
-      Promise.resolve({
+    const videoServiceSpy = {
+      getAllVideos: jest.fn().mockResolvedValue([]),
+      getVideoById: jest.fn().mockResolvedValue({
         id: 1,
         title: 'Test Video',
         description: 'Test Description',
         youtubeId: 'abc123',
         createdAt: '2024-01-01T10:00:00Z',
         publishedAt: '2024-01-01T12:00:00Z',
-      })
-    );
+      }),
+    };
 
     await TestBed.configureTestingModule({
       providers: [
