@@ -10,4 +10,3 @@ module.exports = {
   },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
 };
-
