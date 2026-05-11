@@ -29,8 +29,8 @@
     "@angular/compiler-cli": "^21.2.11",
     "@types/jest": "^30.0.0",
     "jest": "^30.4.2",
-    "jest-environment-jsdom": "^30.3.0",
-    "jest-preset-angular": "^16.1.4",
+    "jest-environment-jsdom": "^30.4.1",
+    "jest-preset-angular": "^16.1.5",
     "typescript": "^6.0.3"
   }
 }
