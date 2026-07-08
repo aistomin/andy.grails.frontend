@@ -14,7 +14,7 @@ export class VideoService {
     return (await this.apiService.get<Video[]>(`/${this.api}`)) ?? [];
   }
 
-  async getVideoById(id: number): Promise<Video | undefined> {
-    return (await this.apiService.get<Video>(`/${this.api}/${id}`)) ?? {};
+  async getVideoById(id: number): Promise<Video> {
+    return this.apiService.get<Video>(`/${this.api}/${id}`);
   }
 }
