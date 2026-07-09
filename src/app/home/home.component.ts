@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { VideoCardComponent } from '../video-card/video-card.component';
 import { Video } from '../services/video';
 import { VideoService } from '../services/video.service';
@@ -35,20 +36,27 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private videoService: VideoService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.videoService.getAllVideos().then((list: Video[]) => {
-      this.videos = list.sort((a, b) => {
-        // Sort by createdAt (newest first)
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+    this.videoService
+      .getAllVideos()
+      .then((list: Video[]) => {
+        this.videos = list.sort((a, b) => {
+          // Sort by createdAt (newest first)
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        });
+        this.filteredVideos = this.videos;
+        this.cdr.markForCheck();
+      })
+      .catch((error) => {
+        console.error('Error loading videos:', error);
+        this.router.navigate(['/500']);
       });
-      this.filteredVideos = this.videos;
-      this.cdr.markForCheck();
-    });
   }
 
   filterResults(text: string) {

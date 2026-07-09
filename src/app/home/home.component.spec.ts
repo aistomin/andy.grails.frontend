@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { VideoDetailsComponent } from '../video-details/video-details.component';
 
 describe('HomeComponent', () => {
@@ -156,5 +156,16 @@ describe('HomeComponent', () => {
     // Then clear search
     component.filterResults('');
     expect(component.filteredVideos.length).toBe(3);
+  });
+
+  it('should navigate to /500 when getAllVideos fails', async () => {
+    videoService.getAllVideos.mockRejectedValue(new Error('API error'));
+    const router = TestBed.inject(Router);
+    jest.spyOn(router, 'navigate');
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(router.navigate).toHaveBeenCalledWith(['/500']);
   });
 });
