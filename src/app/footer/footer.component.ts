@@ -85,18 +85,23 @@ export class FooterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.webLinksService.getWebLinks().then((links: WebLink[]) => {
-      this.webLinks = links;
-      this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
-      this.instagramLink = links.find((link) => link.type === 'INSTAGRAM');
-      this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
-      this.developerWebsiteLink = links.find(
-        (link) => link.type === 'DEVELOPER_WEBSITE'
-      );
-      this.issueTrackerLink = links.find(
-        (link) => link.type === 'ISSUE_TRACKER'
-      );
-      this.cdr.markForCheck();
-    });
+    this.webLinksService
+      .getWebLinks()
+      .then((links: WebLink[]) => {
+        this.webLinks = links;
+        this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
+        this.instagramLink = links.find((link) => link.type === 'INSTAGRAM');
+        this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
+        this.developerWebsiteLink = links.find(
+          (link) => link.type === 'DEVELOPER_WEBSITE'
+        );
+        this.issueTrackerLink = links.find(
+          (link) => link.type === 'ISSUE_TRACKER'
+        );
+        this.cdr.markForCheck();
+      })
+      .catch((error) => {
+        console.error('Error loading footer links:', error);
+      });
   }
 }
