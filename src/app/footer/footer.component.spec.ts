@@ -233,6 +233,24 @@ describe('FooterComponent', () => {
     expect(mockWebLinksService.getWebLinks).toHaveBeenCalled();
   });
 
+  it('should log an error when getWebLinks fails', async () => {
+    const consoleSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    mockWebLinksService.getWebLinks.mockRejectedValue(new Error('API error'));
+
+    fixture = TestBed.createComponent(FooterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Error loading footer links:',
+      expect.any(Error)
+    );
+    consoleSpy.mockRestore();
+  });
+
   it('should handle empty web links gracefully', async () => {
     // Reset the component and mock with empty data
     mockWebLinksService.getWebLinks.mockResolvedValue([]);
