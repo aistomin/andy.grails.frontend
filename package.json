@@ -14,7 +14,7 @@
     "@angular/compiler": "^22.0.6",
     "@angular/core": "^22.0.4",
     "@angular/forms": "^22.0.4",
-    "@angular/platform-browser": "^22.0.2",
+    "@angular/platform-browser": "^22.0.6",
     "@angular/platform-browser-dynamic": "^22.0.6",
     "@angular/router": "^22.0.1",
     "puppeteer": "^25.2.1",
