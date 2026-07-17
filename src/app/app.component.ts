@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 
@@ -28,8 +28,9 @@ import { FooterComponent } from './footer/footer.component';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  constructor(private router: Router) {}
+
   navigateHome() {
-    // This will be handled by the router
-    window.location.href = '/';
+    this.router.navigate(['/']);
   }
 }
