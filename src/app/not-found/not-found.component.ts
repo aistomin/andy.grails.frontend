@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-not-found',
@@ -19,7 +19,9 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./not-found.component.scss'],
 })
 export class NotFoundComponent {
+  constructor(private router: Router) {}
+
   goBack(): void {
-    window.history.back();
+    this.router.navigate(['/']);
   }
 }
