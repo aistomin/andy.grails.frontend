@@ -12,6 +12,7 @@ describe('VideoDetailsComponent', () => {
   let videoService: jest.Mocked<VideoService>;
   let router: jest.Mocked<Router>;
   let sanitizer: DomSanitizer;
+  let mockRouteParams: { id: string };
 
   const mockVideo: Video = {
     id: 1,
@@ -32,6 +33,7 @@ describe('VideoDetailsComponent', () => {
   };
 
   beforeEach(async () => {
+    mockRouteParams = { id: '1' };
     const videoServiceSpy = {
       getVideoById: jest.fn().mockResolvedValue(mockVideo),
     };
@@ -49,7 +51,7 @@ describe('VideoDetailsComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             snapshot: {
-              params: { id: '1' },
+              params: mockRouteParams,
             },
           },
         },
@@ -175,9 +177,9 @@ describe('VideoDetailsComponent', () => {
   });
 
   it('should handle non-numeric video ID gracefully', () => {
+    mockRouteParams.id = 'abc';
     fixture.detectChanges(); // Trigger ngOnInit
-    // The component should call getVideoById with the ID from the route
-    expect(videoService.getVideoById).toHaveBeenCalledWith(1);
+    expect(videoService.getVideoById).toHaveBeenCalledWith(NaN);
   });
 
   it('should handle missing video ID gracefully', () => {
