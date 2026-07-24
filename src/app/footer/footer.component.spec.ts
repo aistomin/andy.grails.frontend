@@ -233,6 +233,33 @@ describe('FooterComponent', () => {
     expect(mockWebLinksService.getWebLinks).toHaveBeenCalled();
   });
 
+  it('should hide footer-left and footer-right while loading', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.footer-left')).toBeFalsy();
+    expect(compiled.querySelector('.footer-right')).toBeFalsy();
+    expect(compiled.querySelector('.footer-center')).toBeTruthy();
+  });
+
+  it('should show footer-left and footer-right after links are loaded', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.footer-left')).toBeTruthy();
+    expect(compiled.querySelector('.footer-right')).toBeTruthy();
+  });
+
+  it('should show footer-left and footer-right after failed fetch', async () => {
+    mockWebLinksService.getWebLinks.mockRejectedValue(new Error('API error'));
+    fixture = TestBed.createComponent(FooterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(component.isLoading).toBe(false);
+  });
+
   it('should log an error when getWebLinks fails', async () => {
     const consoleSpy = jest
       .spyOn(console, 'error')
