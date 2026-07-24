@@ -9,7 +9,7 @@ import { WebLinksService } from '../services/web-links.service';
   template: `
     <footer class="footer">
       <div class="footer-content">
-        <div class="footer-left">
+        <div class="footer-left" *ngIf="!isLoading">
           <!-- <a href="/privacy">Privacy</a>
           <span class="separator">|</span>
           <a href="/imprint">Imprint</a>
@@ -28,7 +28,7 @@ import { WebLinksService } from '../services/web-links.service';
         <div class="footer-center">
           <p>&copy; {{ copyrightYears }} Andy Grails</p>
         </div>
-        <div class="footer-right">
+        <div class="footer-right" *ngIf="!isLoading">
           <a
             *ngIf="youtubeLink"
             [href]="youtubeLink.url"
@@ -63,6 +63,7 @@ import { WebLinksService } from '../services/web-links.service';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
+  isLoading = true;
   webLinks: WebLink[] = [];
   youtubeLink?: WebLink;
   instagramLink?: WebLink;
@@ -98,9 +99,11 @@ export class FooterComponent implements OnInit {
         this.issueTrackerLink = links.find(
           (link) => link.type === 'ISSUE_TRACKER'
         );
+        this.isLoading = false;
         this.cdr.markForCheck();
       })
       .catch((error) => {
+        this.isLoading = false;
         console.error('Error loading footer links:', error);
       });
   }

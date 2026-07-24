@@ -168,4 +168,29 @@ describe('HomeComponent', () => {
 
     expect(router.navigate).toHaveBeenCalledWith(['/500']);
   });
+
+  it('should show loading spinner while fetching videos', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.loading-container')).toBeTruthy();
+    expect(compiled.querySelector('.spinner')).toBeTruthy();
+    expect(compiled.querySelector('.loading-text').textContent.trim()).toBe('Loading videos...');
+  });
+
+  it('should hide loading spinner and show content after videos are loaded', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.loading-container')).toBeFalsy();
+    expect(compiled.querySelector('.results')).toBeTruthy();
+  });
+
+  it('should hide loading spinner after failed fetch', async () => {
+    videoService.getAllVideos.mockRejectedValue(new Error('API error'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(component.isLoading).toBe(false);
+  });
 });
