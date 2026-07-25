@@ -111,6 +111,8 @@ describe('FooterComponent', () => {
 
     expect(developerWebsiteLink).toBeTruthy();
     expect(developerWebsiteLink.textContent.trim()).toBe('Developer');
+    expect(developerWebsiteLink.getAttribute('target')).toBe('_blank');
+    expect(developerWebsiteLink.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
   it('should render footer left section with issue tracker link from API', async () => {
