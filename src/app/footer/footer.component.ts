@@ -22,8 +22,15 @@ import { WebLinksService } from '../services/web-links.service';
           >
             Support
           </a>
-          <span class="separator" *ngIf="issueTrackerLink">|</span>
-          <a [href]="developerWebsiteLink?.url">Developer</a>
+          <span class="separator" *ngIf="issueTrackerLink && developerWebsiteLink">|</span>
+          <a
+            *ngIf="developerWebsiteLink"
+            [href]="developerWebsiteLink.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Developer
+          </a>
         </div>
         <div class="footer-center">
           <p>&copy; {{ copyrightYears }} Andy Grails</p>
