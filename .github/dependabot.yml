@@ -12,3 +12,14 @@ updates:
     commit-message:
       prefix: "build" # Conventional Commits type, e.g. build(deps): bump ...
       include: "scope" # Adds (deps) / (deps-dev) scope
+    groups:
+      # Angular packages declare exact-version peer dependencies on each other
+      # (e.g. @angular/compiler-cli 22.1.1 requires @angular/compiler 22.1.1),
+      # so bumping them one PR at a time produces a lockfile that spans two
+      # minors and breaks the production build. Keep the whole family in a
+      # single pull request.
+      angular:
+        patterns:
+          - "@angular/*"
+          - "@angular-devkit/*"
+          - "@angular-builders/*"
