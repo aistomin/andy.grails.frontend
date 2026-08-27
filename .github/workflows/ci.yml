@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Build production Docker image
         run: docker build -f Dockerfile.prod -t andy-grails-frontend-prod-test .
       - name: Start production services
@@ -197,7 +197,7 @@ jobs:
           username: andygrails
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
