@@ -23,3 +23,10 @@ updates:
           - "@angular/*"
           - "@angular-devkit/*"
           - "@angular-builders/*"
+  - package-ecosystem: "github-actions"
+    directory: "/" # Dependabot always scans .github/workflows from the root
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "build" # Conventional Commits type, e.g. build(deps): bump ...
+      include: "scope" # Adds (deps) / (deps-dev) scope
