@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
@@ -106,116 +106,98 @@ describe('App Routes', () => {
   });
 
   describe('Page Title Navigation', () => {
-    it('should set correct title when navigating to home', fakeAsync(() => {
-      router.navigate(['']);
-      tick();
+    it('should set correct title when navigating to home', async () => {
+      await router.navigate(['']);
       expect(titleService.getTitle()).toBe('Andy Grails');
-    }));
+    });
 
-    it('should set correct title when navigating to privacy', fakeAsync(() => {
-      router.navigate(['/privacy']);
-      tick();
+    it('should set correct title when navigating to privacy', async () => {
+      await router.navigate(['/privacy']);
       expect(titleService.getTitle()).toBe('Privacy Policy - Andy Grails');
-    }));
+    });
 
-    it('should set correct title when navigating to imprint', fakeAsync(() => {
-      router.navigate(['/imprint']);
-      tick();
+    it('should set correct title when navigating to imprint', async () => {
+      await router.navigate(['/imprint']);
       expect(titleService.getTitle()).toBe('Imprint/Terms - Andy Grails');
-    }));
+    });
 
-    it('should set correct title when navigating to 500 error page', fakeAsync(() => {
-      router.navigate(['/500']);
-      tick();
+    it('should set correct title when navigating to 500 error page', async () => {
+      await router.navigate(['/500']);
       expect(titleService.getTitle()).toBe(
         'Internal Server Error - Andy Grails'
       );
-    }));
+    });
 
-    it('should set correct title when navigating to 404 error page', fakeAsync(() => {
-      router.navigate(['/404']);
-      tick();
+    it('should set correct title when navigating to 404 error page', async () => {
+      await router.navigate(['/404']);
       expect(titleService.getTitle()).toBe('Page Not Found - Andy Grails');
-    }));
+    });
 
-    it('should set correct title when navigating to test error page', fakeAsync(() => {
-      router.navigate(['/test/error']);
-      tick();
+    it('should set correct title when navigating to test error page', async () => {
+      await router.navigate(['/test/error']);
       expect(titleService.getTitle()).toBe('Error Test - Andy Grails');
-    }));
+    });
 
-    it('should set correct title when navigating to network error page', fakeAsync(() => {
-      router.navigate(['/network/error']);
-      tick();
+    it('should set correct title when navigating to network error page', async () => {
+      await router.navigate(['/network/error']);
       expect(titleService.getTitle()).toBe('Network Error - Andy Grails');
-    }));
+    });
 
-    it('should set correct title when navigating to video details', fakeAsync(() => {
-      router.navigate(['/details/1']);
-      tick();
+    it('should set correct title when navigating to video details', async () => {
+      await router.navigate(['/details/1']);
       expect(titleService.getTitle()).toBe('Home details');
-    }));
+    });
 
-    it('should set correct title for unknown routes (wildcard)', fakeAsync(() => {
-      router.navigate(['/some/unknown/route']);
-      tick();
+    it('should set correct title for unknown routes (wildcard)', async () => {
+      await router.navigate(['/some/unknown/route']);
       expect(titleService.getTitle()).toBe('Page Not Found - Andy Grails');
-    }));
+    });
   });
 
   describe('Route Navigation', () => {
-    it('should navigate to home route', fakeAsync(() => {
-      router.navigate(['']);
-      tick();
+    it('should navigate to home route', async () => {
+      await router.navigate(['']);
       expect(location.path()).toBe('');
-    }));
+    });
 
-    it('should navigate to privacy route', fakeAsync(() => {
-      router.navigate(['/privacy']);
-      tick();
+    it('should navigate to privacy route', async () => {
+      await router.navigate(['/privacy']);
       expect(location.path()).toBe('/privacy');
-    }));
+    });
 
-    it('should navigate to imprint route', fakeAsync(() => {
-      router.navigate(['/imprint']);
-      tick();
+    it('should navigate to imprint route', async () => {
+      await router.navigate(['/imprint']);
       expect(location.path()).toBe('/imprint');
-    }));
+    });
 
-    it('should navigate to video details route', fakeAsync(() => {
-      router.navigate(['/details/123']);
-      tick();
+    it('should navigate to video details route', async () => {
+      await router.navigate(['/details/123']);
       expect(location.path()).toBe('/details/123');
-    }));
+    });
 
-    it('should navigate to 500 error route', fakeAsync(() => {
-      router.navigate(['/500']);
-      tick();
+    it('should navigate to 500 error route', async () => {
+      await router.navigate(['/500']);
       expect(location.path()).toBe('/500');
-    }));
+    });
 
-    it('should navigate to 404 error route', fakeAsync(() => {
-      router.navigate(['/404']);
-      tick();
+    it('should navigate to 404 error route', async () => {
+      await router.navigate(['/404']);
       expect(location.path()).toBe('/404');
-    }));
+    });
 
-    it('should navigate to test error route', fakeAsync(() => {
-      router.navigate(['/test/error']);
-      tick();
+    it('should navigate to test error route', async () => {
+      await router.navigate(['/test/error']);
       expect(location.path()).toBe('/test/error');
-    }));
+    });
 
-    it('should navigate to network error route', fakeAsync(() => {
-      router.navigate(['/network/error']);
-      tick();
+    it('should navigate to network error route', async () => {
+      await router.navigate(['/network/error']);
       expect(location.path()).toBe('/network/error');
-    }));
+    });
 
-    it('should redirect unknown routes to 404 via wildcard', fakeAsync(() => {
-      router.navigate(['/nonexistent-page']);
-      tick();
+    it('should redirect unknown routes to 404 via wildcard', async () => {
+      await router.navigate(['/nonexistent-page']);
       expect(location.path()).toBe('/nonexistent-page');
-    }));
+    });
   });
 });
