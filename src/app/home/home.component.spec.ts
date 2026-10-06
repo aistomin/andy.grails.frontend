@@ -4,6 +4,7 @@ import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
 import { provideRouter, Router } from '@angular/router';
 import { VideoDetailsComponent } from '../video-details/video-details.component';
+import { InternalServerErrorComponent } from '../internal-server-error/internal-server-error';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -48,6 +49,7 @@ describe('HomeComponent', () => {
         { provide: VideoService, useValue: spy },
         provideRouter([
           { path: 'details/:id', component: VideoDetailsComponent },
+          { path: '500', component: InternalServerErrorComponent },
         ]),
       ],
     }).compileComponents();

@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  PendingTasks,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VideoService } from '../services/video.service';
@@ -59,20 +64,23 @@ export class VideoDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private pendingTasks: PendingTasks
   ) {}
 
   ngOnInit() {
     const videoId = parseInt(this.route.snapshot.params['id'], 10);
-    this.videoService
-      .getVideoById(videoId)
-      .then((vid) => {
-        this.video = vid;
-        this.cdr.markForCheck();
-      })
-      .catch((error) => {
-        console.error('Error loading video:', error);
-      });
+    this.pendingTasks.run(() =>
+      this.videoService
+        .getVideoById(videoId)
+        .then((vid) => {
+          this.video = vid;
+          this.cdr.markForCheck();
+        })
+        .catch((error) => {
+          console.error('Error loading video:', error);
+        })
+    );
   }
 
   getYouTubeUrl(): SafeResourceUrl {

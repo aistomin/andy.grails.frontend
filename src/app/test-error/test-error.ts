@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, PendingTasks } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../services/api.service';
 
@@ -14,21 +14,28 @@ export class TestErrorComponent {
   isLoading: boolean = false;
   hasError: boolean = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private cdr: ChangeDetectorRef,
+    private pendingTasks: PendingTasks
+  ) {}
 
-  async testError(): Promise<void> {
-    this.isLoading = true;
-    this.hasError = false;
-    this.result = '';
+  testError(): void {
+    this.pendingTasks.run(async () => {
+      this.isLoading = true;
+      this.hasError = false;
+      this.result = '';
 
-    try {
-      const response = await this.apiService.get<any>('/test/error');
-      this.result = 'Everything works! Server responded successfully.';
-    } catch (error) {
-      this.hasError = true;
-      this.result = 'Error occurred and was handled properly!';
-    } finally {
-      this.isLoading = false;
-    }
+      try {
+        const response = await this.apiService.get<any>('/test/error');
+        this.result = 'Everything works! Server responded successfully.';
+      } catch (error) {
+        this.hasError = true;
+        this.result = 'Error occurred and was handled properly!';
+      } finally {
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 }
