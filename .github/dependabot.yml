@@ -23,6 +23,18 @@ updates:
           - "@angular/*"
           - "@angular-devkit/*"
           - "@angular-builders/*"
+      # jest and jest-environment-jsdom are released in lockstep from the
+      # same monorepo, so splitting them leaves the lockfile with a test
+      # runner and its environment on different versions until the second
+      # pull request lands. @angular-builders/jest has exact peer
+      # dependencies on the Angular version, so it has to travel with
+      # Angular instead: it lands in the angular group above because
+      # Dependabot assigns a package to the first group it matches.
+      jest:
+        patterns:
+          - "jest"
+          - "jest-*"
+          - "@types/jest"
   - package-ecosystem: "github-actions"
     directory: "/" # Dependabot always scans .github/workflows from the root
     schedule:
