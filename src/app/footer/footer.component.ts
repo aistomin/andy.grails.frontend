@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  PendingTasks,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WebLink } from '../services/web-link';
 import { WebLinksService } from '../services/web-links.service';
@@ -89,29 +94,33 @@ export class FooterComponent implements OnInit {
 
   constructor(
     private webLinksService: WebLinksService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private pendingTasks: PendingTasks
   ) {}
 
   ngOnInit() {
-    this.webLinksService
-      .getWebLinks()
-      .then((links: WebLink[]) => {
-        this.webLinks = links;
-        this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
-        this.instagramLink = links.find((link) => link.type === 'INSTAGRAM');
-        this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
-        this.developerWebsiteLink = links.find(
-          (link) => link.type === 'DEVELOPER_WEBSITE'
-        );
-        this.issueTrackerLink = links.find(
-          (link) => link.type === 'ISSUE_TRACKER'
-        );
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      })
-      .catch((error) => {
-        this.isLoading = false;
-        console.error('Error loading footer links:', error);
-      });
+    this.pendingTasks.run(() =>
+      this.webLinksService
+        .getWebLinks()
+        .then((links: WebLink[]) => {
+          this.webLinks = links;
+          this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
+          this.instagramLink = links.find((link) => link.type === 'INSTAGRAM');
+          this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
+          this.developerWebsiteLink = links.find(
+            (link) => link.type === 'DEVELOPER_WEBSITE'
+          );
+          this.issueTrackerLink = links.find(
+            (link) => link.type === 'ISSUE_TRACKER'
+          );
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error('Error loading footer links:', error);
+          this.cdr.markForCheck();
+        })
+    );
   }
 }

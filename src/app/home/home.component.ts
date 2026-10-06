@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  PendingTasks,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -42,28 +47,31 @@ export class HomeComponent implements OnInit {
   constructor(
     private videoService: VideoService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private pendingTasks: PendingTasks
   ) {}
 
   ngOnInit() {
-    this.videoService
-      .getAllVideos()
-      .then((list: Video[]) => {
-        this.videos = list.sort((a, b) => {
-          // Sort by createdAt (newest first)
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        });
-        this.filteredVideos = this.videos;
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      })
-      .catch((error) => {
-        this.isLoading = false;
-        console.error('Error loading videos:', error);
-        this.router.navigate(['/500']);
-      });
+    this.pendingTasks.run(() =>
+      this.videoService
+        .getAllVideos()
+        .then((list: Video[]) => {
+          this.videos = list.sort((a, b) => {
+            // Sort by createdAt (newest first)
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          });
+          this.filteredVideos = this.videos;
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error('Error loading videos:', error);
+          this.router.navigate(['/500']);
+        })
+    );
   }
 
   filterResults(text: string) {
