@@ -37,7 +37,7 @@ describe('App Routes', () => {
 
   describe('Route Configuration', () => {
     it('should have correct number of routes', () => {
-      expect(routeConfig.length).toBe(9);
+      expect(routeConfig.length).toBe(8);
     });
 
     it('should have home route with correct title', () => {
@@ -82,14 +82,6 @@ describe('App Routes', () => {
       expect(notFoundRoute?.title).toBe('Page Not Found - Andy Grails');
     });
 
-    it('should have test error route with correct title', () => {
-      const testErrorRoute = routeConfig.find(
-        (route) => route.path === 'test/error'
-      );
-      expect(testErrorRoute).toBeTruthy();
-      expect(testErrorRoute?.title).toBe('Error Test - Andy Grails');
-    });
-
     it('should have network error route with correct title', () => {
       const networkErrorRoute = routeConfig.find(
         (route) => route.path === 'network/error'
@@ -131,11 +123,6 @@ describe('App Routes', () => {
     it('should set correct title when navigating to 404 error page', async () => {
       await router.navigate(['/404']);
       expect(titleService.getTitle()).toBe('Page Not Found - Andy Grails');
-    });
-
-    it('should set correct title when navigating to test error page', async () => {
-      await router.navigate(['/test/error']);
-      expect(titleService.getTitle()).toBe('Error Test - Andy Grails');
     });
 
     it('should set correct title when navigating to network error page', async () => {
@@ -183,11 +170,6 @@ describe('App Routes', () => {
     it('should navigate to 404 error route', async () => {
       await router.navigate(['/404']);
       expect(location.path()).toBe('/404');
-    });
-
-    it('should navigate to test error route', async () => {
-      await router.navigate(['/test/error']);
-      expect(location.path()).toBe('/test/error');
     });
 
     it('should navigate to network error route', async () => {
