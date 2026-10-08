@@ -105,9 +105,6 @@ The application includes comprehensive error handling for different scenarios:
 
 For demonstration purposes, the following test routes are available:
 
-- `/test/error`: Test page that calls the `/test/error` backend endpoint
-  - If the backend returns 500, you'll be redirected to the 500 error page
-  - If the backend responds successfully, you'll see "Everything works!"
 - `/500`: Direct access to the 500 error page
 - `/404`: Direct access to the 404 error page
 - `/network/error`: Direct access to the network error page

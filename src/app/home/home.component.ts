@@ -76,17 +76,14 @@ export class HomeComponent implements OnInit {
 
   filterResults(text: string) {
     if (!text) {
-      console.log('No text, showing all videos');
       this.filteredVideos = this.videos;
     } else {
       const lowered = text.toLowerCase();
-      console.log('Search for: ', lowered);
       const found = this.videos.filter(
         (video) =>
           video?.title?.toLowerCase().includes(lowered) ||
           video?.description?.toLowerCase().includes(lowered)
       );
-      console.log('Found videos: ', found);
       this.filteredVideos = found;
     }
   }
