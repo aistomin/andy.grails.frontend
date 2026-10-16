@@ -35,6 +35,7 @@ services:
 
   # Frontend Angular App (Production - built locally)
   frontend-prod:
+    image: andy-grails-frontend-prod
     build:
       context: .
       dockerfile: Dockerfile.prod
