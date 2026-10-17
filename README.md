@@ -67,7 +67,7 @@ Once running, open your browser and navigate to `http://localhost:4200/`. This r
 **View logs (Development):**
 
 ```bash
-docker-compose -f docker-compose-dev.yml logs -f
+docker compose -f docker-compose-dev.yml logs -f
 ```
 
 **View logs (Production):**

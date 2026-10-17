@@ -16,7 +16,7 @@ This project now supports Docker for both development and production environment
 ./start-dev.sh
 
 # Or manually:
-docker-compose -f docker-compose-dev.yml up --build
+docker compose -f docker-compose-dev.yml up --build
 ```
 
 This will start:
@@ -135,10 +135,10 @@ If the database doesn't start properly:
 
 ```bash
 # Remove existing volumes
-docker-compose -f docker-compose-dev.yml down -v
+docker compose -f docker-compose-dev.yml down -v
 
 # Start fresh
-docker-compose -f docker-compose-dev.yml up --build
+docker compose -f docker-compose-dev.yml up --build
 ```
 
 ### Frontend Build Issues
@@ -146,11 +146,11 @@ docker-compose -f docker-compose-dev.yml up --build
 If the frontend build fails:
 
 ```bash
-# Clean Docker cache
-docker system prune -a
+# Remove this project's containers, locally built images and volumes
+docker compose -f docker-compose-dev.yml down --rmi local -v --remove-orphans
 
 # Rebuild
-docker-compose -f docker-compose-dev.yml up --build
+docker compose -f docker-compose-dev.yml up --build
 ```
 
 ## API Configuration

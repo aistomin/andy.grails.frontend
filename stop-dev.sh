@@ -2,35 +2,16 @@
 
 echo "Stopping Andy Grails App..."
 
-# NUCLEAR OPTION: Complete annihilation
+# Stop containers and remove this project's locally built images and volumes
 echo ""
-echo "💥  FULL STOP - Removing everything..."
-echo ""
-
-# Stop containers and remove volumes
-echo "🧹  Stopping containers and removing volumes..."
-docker compose -f docker-compose-dev.yml down --remove-orphans -v
-
-# Remove project-specific images
-echo "🧹  Removing images..."
-docker rmi andy-grails-frontend_frontend-dev 2>/dev/null || true
-docker rmi andygrails/andy-grails-backend:latest 2>/dev/null || true
-
-# Prune build cache
-echo "🧹  Pruning Docker build cache..."
-docker builder prune -af --filter "until=24h" 2>/dev/null || true
-
-# Remove dangling images
-echo "🧹  Removing dangling images..."
-docker image prune -af 2>/dev/null || true
-
-if [ $? -eq 0 ]; then
+echo "🧹  Stopping containers and removing images and volumes..."
+if docker compose -f docker-compose-dev.yml down --rmi local -v --remove-orphans; then
     echo ""
-    echo "🛑  The App stopped and purged!"
+    echo "🛑  The App stopped and cleaned up!"
     echo ""
     echo "    ┌─────────────────────────────────────┐"
     echo "    │                                     │"
-    echo "    │   🧡 Everything is GONE! 🧡         │"
+    echo "    │   🧡 See you next time! 🧡          │"
     echo "    │                                     │"
     echo "    └─────────────────────────────────────┘"
     echo ""
