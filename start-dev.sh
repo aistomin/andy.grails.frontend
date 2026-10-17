@@ -19,43 +19,14 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
-# NUCLEAR OPTION: Kill everything related to this project
+# Clean up this project's containers, locally built images and volumes
 echo ""
-echo "💥  NUKE MODE ACTIVATED - Wiping all caches..."
-echo ""
-
-# Stop and remove all containers
-echo "🧹  Stopping and removing containers..."
-docker-compose -f docker-compose-dev.yml down --remove-orphans -v 2>/dev/null || true
-
-# Remove project-specific images
-echo "🧹  Removing old images..."
-docker rmi andy-grails-frontend_frontend-dev 2>/dev/null || true
-docker rmi andygrails/andy-grails-backend:latest 2>/dev/null || true
-
-# Prune build cache
-echo "🧹  Pruning Docker build cache..."
-docker builder prune -af --filter "until=24h" 2>/dev/null || true
-
-# Clean up any dangling images
-echo "🧹  Removing dangling images..."
-docker image prune -af 2>/dev/null || true
-
-# Remove volumes
-echo "🧹  Removing volumes..."
-docker volume rm andy_grails_postgres_data_dev 2>/dev/null || true
-
-# Clean local npm cache (keep package-lock.json for Docker build)
-echo "🧹  Clearing npm cache..."
-rm -rf node_modules 2>/dev/null || true
-npm cache clean --force 2>/dev/null || true
-
-echo ""
-echo "✅  Cache nuked! Starting fresh..."
+echo "🧹  Removing previous containers, images and volumes..."
+docker compose -f docker-compose-dev.yml down --rmi local -v --remove-orphans
 echo ""
 
 # Build and start containers in detached mode
-if docker-compose -f docker-compose-dev.yml up --build --force-recreate --no-deps -d; then
+if docker compose -f docker-compose-dev.yml up --build --force-recreate --no-deps -d; then
     echo ""
     echo "🚀  Containers started! Waiting for backend to be ready..."
     echo ""
@@ -86,7 +57,7 @@ if docker-compose -f docker-compose-dev.yml up --build --force-recreate --no-dep
         echo "    │   Backend is not responding...      │"
         echo "    │                                     │"
         echo "    │   Check the logs:                   │"
-        echo "    │   docker-compose -f docker-compose-dev.yml logs backend       │"
+        echo "    │   docker compose -f docker-compose-dev.yml logs backend       │"
         echo "    │                                     │"
         echo "    └─────────────────────────────────────┘"
         echo ""
@@ -105,7 +76,7 @@ if docker-compose -f docker-compose-dev.yml up --build --force-recreate --no-dep
     echo "Backend: http://localhost:8080"
     echo "Database: localhost:55432"
     echo ""
-    echo "To view logs: docker-compose -f docker-compose-dev.yml logs -f"
+    echo "To view logs: docker compose -f docker-compose-dev.yml logs -f"
     echo "To stop: ./stop-dev.sh"
 else
     echo ""
