@@ -26,6 +26,7 @@ COPY --from=builder /app/dist/andy.grails.frontend/browser/ /usr/share/nginx/htm
 
 # Copy nginx configuration
 COPY nginx.prod.conf /etc/nginx/nginx.conf
+COPY nginx.security-headers.conf /etc/nginx/security-headers.conf
 
 # Expose port 80
 EXPOSE 80
