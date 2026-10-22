@@ -40,7 +40,7 @@ export class ApiService {
    * Handles network errors (like backend being down) by navigating to the network error page
    * @param error - The error that occurred
    */
-  private handleNetworkError(error: any, endpoint: string): void {
+  private handleNetworkError(error: any): void {
     if (error instanceof NetworkException) {
       this.router.navigate(['/network/error']);
     }
@@ -72,136 +72,10 @@ export class ApiService {
         error.message?.includes('Failed to fetch')
       ) {
         const networkError = new NetworkException(endpoint, error.message);
-        this.handleNetworkError(networkError, endpoint);
+        this.handleNetworkError(networkError);
         throw networkError;
       }
       console.error(`API GET request failed for ${endpoint}:`, error);
-      this.handle404Error(error);
-      this.handle500Error(error);
-      throw error;
-    }
-  }
-
-  /**
-   * Makes a POST request to the specified endpoint
-   * @param endpoint - The API endpoint (without base URL)
-   * @param data - The data to send in the request body
-   * @returns Promise with the response data
-   */
-  async post<T>(endpoint: string, data: any): Promise<T> {
-    try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new ResourceNotFoundException(endpoint);
-        }
-        if (response.status === 500) {
-          throw new InternalServerException(endpoint);
-        }
-        throw new ServerException(endpoint, response.status);
-      }
-
-      return await response.json();
-    } catch (error: any) {
-      if (
-        error instanceof TypeError ||
-        error.message?.includes('fetch') ||
-        error.message?.toLowerCase().includes('network') ||
-        error.message?.includes('Failed to fetch')
-      ) {
-        const networkError = new NetworkException(endpoint, error.message);
-        this.handleNetworkError(networkError, endpoint);
-        throw networkError;
-      }
-      console.error(`API POST request failed for ${endpoint}:`, error);
-      this.handle404Error(error);
-      this.handle500Error(error);
-      throw error;
-    }
-  }
-
-  /**
-   * Makes a PUT request to the specified endpoint
-   * @param endpoint - The API endpoint (without base URL)
-   * @param data - The data to send in the request body
-   * @returns Promise with the response data
-   */
-  async put<T>(endpoint: string, data: any): Promise<T> {
-    try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new ResourceNotFoundException(endpoint);
-        }
-        if (response.status === 500) {
-          throw new InternalServerException(endpoint);
-        }
-        throw new ServerException(endpoint, response.status);
-      }
-      return await response.json();
-    } catch (error: any) {
-      if (
-        error instanceof TypeError ||
-        error.message?.includes('fetch') ||
-        error.message?.toLowerCase().includes('network') ||
-        error.message?.includes('Failed to fetch')
-      ) {
-        const networkError = new NetworkException(endpoint, error.message);
-        this.handleNetworkError(networkError, endpoint);
-        throw networkError;
-      }
-      console.error(`API PUT request failed for ${endpoint}:`, error);
-      this.handle404Error(error);
-      this.handle500Error(error);
-      throw error;
-    }
-  }
-
-  /**
-   * Makes a DELETE request to the specified endpoint
-   * @param endpoint - The API endpoint (without base URL)
-   * @returns Promise with the response data
-   */
-  async delete<T>(endpoint: string): Promise<T> {
-    try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new ResourceNotFoundException(endpoint);
-        }
-        if (response.status === 500) {
-          throw new InternalServerException(endpoint);
-        }
-        throw new ServerException(endpoint, response.status);
-      }
-      return await response.json();
-    } catch (error: any) {
-      if (
-        error instanceof TypeError ||
-        error.message?.includes('fetch') ||
-        error.message?.toLowerCase().includes('network') ||
-        error.message?.includes('Failed to fetch')
-      ) {
-        const networkError = new NetworkException(endpoint, error.message);
-        this.handleNetworkError(networkError, endpoint);
-        throw networkError;
-      }
-      console.error(`API DELETE request failed for ${endpoint}:`, error);
       this.handle404Error(error);
       this.handle500Error(error);
       throw error;
