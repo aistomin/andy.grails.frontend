@@ -52,5 +52,10 @@ main {
 
 .content {
   flex: 1;
-  padding-bottom: 60px;
+}
+
+@media (min-width: 769px) {
+  .content {
+    padding-bottom: 60px;
+  }
 }
