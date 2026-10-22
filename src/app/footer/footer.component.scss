@@ -74,6 +74,10 @@
 }
 
 @media (max-width: 768px) {
+  .footer {
+    position: static;
+  }
+
   .footer-content {
     display: block;
     text-align: center;
