@@ -25,6 +25,7 @@ The CI/CD pipeline automatically builds and publishes the production image to Do
 
 - **`nginx.conf`**: Development configuration with API proxy to backend
 - **`nginx.prod.conf`**: Production configuration without API proxy (for standalone deployment)
+- **`nginx.security-headers.conf`**: Security headers included by `nginx.prod.conf` in every location that sets its own headers
 
 ### Quick Start (Development)
 
