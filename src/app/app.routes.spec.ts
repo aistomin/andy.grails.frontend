@@ -51,7 +51,7 @@ describe('App Routes', () => {
         (route) => route.path === 'details/:id'
       );
       expect(detailsRoute).toBeTruthy();
-      expect(detailsRoute?.title).toBe('Home details');
+      expect(detailsRoute?.title).toBe('Video - Andy Grails');
     });
 
     it('should have privacy route with correct title', () => {
@@ -132,7 +132,7 @@ describe('App Routes', () => {
 
     it('should set correct title when navigating to video details', async () => {
       await router.navigate(['/details/1']);
-      expect(titleService.getTitle()).toBe('Home details');
+      expect(titleService.getTitle()).toBe('Video - Andy Grails');
     });
 
     it('should set correct title for unknown routes (wildcard)', async () => {

@@ -16,7 +16,7 @@ const routeConfig: Routes = [
   {
     path: 'details/:id',
     component: VideoDetailsComponent,
-    title: 'Home details',
+    title: 'Video - Andy Grails',
   },
   {
     path: 'privacy',

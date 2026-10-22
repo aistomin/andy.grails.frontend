@@ -8,7 +8,11 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeResourceUrl,
+  Title,
+} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-details',
@@ -65,7 +69,8 @@ export class VideoDetailsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private pendingTasks: PendingTasks
+    private pendingTasks: PendingTasks,
+    private title: Title
   ) {}
 
   ngOnInit() {
@@ -75,6 +80,7 @@ export class VideoDetailsComponent implements OnInit {
         .getVideoById(videoId)
         .then((vid) => {
           this.video = vid;
+          this.title.setTitle(`${vid.title} - Andy Grails`);
           this.cdr.markForCheck();
         })
         .catch((error) => {

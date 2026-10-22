@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { VideoDetailsComponent } from './video-details.component';
 import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
@@ -12,6 +12,7 @@ describe('VideoDetailsComponent', () => {
   let videoService: jest.Mocked<VideoService>;
   let router: jest.Mocked<Router>;
   let sanitizer: DomSanitizer;
+  let title: Title;
   let mockRouteParams: { id: string };
 
   const mockVideo: Video = {
@@ -63,6 +64,8 @@ describe('VideoDetailsComponent', () => {
     videoService = TestBed.inject(VideoService) as jest.Mocked<VideoService>;
     router = TestBed.inject(Router) as jest.Mocked<Router>;
     sanitizer = TestBed.inject(DomSanitizer);
+    title = TestBed.inject(Title);
+    title.setTitle('Video - Andy Grails');
   });
 
   it('should create', () => {
@@ -126,6 +129,24 @@ describe('VideoDetailsComponent', () => {
     expect(component.video).toBeUndefined();
 
     consoleErrorSpy.mockRestore();
+  });
+
+  it('should set the browser tab title to the video title once loaded', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(title.getTitle()).toBe('Test Video - Andy Grails');
+  });
+
+  it('should keep the fallback tab title when the video fails to load', async () => {
+    videoService.getVideoById.mockRejectedValue(new Error('Server error'));
+    jest.spyOn(console, 'error').mockImplementation();
+
+    fixture = TestBed.createComponent(VideoDetailsComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(title.getTitle()).toBe('Video - Andy Grails');
   });
 
   it('should generate correct YouTube URL', () => {
