@@ -5,7 +5,6 @@ import {
   PendingTasks,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VideoCardComponent } from '../video-card/video-card.component';
 import { Video } from '../services/video';
@@ -13,7 +12,7 @@ import { VideoService } from '../services/video.service';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, VideoCardComponent, FormsModule],
+  imports: [CommonModule, VideoCardComponent],
   template: `
     <div *ngIf="isLoading" class="loading-container">
       <div class="spinner"></div>

@@ -73,7 +73,7 @@ Default values:
 - Includes frontend, backend, and database services
 - Uses the development Dockerfile for hot reloading
 
-### `nginx.conf`
+### `nginx.prod.conf`
 
 - Nginx configuration for serving the Angular app
 - Handles Angular routing (SPA)

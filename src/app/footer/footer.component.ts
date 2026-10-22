@@ -76,7 +76,6 @@ import { WebLinksService } from '../services/web-links.service';
 })
 export class FooterComponent implements OnInit {
   isLoading = true;
-  webLinks: WebLink[] = [];
   youtubeLink?: WebLink;
   instagramLink?: WebLink;
   facebookLink?: WebLink;
@@ -103,7 +102,6 @@ export class FooterComponent implements OnInit {
       this.webLinksService
         .getWebLinks()
         .then((links: WebLink[]) => {
-          this.webLinks = links;
           this.youtubeLink = links.find((link) => link.type === 'YOUTUBE');
           this.instagramLink = links.find((link) => link.type === 'INSTAGRAM');
           this.facebookLink = links.find((link) => link.type === 'FACEBOOK');
