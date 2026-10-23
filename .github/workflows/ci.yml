@@ -19,7 +19,7 @@ jobs:
           node-version: lts/*
           cache: 'npm'
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm ci
       - name: Run unit tests
         run: npm test
       - name: Extract short SHA
@@ -123,7 +123,7 @@ jobs:
 
           # Install Puppeteer for headless browser testing
           echo "Installing Puppeteer for JavaScript-enabled testing..."
-          npm ci --legacy-peer-deps
+          npm ci
 
           # Wait for Angular app to load and render content using headless browser
           echo "Waiting for Angular app to load and render video content..."
