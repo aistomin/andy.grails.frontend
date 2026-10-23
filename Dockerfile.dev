@@ -10,7 +10,7 @@ COPY package*.json ./
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 # Install dependencies
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 
 # Copy source code
 COPY . .
