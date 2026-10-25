@@ -26,7 +26,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       </iframe>
       <h2 class="video-card-heading">{{ video.title }}</h2>
       <p class="video-card-description">
-        {{ truncateDescription(video.description) }}
+        {{ video.description }}
       </p>
       <a [routerLink]="['/details', video.id]">More ...</a>
     </section>
@@ -42,10 +42,5 @@ export class VideoCardComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://www.youtube.com/embed/${this.video.youtubeId}`
     );
-  }
-
-  truncateDescription(description: string): string {
-    const firstSentence = description.match(/[^.!?]+[.!?]+/);
-    return firstSentence ? firstSentence[0].trim() : description;
   }
 }

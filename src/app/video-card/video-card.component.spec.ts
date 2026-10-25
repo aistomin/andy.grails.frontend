@@ -54,17 +54,6 @@ describe('VideoCardComponent', () => {
     spy.mockRestore();
   });
 
-  it('should truncate description to first sentence', () => {
-    const result = component.truncateDescription(mockVideo.description);
-    expect(result).toBe('This is a test video.');
-  });
-
-  it('should return full description if no sentence ending found', () => {
-    const description = 'No sentence ending here';
-    const result = component.truncateDescription(description);
-    expect(result).toBe(description);
-  });
-
   it('should render video title in template', () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.video-card-heading').textContent).toContain(
@@ -72,11 +61,21 @@ describe('VideoCardComponent', () => {
     );
   });
 
-  it('should render truncated description in template', () => {
+  it('should render full description in template', () => {
     const compiled = fixture.nativeElement;
     expect(
       compiled.querySelector('.video-card-description').textContent.trim()
-    ).toBe('This is a test video.');
+    ).toBe(mockVideo.description);
+  });
+
+  it('should not cut description at abbreviations', () => {
+    const description = 'J. S. Bach - Bourrée. Second sentence.';
+    fixture.componentRef.setInput('video', { ...mockVideo, description });
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(
+      compiled.querySelector('.video-card-description').textContent.trim()
+    ).toBe(description);
   });
 
   it('should render YouTube iframe with correct attributes', () => {
