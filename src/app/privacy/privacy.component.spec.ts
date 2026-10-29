@@ -42,7 +42,7 @@ describe('PrivacyComponent', () => {
     const lastUpdated = compiled.querySelector('.last-updated');
 
     expect(lastUpdated).toBeTruthy();
-    expect(lastUpdated.textContent.trim()).toBe('Last updated: January 2025');
+    expect(lastUpdated.textContent.trim()).toBe('Last updated: October 2026');
   });
 
   it('should render introduction section', () => {
@@ -162,6 +162,19 @@ describe('PrivacyComponent', () => {
     const heading = thirdPartySection.querySelector('h2');
 
     expect(heading.textContent.trim()).toBe('5. Third-Party Services');
+  });
+
+  it('should explain the embedded YouTube players in the third-party section', () => {
+    const compiled = fixture.nativeElement;
+    const thirdPartySection = compiled.querySelectorAll('section')[4];
+    const subheading = thirdPartySection.querySelector('h3');
+    const link = thirdPartySection.querySelector('a');
+
+    expect(subheading.textContent.trim()).toBe('5.1 Embedded YouTube Videos');
+    expect(thirdPartySection.textContent).toContain('youtube-nocookie.com');
+    expect(thirdPartySection.textContent).toContain('until you press play');
+    expect(link.getAttribute('href')).toBe('https://policies.google.com/privacy');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
   it('should render data security section', () => {

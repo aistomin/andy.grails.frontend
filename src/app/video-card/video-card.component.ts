@@ -11,6 +11,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     <section class="video-card">
       <iframe
         [src]="getYouTubeUrl()"
+        [title]="video.title"
+        loading="lazy"
         class="video-card-youtube-video"
         frameborder="0"
         allow="accelerometer; 
@@ -40,7 +42,7 @@ export class VideoCardComponent {
 
   getYouTubeUrl(): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube.com/embed/${this.video.youtubeId}`
+      `https://www.youtube-nocookie.com/embed/${this.video.youtubeId}`
     );
   }
 }

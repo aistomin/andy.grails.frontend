@@ -44,7 +44,7 @@ describe('VideoCardComponent', () => {
   });
 
   it('should generate correct YouTube URL', () => {
-    const expectedUrl = `https://www.youtube.com/embed/${mockVideo.youtubeId}`;
+    const expectedUrl = `https://www.youtube-nocookie.com/embed/${mockVideo.youtubeId}`;
     const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
 
     component.getYouTubeUrl();
@@ -88,5 +88,18 @@ describe('VideoCardComponent', () => {
     expect(iframe.getAttribute('referrerpolicy')).toBe(
       'strict-origin-when-cross-origin'
     );
+  });
+
+  it('should load the player from the privacy-enhanced YouTube domain', () => {
+    const iframe: HTMLIFrameElement = fixture.nativeElement.querySelector('iframe');
+    expect(iframe.src).toBe(
+      `https://www.youtube-nocookie.com/embed/${mockVideo.youtubeId}`
+    );
+  });
+
+  it('should give the iframe the video title and load it lazily', () => {
+    const iframe: HTMLIFrameElement = fixture.nativeElement.querySelector('iframe');
+    expect(iframe.title).toBe(mockVideo.title);
+    expect(iframe.getAttribute('loading')).toBe('lazy');
   });
 });
