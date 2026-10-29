@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-not-found',
@@ -13,6 +13,11 @@ import { Router, RouterLink } from '@angular/router';
           Oops! The page you're looking for doesn't exist. It might have been
           moved, deleted, or you entered the wrong URL.
         </p>
+        <div class="actions">
+          <button class="btn btn-primary" (click)="goHome()">
+            Back to Home
+          </button>
+        </div>
       </div>
     </div>
   `,
@@ -21,7 +26,7 @@ import { Router, RouterLink } from '@angular/router';
 export class NotFoundComponent {
   constructor(private router: Router) {}
 
-  goBack(): void {
+  goHome(): void {
     this.router.navigate(['/']);
   }
 }

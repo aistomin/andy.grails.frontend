@@ -65,3 +65,19 @@
     margin: 0 0.5rem;
   }
 }
+
+.video-details-error {
+  text-align: center;
+  padding: 3rem 1rem;
+
+  .section-heading {
+    color: var(--secondary-color);
+    font-size: 24pt;
+    margin-bottom: 15px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 14pt;
+  }
+}

@@ -4,7 +4,6 @@ import { VideoService } from '../services/video.service';
 import { Video } from '../services/video';
 import { provideRouter, Router } from '@angular/router';
 import { VideoDetailsComponent } from '../video-details/video-details.component';
-import { InternalServerErrorComponent } from '../internal-server-error/internal-server-error';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -49,7 +48,6 @@ describe('HomeComponent', () => {
         { provide: VideoService, useValue: spy },
         provideRouter([
           { path: 'details/:id', component: VideoDetailsComponent },
-          { path: '500', component: InternalServerErrorComponent },
         ]),
       ],
     }).compileComponents();
@@ -160,15 +158,16 @@ describe('HomeComponent', () => {
     expect(component.filteredVideos.length).toBe(3);
   });
 
-  it('should navigate to /500 when getAllVideos fails', async () => {
+  it('should not navigate when getAllVideos fails (ApiService owns error pages)', async () => {
     videoService.getAllVideos.mockRejectedValue(new Error('API error'));
+    jest.spyOn(console, 'error').mockImplementation();
     const router = TestBed.inject(Router);
     jest.spyOn(router, 'navigate');
 
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/500']);
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 
   it('should show loading spinner while fetching videos', () => {
@@ -190,6 +189,7 @@ describe('HomeComponent', () => {
 
   it('should hide loading spinner after failed fetch', async () => {
     videoService.getAllVideos.mockRejectedValue(new Error('API error'));
+    jest.spyOn(console, 'error').mockImplementation();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();

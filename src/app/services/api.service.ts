@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import {
+  ApiException,
   ResourceNotFoundException,
   InternalServerException,
   ServerException,
   NetworkException,
 } from './api-exceptions';
+
+const UNREACHABLE_STATUSES = [502, 503, 504];
 
 @Injectable({
   providedIn: 'root',
@@ -17,68 +20,58 @@ export class ApiService {
   constructor(private router: Router) {}
 
   /**
-   * Handles 404 errors by navigating to the 404 page
-   * @param error - The error that occurred
-   */
-  private handle404Error(error: any): void {
-    if (error instanceof ResourceNotFoundException) {
-      this.router.navigate(['/404']);
-    }
-  }
-
-  /**
-   * Handles 500 errors by navigating to the 500 error page
-   * @param error - The error that occurred
-   */
-  private handle500Error(error: any): void {
-    if (error instanceof InternalServerException) {
-      this.router.navigate(['/500']);
-    }
-  }
-
-  /**
-   * Handles network errors (like backend being down) by navigating to the network error page
-   * @param error - The error that occurred
-   */
-  private handleNetworkError(error: any): void {
-    if (error instanceof NetworkException) {
-      this.router.navigate(['/network/error']);
-    }
-  }
-
-  /**
-   * Makes a GET request to the specified endpoint
+   * Makes a GET request to the specified endpoint.
+   *
+   * Every failure is turned into an ApiException and the user is sent to the
+   * matching error page before the exception is rethrown, so callers never
+   * need to navigate themselves.
+   *
    * @param endpoint - The API endpoint (without base URL)
    * @returns Promise with the response data
    */
   async get<T>(endpoint: string): Promise<T> {
+    let response: Response;
     try {
-      const response = await fetch(`${this.baseUrl}${endpoint}`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new ResourceNotFoundException(endpoint);
-        }
-        if (response.status === 500) {
-          throw new InternalServerException(endpoint);
-        }
-        throw new ServerException(endpoint, response.status);
-      }
-      return await response.json();
+      response = await fetch(`${this.baseUrl}${endpoint}`);
     } catch (error: any) {
-      if (
-        error instanceof TypeError ||
-        error.message?.includes('fetch') ||
-        error.message?.toLowerCase().includes('network') ||
-        error.message?.includes('Failed to fetch')
-      ) {
-        const networkError = new NetworkException(endpoint, error.message);
-        this.handleNetworkError(networkError);
-        throw networkError;
-      }
-      console.error(`API GET request failed for ${endpoint}:`, error);
-      this.handle404Error(error);
-      this.handle500Error(error);
-      throw error;
+      throw this.fail(new NetworkException(endpoint, error?.message));
     }
+    if (!response.ok) {
+      throw this.fail(this.toException(endpoint, response.status));
+    }
+    return await response.json();
+  }
+
+  private toException(endpoint: string, status: number): ApiException {
+    if (status === 404) {
+      return new ResourceNotFoundException(endpoint);
+    }
+    if (status === 500) {
+      return new InternalServerException(endpoint);
+    }
+    if (UNREACHABLE_STATUSES.includes(status)) {
+      return new NetworkException(
+        endpoint,
+        `Server unavailable: ${status}`,
+        status
+      );
+    }
+    return new ServerException(endpoint, status);
+  }
+
+  private fail(error: ApiException): ApiException {
+    console.error(`API GET request failed for ${error.endpoint}:`, error);
+    this.router.navigate([this.errorPage(error)]);
+    return error;
+  }
+
+  private errorPage(error: ApiException): string {
+    if (error instanceof ResourceNotFoundException) {
+      return '/404';
+    }
+    if (error instanceof NetworkException) {
+      return '/network/error';
+    }
+    return '/500';
   }
 }
