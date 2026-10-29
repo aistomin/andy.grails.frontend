@@ -150,7 +150,7 @@ describe('VideoDetailsComponent', () => {
   });
 
   it('should generate correct YouTube URL', () => {
-    const expectedUrl = `https://www.youtube.com/embed/${mockVideo.youtubeId}`;
+    const expectedUrl = `https://www.youtube-nocookie.com/embed/${mockVideo.youtubeId}`;
     const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
 
     const result = component.getYouTubeUrl(mockVideo);
@@ -178,8 +178,9 @@ describe('VideoDetailsComponent', () => {
       fixture.nativeElement.querySelector('iframe');
     expect(iframe).not.toBeNull();
     expect(iframe?.src).toBe(
-      `https://www.youtube.com/embed/${mockVideo.youtubeId}`
+      `https://www.youtube-nocookie.com/embed/${mockVideo.youtubeId}`
     );
+    expect(iframe?.title).toBe(mockVideo.title);
     expect(fixture.nativeElement.textContent).toContain(mockVideo.title);
   });
 

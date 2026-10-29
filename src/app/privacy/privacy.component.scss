@@ -54,6 +54,15 @@ p {
   color: var(--text-color);
 }
 
+a {
+  color: var(--primary-color);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--secondary-color);
+  }
+}
+
 ul {
   margin: 1rem 0;
   padding-left: 2rem;

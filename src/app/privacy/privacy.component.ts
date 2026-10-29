@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
     <div class="privacy-container">
       <div class="privacy-content">
         <h1>Privacy Policy</h1>
-        <p class="last-updated">Last updated: January 2025</p>
+        <p class="last-updated">Last updated: October 2026</p>
 
         <section>
           <h2>1. Introduction</h2>
@@ -71,6 +71,20 @@ import { CommonModule } from '@angular/common';
             Our website may contain links to third-party websites and services.
             We are not responsible for the privacy practices of these external
             sites. We encourage you to review their privacy policies.
+          </p>
+          <h3>5.1 Embedded YouTube Videos</h3>
+          <p>
+            The videos on this website are embedded YouTube players provided by
+            Google. We use YouTube's privacy-enhanced mode
+            (youtube-nocookie.com), so YouTube does not store cookies on your
+            device until you press play. Once you start a video, YouTube may
+            collect data about your use of the player according to the
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Google Privacy Policy</a
+            >.
           </p>
         </section>
 

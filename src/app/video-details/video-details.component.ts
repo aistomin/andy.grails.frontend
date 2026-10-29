@@ -21,6 +21,7 @@ import {
     <article *ngIf="video">
       <iframe
         [src]="getYouTubeUrl(video)"
+        [title]="video.title"
         class="video-details-youtube-video"
         frameborder="0"
         allow="accelerometer; 
@@ -104,7 +105,7 @@ export class VideoDetailsComponent implements OnInit {
 
   getYouTubeUrl(video: Video): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube.com/embed/${video.youtubeId}`
+      `https://www.youtube-nocookie.com/embed/${video.youtubeId}`
     );
   }
 }
