@@ -150,11 +150,10 @@ describe('VideoDetailsComponent', () => {
   });
 
   it('should generate correct YouTube URL', () => {
-    component.video = mockVideo;
     const expectedUrl = `https://www.youtube.com/embed/${mockVideo.youtubeId}`;
     const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
 
-    const result = component.getYouTubeUrl();
+    const result = component.getYouTubeUrl(mockVideo);
 
     expect(spy).toHaveBeenCalledWith(expectedUrl);
     expect(result).toBeTruthy();
@@ -162,17 +161,42 @@ describe('VideoDetailsComponent', () => {
     spy.mockRestore();
   });
 
-  it('should handle undefined video in getYouTubeUrl', () => {
-    component.video = undefined;
-    const expectedUrl = 'https://www.youtube.com/embed/undefined';
-    const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustResourceUrl');
+  it('should not render the player before the video is loaded', () => {
+    fixture.detectChanges();
 
-    const result = component.getYouTubeUrl();
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(compiled.querySelector('iframe')).toBeNull();
+    expect(compiled.querySelector('.video-details-error')).toBeNull();
+  });
 
-    expect(spy).toHaveBeenCalledWith(expectedUrl);
-    expect(result).toBeTruthy();
+  it('should render the player with the video id once loaded', async () => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
 
-    spy.mockRestore();
+    const iframe: HTMLIFrameElement | null =
+      fixture.nativeElement.querySelector('iframe');
+    expect(iframe).not.toBeNull();
+    expect(iframe?.src).toBe(
+      `https://www.youtube.com/embed/${mockVideo.youtubeId}`
+    );
+    expect(fixture.nativeElement.textContent).toContain(mockVideo.title);
+  });
+
+  it('should show an error state instead of the player when loading fails', async () => {
+    videoService.getVideoById.mockRejectedValue(new Error('Server error'));
+    jest.spyOn(console, 'error').mockImplementation();
+
+    fixture = TestBed.createComponent(VideoDetailsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const compiled: HTMLElement = fixture.nativeElement;
+    expect(component.loadFailed).toBe(true);
+    expect(compiled.querySelector('iframe')).toBeNull();
+    expect(compiled.textContent).toContain('Video could not be loaded');
   });
 
   it('should handle unpublished videos correctly', async () => {
@@ -197,10 +221,18 @@ describe('VideoDetailsComponent', () => {
     expect(videoService.getVideoById).toHaveBeenCalledWith(1);
   });
 
-  it('should handle non-numeric video ID gracefully', () => {
+  it('should redirect to 404 for a non-numeric video ID without calling the API', () => {
     mockRouteParams.id = 'abc';
     fixture.detectChanges(); // Trigger ngOnInit
-    expect(videoService.getVideoById).toHaveBeenCalledWith(NaN);
+    expect(videoService.getVideoById).not.toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/404']);
+  });
+
+  it('should redirect to 404 for a decimal video ID without calling the API', () => {
+    mockRouteParams.id = '1.5';
+    fixture.detectChanges(); // Trigger ngOnInit
+    expect(videoService.getVideoById).not.toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/404']);
   });
 
   it('should handle missing video ID gracefully', () => {

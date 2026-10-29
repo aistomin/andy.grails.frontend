@@ -5,7 +5,6 @@ import {
   PendingTasks,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { VideoCardComponent } from '../video-card/video-card.component';
 import { Video } from '../services/video';
 import { VideoService } from '../services/video.service';
@@ -45,7 +44,6 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private videoService: VideoService,
-    private router: Router,
     private cdr: ChangeDetectorRef,
     private pendingTasks: PendingTasks
   ) {}
@@ -66,9 +64,9 @@ export class HomeComponent implements OnInit {
           this.cdr.markForCheck();
         })
         .catch((error) => {
+          // ApiService has already sent the user to the matching error page.
           this.isLoading = false;
           console.error('Error loading videos:', error);
-          this.router.navigate(['/500']);
         })
     );
   }

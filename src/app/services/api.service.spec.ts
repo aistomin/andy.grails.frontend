@@ -139,6 +139,33 @@ describe('ApiService', () => {
       await expect(service.get(endpoint)).rejects.toBeInstanceOf(ServerException);
     });
 
+    it('should navigate to 500 page for other HTTP errors', async () => {
+      const endpoint = '/api/videos';
+      const mockResponse = createMockResponse('Bad Request', { status: 400 });
+
+      mockFetch.mockResolvedValue(mockResponse);
+
+      await expect(service.get(endpoint)).rejects.toBeInstanceOf(ServerException);
+      expect(router.navigate).toHaveBeenCalledWith(['/500']);
+    });
+
+    it.each([502, 503, 504])(
+      'should treat %i from the proxy as a network error',
+      async (status) => {
+        const endpoint = '/api/videos';
+        const mockResponse = createMockResponse('Bad Gateway', { status });
+
+        mockFetch.mockResolvedValue(mockResponse);
+
+        await expect(service.get(endpoint)).rejects.toMatchObject({
+          name: 'NetworkException',
+          status,
+        });
+        expect(router.navigate).toHaveBeenCalledWith(['/network/error']);
+        expect(router.navigate).not.toHaveBeenCalledWith(['/500']);
+      }
+    );
+
     it('should return data for successful requests', async () => {
       const endpoint = '/api/videos/1';
       const mockData = { id: 1, title: 'Test Video' };

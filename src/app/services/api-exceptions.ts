@@ -26,9 +26,17 @@ export class ServerException extends ApiException {
   }
 }
 
+/**
+ * The backend could not be reached: the request itself failed (offline, DNS,
+ * CORS, aborted) or a proxy in front of the backend answered 502/503/504.
+ */
 export class NetworkException extends ApiException {
-  constructor(endpoint: string, message: string = 'Network error') {
-    super(message, 0, endpoint);
+  constructor(
+    endpoint: string,
+    message: string = 'Network error',
+    status: number = 0
+  ) {
+    super(message, status, endpoint);
     this.name = 'NetworkException';
   }
 }
