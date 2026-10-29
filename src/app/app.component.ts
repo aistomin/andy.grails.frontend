@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from './footer/footer.component';
 
@@ -10,14 +10,9 @@ import { FooterComponent } from './footer/footer.component';
     <main>
       <header class="brand-name">
         <a [routerLink]="['/']" class="logo-link">
-          <img
-            class="brand-logo"
-            src="/assets/logo.svg"
-            alt="chalice logo"
-            aria-hidden="true"
-          />
+          <img class="brand-logo" src="/assets/logo.svg" alt="" />
+          <span class="brand-text">Andy Grails</span>
         </a>
-        <span class="brand-text" (click)="navigateHome()">Andy Grails</span>
       </header>
       <section class="content">
         <router-outlet></router-outlet>
@@ -27,10 +22,4 @@ import { FooterComponent } from './footer/footer.component';
   `,
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  constructor(private router: Router) {}
-
-  navigateHome() {
-    this.router.navigate(['/']);
-  }
-}
+export class AppComponent {}
