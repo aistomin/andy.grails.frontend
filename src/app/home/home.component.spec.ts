@@ -138,9 +138,18 @@ describe('HomeComponent', () => {
     // Wait for the component to finish loading videos
     await fixture.whenStable();
 
-    component.filterResults('nonexistent');
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.no-results')).toBeFalsy();
+
+    compiled.querySelector('input').value = 'nonexistent';
+    compiled.querySelector('form').dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
 
     expect(component.filteredVideos.length).toBe(0);
+    expect(compiled.querySelector('.no-results').textContent.trim()).toBe(
+      'No videos found'
+    );
   });
 
   it('should clear search and show all videos', async () => {
@@ -185,6 +194,7 @@ describe('HomeComponent', () => {
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('.loading-container')).toBeFalsy();
     expect(compiled.querySelector('.results')).toBeTruthy();
+    expect(compiled.querySelector('.no-results')).toBeFalsy();
   });
 
   it('should hide loading spinner after failed fetch', async () => {

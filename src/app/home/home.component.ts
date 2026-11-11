@@ -27,6 +27,9 @@ import { VideoService } from '../services/video.service';
         <button class="primary" type="submit">Search</button>
       </form>
     </section>
+    <p *ngIf="!isLoading && filteredVideos.length === 0" class="no-results">
+      No videos found
+    </p>
     <section *ngIf="!isLoading" class="results">
       <app-video-card
         *ngFor="let video of filteredVideos"
